@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+// New Color Scheme to Match Agency Page
+$background-color: #FFFFFF; // Matching the page container background
+$text-color: #252525; // Dark for contrast with light background
+$accent-color: #707070; // Keeping the vibrant accent for interactive elements
+$secondary-text-color: #707070; // Muted for less important elements
+$border-color: #E0E0E0; // Light grey border to match agencyHeader
+
+// ChatBox Container
+.chatBox {
+  position: fixed; 
+  font-family: 'Roboto', sans-serif;
+  background-color: $background-color; /* Ensure you have this variable defined or replace it with a hex code */
+  color: $text-color; /* Ensure you have this variable defined or replace it with a hex code */
+  max-width: 800px;
+  width: 100%; /* Ensures it doesn't exceed the viewport width */
+  max-height: 600px; /* Adjust if you want a different height */
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03); /* Soft shadow for depth */
+  height: 600px;
+
+  top: 20px; /* Distance from the top of the viewport */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust based on width to center */
+  overflow: auto; /* Adds scroll to the chat box itself if content exceeds its max-height */
+}
+
+// Heading
+.heading {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 20px;
+  color: $accent-color;
+  font-weight: 500;
+}
+
+// Conversation Area
+.conversation {
+  overflow-y: auto;
+  margin-bottom: 10px;
+  flex-grow: 1;
+  background-color: #F7F7F7; // Lighter than the main background for subtle contrast
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid $border-color; // Consistent with agencyHeader styling
+}
+
+// Suggestion Container
+.suggestionContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+// Suggestion Buttons
+.suggestion {
+  background-color: $background-color;
+  border: 1px solid $border-color;
+  padding: 10px;
+  flex: 1;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 20px;
+  color: $secondary-text-color;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  &:hover {
+    background-color: $accent-color;
+    color: $background-color;
+  }
+}
+
+// Input Field
+.input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: 1px solid $border-color;
+  background-color: #F0F0F0; // Slightly off-white for contrast with main background
+  color: $text-color;
+  border-radius: 20px;
+  margin: 0;
+  font-size: 1em;
+  outline: none;
+  &:focus {
+    border-color: $accent-color;
+  }
+}
+
+// Form and Button Styling
+.form {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding: 0 5px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: $accent-color;
+  color: $background-color;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: darken($accent-color, 10%);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  width: 30px; // Adjust as needed to ensure a circular shape
+  height: 30px; // Equal to width to create a circle
+  line-height: 20px; // Adjust based on your font size to vertically center the 'X'
+  text-align: center; // Ensure the 'X' is horizontally centered
+  background-color: transparent;
+  border: 2px solid $text-color; // Use the existing text color for the border
+  border-radius: 50%; // This creates the circular shape
+  cursor: pointer;
+  font-size: 1.2em;
+  color: $text-color;
+  transition: color 0.3s, transform 0.3s, background-color 0.3s;
+
+  &:hover {
+    color: $background-color;
+    background-color: $accent-color; // Invert colors on hover for better visibility
+    transform: scale(1.1);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.greenDot {
+  background-color: #8079b7; /* Green */
+}
+
+.redDot {
+  background-color: #ff0000; /* Red */
+}
+
+.messageWithDot {
+  display: flex;
+  align-items: center;
+}

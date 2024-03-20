@@ -1,0 +1,70 @@
+.header {
+  width: 100%;
+  background: #FFFFFF; // Corrected double semicolon
+  color: #252525;
+  padding: 1rem 0;
+}
+
+.headerContainer {
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.headerTitle {
+  font-size: 2rem;
+  color: #252525;
+  margin-right: 20px;
+  font-family: "Segoe UI";
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.navLink {
+  font-size: 1.1rem;
+  color: #252525;
+  margin-right: 20px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+.dropdownCaret {
+  display: none; // Hide the caret as the dropdown functionality is removed
+}
+
+.stateButtons {
+  display: flex;
+  gap: 8px; // Adjust the gap between buttons as needed
+}
+
+.stateButton {
+  background-color: #f0f0f0; // Light grey background
+  color: #252525; // Dark text for readability
+  border: 1px solid #ccc; // Slight border to match the dropdownButton style
+  border-radius: 5px; // Rounded corners
+  padding: 8px 16px; // Slightly larger padding for better touch target
+  cursor: pointer;
+  font-size: 1rem; // Match the navLink size for consistency
+  transition: background-color 0.3s ease; // Smooth background color transition on hover
+
+  &:hover {
+    background-color: #e0e0e0; // Slightly darker on hover
+  }
+}
+
+.active {
+  background-color: rgb(94, 90, 90); // Indicate the active state with a darker background
+  color: #ffffff; // White text for contrast
+}

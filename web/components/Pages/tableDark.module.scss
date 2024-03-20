@@ -1,0 +1,397 @@
+.tableContainer {
+  background-color: #121212; /* Dark background color */
+  overflow-x: auto;
+  position: relative;
+  font-family: 'Segoe UI';
+}
+
+.tableWrapper {
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(205, 9, 9, 0.1); /* Lighter shadow for contrast */
+  overflow: hidden;
+  background-color: #121212; /* Dark background color */
+  margin: 20px;
+  padding: 20px;
+  position: relative;
+  z-index: 5;
+}
+
+.tableControls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-right: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.agencyTable {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin: 0 10px;
+  padding: 3px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjust the values s needed */
+    left: -5px; /* Adjust the values as needed */
+    right: -5px; /* Adjust the values as needed */
+    bottom: -5px; /* Adjust the values as needed */
+    border: 1px solid #ddd;
+    border-radius: 15px; /* Adjust the value as needed */
+    pointer-events: none;
+  }
+
+  thead tr th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-family: 'Segoe UI';
+    color: #ddd;
+    font-weight: normal;
+    background-color: #1e1e1e;
+  }
+
+  th,
+  td {
+    border: none;
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #565454;
+    width: auto;
+    min-width: 120px;
+    white-space: nowrap;
+    color: #ddd;
+  }
+
+  th {
+    color: #ddd;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #1a1a1a;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #252525;
+  }
+
+  &:nth-child(1) {
+    width: 1000px;
+  }
+  &:nth-child(2) {
+    width: 1490px;
+  }
+
+  tbody tr:hover {
+    background-color: #333;
+    cursor: pointer;
+  }
+}
+
+.searchInput {
+  padding: 0.5rem;
+  padding-left: 30px; /* Keep your existing left padding */
+  margin-left: 10px; /* Adjust this value to move the component to the right */
+  width: calc(100% - 10px); /* Decrease width slightly; adjust as necessary */
+  border-bottom: 2px solid #b3b3b3; /* Bottom border 
+  
+  color: #ddd; /* Text color */
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid #b3b3b3; /* Bottom border color */
+  background-color: #121212; /* Background color */
+  font-family: 'Segoe UI';
+}
+
+.searchInput::placeholder { /* Styles for placeholder */
+  color: #ddd; /* Placeholder text color */
+}
+
+/* Following styles remain unchanged, provided for context and completeness */
+.pagination {
+  color: #ddd; /* Lighter text color for contrast */
+}
+
+.pagination button {
+  color: #ddd; /* Lighter text color for contrast */
+}
+
+.pagination span {
+  color: #ddd; /* Lighter text color for contrast */
+}
+
+.csvLink {
+  width: 10rem; /* Matches .columnVisibilityButton */
+  height: 2.5rem; /* Matches .columnVisibilityButton */
+  border-radius: 0.5rem; /* Matches .columnVisibilityButton */
+  background-color: #121212; /* Matches .columnVisibilityButton */
+  border: 1px solid #ddd; /* Matches .columnVisibilityButton */
+  color: #ddd; /* Matches .columnVisibilityButton */
+  font-size: 0.875rem; /* Matches .columnVisibilityButton */
+  margin-right: 1px; /* Matches .columnVisibilityButton */
+  transition: background-color 0.3s ease; /* Matches .columnVisibilityButton */
+  display: flex; /* Align items using Flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Ensure text is centered if it wraps */
+
+  &:hover {
+    background-color: rgba(221, 221, 221, 0.1); /* Slight background fill to match */
+    border-color: #bbb; /* Matches .columnVisibilityButton */
+    color: #bbb; /* Matches .columnVisibilityButton */
+  }
+}
+
+
+.arrowButton {
+  width: 10rem; /* Adjust as needed */
+  height: 2.5rem; /* Adjust as needed */
+  border-radius: 0.5rem; /* Adjust as needed */
+  background-color: #121212;
+  border: 1px solid #ddd; /* Adjust as needed */
+  color: #ddd;
+  font-size: 0.875rem; /* Adjust as needed */
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(221, 221, 221, 0.1); /* Slight background fill */
+    border-color: #bbb;
+    color: #bbb;
+  }
+}
+
+.csvLinkWrapper {
+  margin-right: 20px;
+}
+
+.paginationControls {
+  margin-left: 20px;
+}
+
+.tableFooter {
+  padding-bottom: 20px;
+  margin-top: 30px; /* Adjust the value as needed */
+}
+
+.columnVisibilityButton {
+  position: absolute;
+  top: 3rem; /* Adjust this value to move the button vertically */
+  right: 20px; /* Adjust this value to move the button horizontally */
+  width: 10rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background-color: #121212;
+  border: 1px solid #ddd;
+  color: #ddd;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(221, 221, 221, 0.1);
+    border-color: #bbb;
+    color: #bbb;
+  }
+}
+
+.closeButton {
+  width: 10rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background-color: #121212;
+  border: 1px solid #ddd;
+  color: #ddd;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: rgba(221, 221, 221, 0.1);
+    border-color: #bbb;
+    color: #bbb;
+  }
+}
+.modalBackground {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.agencyTypeModalBackground {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modalContent {
+  background-color: #121212; /* Dark background color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* Lighter shadow for contrast */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: 'Segoe UI',;
+
+  button {
+    margin-top: 20px;
+  }
+}
+
+.modalCheckboxContainer {
+  display: flex;
+  align-items: center;
+  color: #ddd; /* Adjust the color as needed */
+}
+
+.modalCheckboxLabel {
+  margin-left: 8px;
+}
+
+.modalItem {
+  display: flex;
+  align-items: center;
+  color: white; /* Ensures text color matches your requirement */
+}
+
+.arrowIcon {
+  color: #ddd; /* Light gray color */
+  font-size: .8rem;
+}
+
+.arrowDown {
+  margin-left: 3px;
+}
+
+.pageNumber {
+  color: #ddd; /* Assuming you want to keep the inline style as a class */
+  margin-right: 10px; /* Adds space to the right of the page number */
+  font-weight: normal; /* Explicitly set font weight to normal */
+}
+
+.selectWrapper {
+  position: relative;
+  width: 6.5rem; /* Match the width of your select */
+  height: 2.5rem; /* Match the height of your select */
+}
+
+.showPages {
+  -webkit-appearance: none; /* Hide default dropdown arrow for WebKit browsers */
+  -moz-appearance: none; /* Hide default dropdown arrow for Mozilla browsers */
+  appearance: none; /* Standard way to hide the arrow */
+  width: 100%; /* Make select fill the wrapper */
+  height: 100%; /* Make select fill the wrapper */
+  background-color: #121212;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  color: #ddd;
+  padding: 0 30px 0 10px; /* Adjust text padding and leave space for custom arrow */
+}
+
+.selectWrapper::after {
+  content: '▼'; /* Your custom arrow icon */
+  position: absolute;
+  right: 10px; /* Adjust the position of the custom arrow as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Ensures click events pass through to the select element */
+  color: #ddd;
+  font-size: 0.875rem;
+}
+
+.agencyVisibilityButton {
+  position: relative;
+  top: 30px;
+  width: 6rem; /* Adjust as needed */
+  height: 2.5rem; /* Adjust as needed */
+  border-radius: 0.5rem; /* Adjust as needed */
+  background-color: #121212;
+  border: 1px solid #ddd; /* Adjust as needed */
+  color: #ddd;
+  font-size: 0.875rem; /* Adjust as needed */
+  margin-right: 30px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(221, 221, 221, 0.1); /* Slight background fill */
+    border-color: #bbb;
+    color: #bbb;
+  }
+}
+
+.agencyTypeModalBackground {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+.agencyTypeModalContent {
+  background-color: #121212; /* Dark background color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* Lighter shadow for contrast */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: 'Segoe UI';
+  color: #ddd; /* Light gray text color */
+  max-width: 80%; /* Limit the width of the modal */
+  max-height: 80%; /* Limit the height of the modal */
+  overflow: auto; /* Add scrollbar if content exceeds max-height */
+
+  button {
+    margin-top: 20px;
+  }
+}
+
+.agencyTypeModalCheckboxContainer {
+  display: flex;
+  align-items: center;
+  color: #ddd; /* Adjust the color as needed */
+}
+
+.agencyTypeModalCheckboxLabel {
+  margin-left: 8px;
+}
+
+.agencyTypeModalHeader {
+  color: #ddd;
+  margin-bottom: 10px; /* Adjust this value to reduce the space */
+  text-align: center;
+}
+
+.modalHeader {
+  color: #ddd;
+  margin-bottom: 10px; /* Adjust this value to reduce the space */
+  text-align: center;
+}

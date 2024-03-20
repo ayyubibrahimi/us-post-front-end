@@ -1,0 +1,43 @@
+/* LandingScreen.module.css */
+.landingScreenContainer {
+  background-color: #fff; /* White background */
+}
+
+.georgiaButton {
+  width: 10rem; /* Adjust as needed */
+  height: 2.5rem; /* Adjust as needed */
+  border-radius: 0.5rem; /* Adjust as needed */
+  background-color: #fff;
+  border: 1px solid #333; /* Adjust as needed */
+  color: #333;
+  font-size: 0.875rem; /* Adjust as needed */
+  font-family: 'Segoe UI';
+}
+
+.georgiaButton:hover {
+  background-color: rgba(51, 51, 51, 0.1); /* Slight background fill */
+  border-color: #555;
+  color: #555;
+}
+
+.floridaButton {
+  width: 10rem; /* Adjust as needed */
+  height: 2.5rem; /* Adjust as needed */
+  border-radius: 0.5rem; /* Adjust as needed */
+  background-color: #fff;
+  border: 1px solid #333; /* Adjust as needed */
+  color: #333;
+  font-size: 0.875rem; /* Adjust as needed */
+  font-family: 'Segoe UI';
+}
+
+.floridaButton:hover {
+  background-color: rgba(51, 51, 51, 0.1); /* Slight background fill */
+  border-color: #555;
+  color: #555;
+}
+
+.peaceOfficerText {
+  color: #000000; // Black
+  font-family: 'Segoe UI';
+}

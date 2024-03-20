@@ -1,0 +1,73 @@
+.header {
+  width: 100%;
+  background: #fff; /* Light background color */
+  padding: 1rem 0;
+  font-family: 'Segoe UI';
+}
+
+.headerContainer {
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.headerTitle {
+  font-size: 2rem;
+  color: #333; /* Dark text color for contrast */
+  margin-right: 20px;
+  font-family: "Segoe UI";
+  cursor: pointer;
+}
+
+.navLink {
+  font-size: 1.1rem;
+  color: #333; /* Dark gray color */
+  margin-right: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: 'Segoe UI',;
+
+  &:hover {
+    color: #555; /* Slightly darker text color on hover */
+  }
+}
+
+.dropdownCaret {
+  display: none; /* Hide the caret as the dropdown functionality is removed */
+}
+
+.stateButtons {
+  display: flex;
+  gap: 8px; /* Adjust the gap between buttons as needed */
+}
+
+.stateButton {
+  width: 5rem; /* Adjust as needed */
+  height: 2.5rem; /* Adjust as needed */
+  border-radius: 0.5rem; /* Adjust as needed */
+  background-color: #fff;
+  border: 1px solid #333; /* Adjust as needed */
+  color: #333;
+  font-size: 0.875rem; /* Adjust as needed */
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(51, 51, 51, 0.1); /* Slight background fill */
+    border-color: #555;
+    color: #555;
+  }
+}
+
+.active {
+  background-color: #ccc; /* Lighter background color for active state */
+  color: #333; /* Dark text color for contrast */
+}

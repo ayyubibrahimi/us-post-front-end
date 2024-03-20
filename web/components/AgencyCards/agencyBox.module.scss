@@ -1,0 +1,103 @@
+.agencyBoxContainer {
+  background-color: #FFFFFF; // Light black background
+  color: #030303; // White text color
+  padding: 20px; // Add padding around the container
+  position: relative; // Added for absolute positioning of children
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.agencyGrid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: hidden; // Hide the scrollbar
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 50px; // Make space for the navigation buttons
+
+  &::-webkit-scrollbar {
+      display: none;
+  }
+
+  > div {
+      margin-right: 32px; // Increased spacing between cards
+      min-width: 300px; // Adjusted minimum width for each card
+      height: 300px; // Adjusted fixed height for each card
+      flex: 0 0 auto; // Prevent cards from stretching
+  }
+
+  > div:last-child {
+      margin-right: 0;
+  }
+}
+
+.agencyCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #333; // Card background color
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+  border-radius: 8px; // Rounded corners for the card
+}
+
+.navigationButtons {
+  position: absolute;
+  left: 50px; // Increase the left position to move the buttons to the right
+  bottom: 10px; // Keep at the bottom
+  display: flex;
+}
+
+.button {
+  background-color: #f0f0f0; // Button background color
+  color: #2c2c2c; // Button text color for the left button
+  border: none;
+  padding: 10px; // Adjust padding for circular shape
+  margin-left: 10px; // Spacing between buttons
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%; // Make the buttons circular
+  width: 40px; // Fixed width for circle
+  height: 40px; // Fixed height for circle
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Optional: adds a subtle shadow
+
+  &:hover {
+      background-color: darken(#f0f0f0, 10%);
+  }
+
+  &:first-child {
+      margin-left: 0; // No margin for the first button
+  }
+
+  // Specific style for the right button
+  &.right {
+      background-color: #f0f0f0; // Button background color
+      color: #007bff; // Bright blue color for the arrow
+  }
+}
+
+.agencyGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.agencyGrid {
+  -ms-overflow-style: none; // IE and Edge
+  scrollbar-width: none; // Firefox
+  gap: 1px; // Adjusts space between cards, you can set this to your preference
+}
+
+.header {
+  font-size: 2rem;
+  color: #030303;
+  font-family: "Segoe UI";
+}
