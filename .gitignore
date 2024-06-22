@@ -38,3 +38,10 @@ next-env.d.ts
 *.csv
 *.xls
 *.xlsx
+
+
+# directories
+notebooks/
+preprocessing/
+src/
+agent/
