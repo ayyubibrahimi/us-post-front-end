@@ -11,10 +11,8 @@ const LandingScreen = ({ onButtonClick }) => {
     { text: "employment", textColor: '#000000' },
     { text: "history", textColor: '#000000' },
     { text: "data", textColor: '#000000' },
-    { text: "from", textColor: '#000000' },
-    { text: "over", textColor: '#000000' },
-    { text: "x", textColor: '#000000' },
-    { text: "states", textColor: '#000000' },
+    { text: "in", textColor: '#000000' },
+    { text: "Georgia", textColor: '#000000' },
   ];
   // const words = [
   //   { text: "Explore" }, // Black text color
@@ -39,12 +37,7 @@ const LandingScreen = ({ onButtonClick }) => {
         <button
           className={`${buttonStyles.georgiaButton}`}
           onClick={() => onButtonClick('Georgia')}>
-          Georgia
-        </button>
-        <button
-          className={`${buttonStyles.floridaButton}`}
-          onClick={() => onButtonClick('Florida')}>
-          Florida
+          Enter
         </button>
       </div>
     </div>

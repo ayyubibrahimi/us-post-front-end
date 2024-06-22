@@ -30,18 +30,6 @@ const Header = ({ changeState }) => {
             {"Peace Officer Employment History Database"}
           </h1>
           <div className={styles.stateButtons}>
-            <button
-              className={`${styles.stateButton} ${selectedState === 'Florida' ? styles.active : ''}`}
-              onClick={() => handleStateChange('Florida')}
-            >
-              Florida
-            </button>
-            <button
-              className={`${styles.stateButton} ${selectedState === 'Georgia' ? styles.active : ''}`}
-              onClick={() => handleStateChange('Georgia')}
-            >
-              Georgia
-            </button>
           </div>
         </div>
       </div>
