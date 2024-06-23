@@ -1,26 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import AgencyTable from '../components/Pages/AgencyTable';
-import { fetchAllAgencyData } from '../utils/fetchAllAgencies';
+import { fetchAgencyDataByState } from '../utils/fetchData';
 import LandingScreen from '../components/LandingPage/LandingScreen';
+import Header from '../components/Header/Header';
 
-// Dynamically import the MapComponent with SSR disabled
-const MapComponentWithNoSSR = dynamic(() => import('../components/Map/MapComponent'), {
-  ssr: false,
-});
-
-export default function Home({ allAgencyData }) {
-  const [selectedState] = useState('Arizona'); // Always set to 'Georgia'
-  const [filteredData, setFilteredData] = useState([]);
+export default function Home() {
+  const [selectedState, setSelectedState] = useState('');
+  const [agencyData, setAgencyData] = useState([]);
   const [showLandingScreen, setShowLandingScreen] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const data = allAgencyData.filter(agency => agency.state === selectedState);
-    setFilteredData(data);
-  }, [selectedState, allAgencyData]);
-
-  const handleStateSelection = () => {
-    setShowLandingScreen(false);
+  const handleStateSelection = async (state) => {
+    setIsLoading(true);
+    setError(null);
+    setSelectedState(state);
+    
+    try {
+      const stateData = await fetchAgencyDataByState(state);
+      setAgencyData(stateData);
+      setShowLandingScreen(false);
+    } catch (error) {
+      console.error("Error fetching state data:", error);
+      setError("Failed to load data. Please try again.");
+      setAgencyData([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (showLandingScreen) {
@@ -29,17 +36,16 @@ export default function Home({ allAgencyData }) {
 
   return (
     <div className="flex flex-col h-screen">
-      <main className="flex-grow">
-        <div>
-          <AgencyTable agencyData={filteredData} />
-        </div>
+      <Header selectedState={selectedState} onStateChange={handleStateSelection} />
+      <main className="flex-grow p-4">
+        {isLoading ? (
+          <p>Loading data for {selectedState}...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          <AgencyTable agencyData={agencyData} />
+        )}
       </main>
     </div>
   );
-}
-
-// Fetch initial data
-export async function getStaticProps() {
-  const allAgencyData = await fetchAllAgencyData();
-  return { props: { allAgencyData } };
 }

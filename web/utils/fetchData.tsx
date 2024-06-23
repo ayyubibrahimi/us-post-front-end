@@ -1,27 +1,17 @@
-import { storage } from './firebaseConfig';
-import { ref, getBytes } from "firebase/storage";
 import Papa from 'papaparse';
 
 export const fetchAgencyDataByState = async (state: string) => {
-  const fileRef = ref(storage, `${state.toLowerCase()}-processed.csv`);
-  
   try {
-    const buffer = await getBytes(fileRef);
-    const csvText = new TextDecoder().decode(buffer);
-    
-    return new Promise((resolve, reject) => {
-      Papa.parse(csvText, {
-        header: true,
-        complete: (results) => {
-          resolve(results.data);
-        },
-        error: (error) => {
-          reject(error);
-        }
-      });
-    });
+    const response = await fetch(`/api/fetchStateData?state=${state}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch state data');
+    }
+    const { data: csvText } = await response.json();
+    return Papa.parse(csvText, { header: true, skipEmptyLines: true }).data;
   } catch (error) {
-    console.error(`Error fetching data for ${state}:`, error);
+    console.error("Error fetching state data:", error);
     throw error;
   }
 };
+
+// We can remove the fetchAllAgencyData function if it's no longer needed
