@@ -3,7 +3,7 @@ import { storage, ref, getDownloadURL } from './firebaseConfig';
 import Papa from 'papaparse';
 
 export const fetchAllAgencyData = async () => {
-    const fileRef = ref(storage, 'ga-2024-enhanced-work-history.csv');
+    const fileRef = ref(storage, 'arizona-processed.csv');
     const fileURL = await getDownloadURL(fileRef);
     const response = await fetch(fileURL);
     const csvText = await response.text();
@@ -12,7 +12,7 @@ export const fetchAllAgencyData = async () => {
 };
 
 export const fetchAgencyDataByState = async (state: string) => {
-    const fileRef = ref(storage, 'ga-2024-enhanced-work-history.csv');
+    const fileRef = ref(storage, 'arizona-processed.csv');
     const fileURL = await getDownloadURL(fileRef);
     const response = await fetch(fileURL);
     const csvText = await response.text();

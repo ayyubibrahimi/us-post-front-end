@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header/Header';
 import dynamic from 'next/dynamic';
 import AgencyTable from '../components/Pages/AgencyTable';
 import { fetchAllAgencyData } from '../utils/fetchAllAgencies';
@@ -11,7 +10,7 @@ const MapComponentWithNoSSR = dynamic(() => import('../components/Map/MapCompone
 });
 
 export default function Home({ allAgencyData }) {
-  const [selectedState] = useState('Georgia'); // Always set to 'Georgia'
+  const [selectedState] = useState('Arizona'); // Always set to 'Georgia'
   const [filteredData, setFilteredData] = useState([]);
   const [showLandingScreen, setShowLandingScreen] = useState(true);
 
@@ -30,7 +29,6 @@ export default function Home({ allAgencyData }) {
 
   return (
     <div className="flex flex-col h-screen">
-      <Header changeState={() => {}} /> {/* Empty function since state selection is not needed */}
       <main className="flex-grow">
         <div>
           <AgencyTable agencyData={filteredData} />

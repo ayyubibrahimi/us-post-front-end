@@ -10,9 +10,7 @@ const LandingScreen = ({ onButtonClick }) => {
     { text: "officer", textColor: '#000000' },
     { text: "employment", textColor: '#000000' },
     { text: "history", textColor: '#000000' },
-    { text: "data", textColor: '#000000' },
-    { text: "in", textColor: '#000000' },
-    { text: "Georgia", textColor: '#000000' },
+    { text: "data", textColor: '#000000' }
   ];
   // const words = [
   //   { text: "Explore" }, // Black text color

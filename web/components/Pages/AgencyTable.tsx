@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,6 +27,15 @@ const AgencyTable = ({ agencyData }) => {
     'Corrections Department': true,
   });
 
+  useEffect(() => {
+    console.log('AgencyTable component mounted');
+    console.log('Initial agencyData:', agencyData);
+  }, []);
+
+  useEffect(() => {
+    console.log('agencyData updated:', agencyData);
+  }, [agencyData]);
+
   const toggleColumnVisibility = (columnName) => {
     setColumnVisibility(prev => ({
       ...prev,
@@ -35,7 +44,8 @@ const AgencyTable = ({ agencyData }) => {
   };
 
   const filteredData = useMemo(() => {
-    return agencyData.filter(row =>
+    console.log('Filtering data with:', { lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter });
+    const filtered = agencyData.filter(row =>
       row.last_name.toLowerCase().includes(lastNameFilter.toLowerCase()) &&
       row.first_name.toLowerCase().includes(firstNameFilter.toLowerCase()) &&
       row.agcy_name.toLowerCase().includes(agencyFilter.toLowerCase()) &&
@@ -44,8 +54,9 @@ const AgencyTable = ({ agencyData }) => {
       (agencyTypeFilter["Sheriff's Office"] && row.agcy_name.toLowerCase().includes('sheriff')) ||
       (agencyTypeFilter['Corrections Department'] && row.agcy_name.toLowerCase().includes('corrections')))
     );
+    console.log('Filtered data:', filtered);
+    return filtered;
   }, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter]);
-
 
   const columns = useMemo(
     () => [
@@ -55,13 +66,15 @@ const AgencyTable = ({ agencyData }) => {
       { Header: 'Last Name', accessor: 'last_name' },
       { Header: 'Start Date', accessor: 'start_date' },
       { Header: 'Separation Date', accessor: 'end_date' },
-      { Header: 'Separation Reason', accessor: 'type' },
+      { Header: 'Separation Reason', accessor: 'separation_reason' },
     ],
     []
   );
 
   const filteredColumns = useMemo(() => {
-    return columns.filter(column => columnVisibility[column.accessor]);
+    const filtered = columns.filter(column => columnVisibility[column.accessor]);
+    console.log('Filtered columns:', filtered);
+    return filtered;
   }, [columns, columnVisibility]);
 
   const {
@@ -87,17 +100,27 @@ const AgencyTable = ({ agencyData }) => {
     usePagination
   );
 
+  useEffect(() => {
+    console.log('Table state updated:', { pageIndex, pageSize });
+    console.log('Current page data:', page);
+  }, [page, pageIndex, pageSize]);
+
   const pageCount = Math.ceil(filteredData.length / pageSize);
 
-  const csvData = useMemo(() => filteredData.map(row => ({
-    'Agency Name': row.agcy_name,
-    'UID': row.person_nbr,
-    'First Name': row.first_name,
-    'Last Name': row.last_name,
-    'Start Date': row.start_date,
-    'Separation Date': row.end_date,
-    'Separation Reason': row.type,
-  })), [filteredData]);
+  const csvData = useMemo(() => {
+    const data = filteredData.map(row => ({
+      'Agency Name': row.agcy_name,
+      'UID': row.person_nbr,
+      'First Name': row.first_name,
+      'Last Name': row.last_name,
+      'Start Date': row.start_date,
+      'Separation Date': row.end_date,
+      'Separation Reason': row.separation_reason,
+    }));
+    console.log('CSV data prepared:', data);
+    return data;
+  }, [filteredData]);
+
  
  
 return (
