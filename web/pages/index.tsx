@@ -4,6 +4,7 @@ import AgencyTable from '../components/Pages/AgencyTable';
 import { fetchAgencyDataByState } from '../utils/fetchData';
 import LandingScreen from '../components/LandingPage/LandingScreen';
 import Header from '../components/Header/Header';
+import styles from './index.module.scss';
 
 export default function Home() {
   const [selectedState, setSelectedState] = useState('');
@@ -16,7 +17,7 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     setSelectedState(state);
-    
+
     try {
       const stateData = await fetchAgencyDataByState(state);
       setAgencyData(stateData);
@@ -35,16 +36,20 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className={`${styles.pageContainer} flex flex-col h-screen`}>
       <Header selectedState={selectedState} onStateChange={handleStateSelection} />
       <main className="flex-grow p-4">
-        {isLoading ? (
-          <p>Loading data for {selectedState}...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
-          <AgencyTable agencyData={agencyData} />
-        )}
+        <div className="tableContainer">
+          {isLoading ? (
+            <p>Loading data for {selectedState}...</p>
+          ) : error ? (
+            <p className="text-red-500">{error}</p>
+          ) : (
+            <div className="tableWrapper">
+              <AgencyTable agencyData={agencyData} />
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

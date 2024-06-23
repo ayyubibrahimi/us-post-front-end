@@ -47,3 +47,5 @@ src/
 agent/
 
 firebaseConfig.tsx
+
+components-with-map/

@@ -1,19 +1,28 @@
 .tableContainer {
-  background-color: #fff; /* Dark background color */
+  background-color: #fff; /* Light background color */
   overflow-x: auto;
+  overflow-y: auto; /* Add vertical scroll if content overflows */
   position: relative;
   font-family: 'Segoe UI';
+  flex-grow: 1; /* Ensure the container grows to take up available space */
+  display: flex;
+  flex-direction: column;
+  margin-top: 5rem; /* Add margin to avoid overlapping with the fixed header */
+  padding: 1rem; /* Add some padding for better spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow for better separation */
+  height: calc(100vh - 5rem - 2rem); /* Adjust height to fit within the viewport */
 }
 
 .tableWrapper {
   border-radius: 20px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Lighter shadow for contrast */
   overflow: hidden;
-  background-color: #fff; /* Dark background color */
+  background-color: #fff; /* Light background color */
   margin: 20px;
   padding: 20px;
   position: relative;
   z-index: 5;
+  flex-grow: 1; /* Ensure the wrapper grows to take up available space */
 }
 
 .tableControls {
@@ -23,6 +32,7 @@
   padding-right: 2rem;
   margin-bottom: 0.5rem;
 }
+
 .agencyTable {
   width: 100%;
   table-layout: auto;
@@ -93,8 +103,8 @@
     cursor: pointer;
   }
 }
-  
-  .searchInput {
+
+.searchInput {
   padding: 0.5rem;
   padding-left: 30px;
   margin-left: 10px;
@@ -108,25 +118,25 @@
   border-bottom: 2px solid #b3b3b3;
   background-color: #fff;
   font-family: 'Segoe UI';
-  }
-  
-  .searchInput::placeholder {
+}
+
+.searchInput::placeholder {
   color: #999;
-  }
-  
-  .pagination {
+}
+
+.pagination {
   color: #333;
-  }
-  
-  .pagination button {
+}
+
+.pagination button {
   color: #333;
-  }
-  
-  .pagination span {
+}
+
+.pagination span {
   color: #333;
-  }
-  
-  .csvLink {
+}
+
+.csvLink {
   width: 10rem;
   height: 2.5rem;
   border-radius: 0.5rem;
@@ -140,15 +150,15 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  
+
   &:hover {
-  background-color: rgba(51, 51, 51, 0.1);
-  border-color: #555;
-  color: #555;
+    background-color: rgba(51, 51, 51, 0.1);
+    border-color: #555;
+    color: #555;
   }
-  }
-  
-  .arrowButton {
+}
+
+.arrowButton {
   width: 10rem;
   height: 2.5rem;
   border-radius: 0.5rem;
@@ -158,28 +168,28 @@
   font-size: 0.875rem;
   margin-right: 10px;
   transition: background-color 0.3s ease;
-  
+
   &:hover {
-  background-color: rgba(51, 51, 51, 0.1);
-  border-color: #555;
-  color: #555;
+    background-color: rgba(51, 51, 51, 0.1);
+    border-color: #555;
+    color: #555;
   }
-  }
-  
-  .csvLinkWrapper {
+}
+
+.csvLinkWrapper {
   margin-right: 20px;
-  }
-  
-  .paginationControls {
+}
+
+.paginationControls {
   margin-left: 20px;
-  }
-  
-  .tableFooter {
+}
+
+.tableFooter {
   padding-bottom: 20px;
   margin-top: 30px;
-  }
-  
-  .columnVisibilityButton {
+}
+
+.columnVisibilityButton {
   position: absolute;
   top: 3rem;
   right: 20px;
@@ -191,15 +201,15 @@
   color: #333;
   font-size: 0.875rem;
   transition: background-color 0.3s ease;
-  
+
   &:hover {
-  background-color: rgba(51, 51, 51, 0.1);
-  border-color: #555;
-  color: #555;
+    background-color: rgba(51, 51, 51, 0.1);
+    border-color: #555;
+    color: #555;
   }
-  }
-  
-  .closeButton {
+}
+
+.closeButton {
   width: 10rem;
   height: 2.5rem;
   border-radius: 0.5rem;
@@ -209,15 +219,15 @@
   font-size: 0.875rem;
   transition: background-color 0.3s ease;
   margin-top: 20px;
-  
+
   &:hover {
-  background-color: rgba(51, 51, 51, 0.1);
-  border-color: #555;
-  color: #555;
+    background-color: rgba(51, 51, 51, 0.1);
+    border-color: #555;
+    color: #555;
   }
-  }
-  
-  .modalBackground {
+}
+
+.modalBackground {
   position: fixed;
   z-index: 10;
   left: 0;
@@ -228,9 +238,9 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .modalContent {
+}
+
+.modalContent {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -239,50 +249,50 @@
   flex-direction: column;
   gap: 10px;
   font-family: 'Segoe UI';
-  
+
   button {
-  margin-top: 20px;
+    margin-top: 20px;
   }
-  }
-  
-  .modalCheckboxContainer {
+}
+
+.modalCheckboxContainer {
   display: flex;
   align-items: center;
   color: #333;
-  }
-  
-  .modalCheckboxLabel {
+}
+
+.modalCheckboxLabel {
   margin-left: 8px;
-  }
-  
-  .modalItem {
+}
+
+.modalItem {
   display: flex;
   align-items: center;
   color: #333;
-  }
-  
-  .arrowIcon {
+}
+
+.arrowIcon {
   color: #333;
   font-size: .8rem;
-  }
-  
-  .arrowDown {
+}
+
+.arrowDown {
   margin-left: 3px;
-  }
-  
-  .pageNumber {
+}
+
+.pageNumber {
   color: #333;
   margin-right: 10px;
   font-weight: normal;
-  }
-  
-  .selectWrapper {
+}
+
+.selectWrapper {
   position: relative;
   width: 6.5rem;
   height: 2.5rem;
-  }
-  
-  .showPages {
+}
+
+.showPages {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -293,9 +303,9 @@
   border-radius: 0.5rem;
   color: #333;
   padding: 0 30px 0 10px;
-  }
-  
-  .selectWrapper::after {
+}
+
+.selectWrapper::after {
   content: '▼';
   position: absolute;
   right: 10px;
@@ -304,9 +314,9 @@
   pointer-events: none;
   color: #333;
   font-size: 0.875rem;
-  }
-  
-  .agencyVisibilityButton {
+}
+
+.agencyVisibilityButton {
   position: relative;
   top: 30px;
   width: 6rem;
@@ -319,15 +329,15 @@
   margin-right: 30px;
   margin-top: 20px;
   transition: background-color 0.3s ease;
-  
+
   &:hover {
-  background-color: rgba(51, 51, 51, 0.1);
-  border-color: #555;
-  color: #555;
+    background-color: rgba(51, 51, 51, 0.1);
+    border-color: #555;
+    color: #555;
   }
-  }
-  
-  .agencyTypeModalBackground {
+}
+
+.agencyTypeModalBackground {
   position: fixed;
   z-index: 10;
   left: 0;
@@ -338,9 +348,9 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .agencyTypeModalContent {
+}
+
+.agencyTypeModalContent {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -353,30 +363,30 @@
   max-width: 80%;
   max-height: 80%;
   overflow: auto;
-  
+
   button {
-  margin-top: 20px;
+    margin-top: 20px;
   }
-  }
-  
-  .agencyTypeModalCheckboxContainer {
+}
+
+.agencyTypeModalCheckboxContainer {
   display: flex;
   align-items: center;
   color: #333;
-  }
-  
-  .agencyTypeModalCheckboxLabel {
+}
+
+.agencyTypeModalCheckboxLabel {
   margin-left: 8px;
-  }
-  
-  .agencyTypeModalHeader {
+}
+
+.agencyTypeModalHeader {
   color: #333;
   margin-bottom: 10px;
   text-align: center;
-  }
+}
 
-  .modalHeader {
-    color: #333;
-    margin-bottom: 10px; /* Adjust this value to reduce the space */
-    text-align: center;
-  }
+.modalHeader {
+  color: #333;
+  margin-bottom: 10px; /* Adjust this value to reduce the space */
+  text-align: center;
+}

@@ -1,0 +1,53 @@
+# Ignore Firebase files
+firebase.json
+.firebaserc
+database.rules.json
+
+# Ignore functions directory
+functions/
+
+# Ignore lib directory
+lib/
+
+# Ignore node_modules directories
+node_modules/
+*/node_modules/
+
+# Ignore OCR output directory
+ocr_output/
+
+# Ignore scripts directory
+scripts/
+
+# Ignore TypeScript build info
+tsconfig.tsbuildinfo
+
+# Ignore development and configuration files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.gitignore
+.git
+.cache
+.next
+.vercel
+.vscode
+*.log
+*.swp
+*.bak
+*.old
+*.tmp
+*.temp
+*.test
+*.example
+*.sample
+*.mock
+*.backup
+*.DS_Store
+Thumbs.db
+
+# Ignore unnecessary public files
+public/ocr_output/
+public/uploads/
