@@ -12,12 +12,12 @@ const AgencyTable = ({ agencyData }) => {
   const [uidFilter, setUidFilter] = useState('');
   const [columnVisibility, setColumnVisibility] = useState({
     agcy_name: true,
-    uid: true,
+    person_nbr: true,
     first_name: true,
     last_name: true,
-    employ_start_date: true,
-    separation_date: true,
-    separation_code: true,
+    start_date: true,
+    end_date: true,
+    type: true,
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAgencyTypeModalVisible, setIsAgencyTypeModalVisible] = useState(false);
@@ -39,7 +39,7 @@ const AgencyTable = ({ agencyData }) => {
       row.last_name.toLowerCase().includes(lastNameFilter.toLowerCase()) &&
       row.first_name.toLowerCase().includes(firstNameFilter.toLowerCase()) &&
       row.agcy_name.toLowerCase().includes(agencyFilter.toLowerCase()) &&
-      row.uid.toLowerCase().includes(uidFilter.toLowerCase()) &&
+      row.person_nbr.toLowerCase().includes(uidFilter.toLowerCase()) &&
       ((agencyTypeFilter['Police Department'] && row.agcy_name.toLowerCase().includes('police')) ||
       (agencyTypeFilter["Sheriff's Office"] && row.agcy_name.toLowerCase().includes('sheriff')) ||
       (agencyTypeFilter['Corrections Department'] && row.agcy_name.toLowerCase().includes('corrections')))
@@ -50,12 +50,12 @@ const AgencyTable = ({ agencyData }) => {
   const columns = useMemo(
     () => [
       { Header: 'Agency Name', accessor: 'agcy_name' },
-      { Header: 'UID', accessor: 'uid' },
+      { Header: 'UID', accessor: 'person_nbr' },
       { Header: 'First Name', accessor: 'first_name' },
       { Header: 'Last Name', accessor: 'last_name' },
-      { Header: 'Start Date', accessor: 'employ_start_date' },
-      { Header: 'Separation Date', accessor: 'separation_date' },
-      { Header: 'Separation Reason', accessor: 'separation_code' },
+      { Header: 'Start Date', accessor: 'start_date' },
+      { Header: 'Separation Date', accessor: 'end_date' },
+      { Header: 'Separation Reason', accessor: 'type' },
     ],
     []
   );
@@ -91,12 +91,12 @@ const AgencyTable = ({ agencyData }) => {
 
   const csvData = useMemo(() => filteredData.map(row => ({
     'Agency Name': row.agcy_name,
-    'UID': row.uid,
+    'UID': row.person_nbr,
     'First Name': row.first_name,
     'Last Name': row.last_name,
-    'Start Date': row.employ_start_date,
-    'Separation Date': row.separation_date,
-    'Separation Reason': row.separation_code,
+    'Start Date': row.start_date,
+    'Separation Date': row.end_date,
+    'Separation Reason': row.type,
   })), [filteredData]);
  
  

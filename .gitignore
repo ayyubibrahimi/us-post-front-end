@@ -45,3 +45,5 @@ notebooks/
 preprocessing/
 src/
 agent/
+
+firebaseConfig.tsx
