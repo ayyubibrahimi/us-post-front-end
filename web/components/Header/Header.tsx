@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './headerLight.module.scss';
 
 const states = [
-  "Washington", "Virginia", "Texas", "Tennessee", "South Carolina",
+  "Washington", "Vermont", "Texas", "Tennessee", "South Carolina",
   "Oregon", "Ohio", "Maryland", "Illinois", "Georgia", "Florida",
   "California", "Arizona"
 ];
