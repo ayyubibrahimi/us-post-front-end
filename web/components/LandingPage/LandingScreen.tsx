@@ -18,13 +18,10 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   ];
 
   const states = [
-    "Washington", "Vermont", "Texas", "Tennessee", "South Carolina",
-    "Oregon", "Ohio", "Maryland", "Illinois", "Georgia", "Florida",
-    "California", "Arizona"
+    "Arizona", "California", "Florida", "Georgia", "Illinois", "Maryland",
+    "Ohio", "Oregon", "South Carolina", "Tennessee", "Texas", "Vermont",
+    "Washington"
   ];
-
-  // Sort the states in reverse alphabetical order
-  const sortedStates = states.sort((a, b) => b.localeCompare(a));
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-screen space-y-4 ${styles.landingScreenContainer}`}>
@@ -37,7 +34,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         cursorClassName={`w-2 h-8 md:h-10 lg:h-12 ${styles.black}`}
       />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8">
-        {sortedStates.map((state) => (
+        {states.map((state) => (
           <button
             key={state}
             className={`${buttonStyles.georgiaButton}`}

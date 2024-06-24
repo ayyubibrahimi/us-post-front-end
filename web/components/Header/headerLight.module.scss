@@ -48,7 +48,10 @@
   border-radius: 0.5rem;
   cursor: pointer;
   width: 100%; /* Make the button the same width as the dropdown */
-  text-align: left;
+  text-align: center; /* Center the text */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
 }
 
 .dropdownMenu {
@@ -67,6 +70,10 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
   color: #000; /* Black text color */
+  text-align: center; /* Center the text */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
 
   &:hover {
     background-color: rgba(51, 51, 51, 0.1); /* Slight background fill */
