@@ -1,16 +1,6 @@
-// index.module.scss
-
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #121212; // Dark background for the whole page
-  }
-  
-  .mainContent {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    // Add any additional styling you need for the main content area
-  }
-  
+.pageContainer {
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}

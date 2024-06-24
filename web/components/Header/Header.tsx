@@ -7,14 +7,19 @@ const states = [
   "California", "Arizona"
 ];
 
-const Header = ({ selectedState, onStateChange }) => {
+interface HeaderProps {
+  selectedState: string;
+  onStateChange: (state: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleStateSelection = (state) => {
+  const handleStateSelection = (state: string) => {
     onStateChange(state);
     setIsDropdownOpen(false);
   };

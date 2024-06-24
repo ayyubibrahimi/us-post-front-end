@@ -1,11 +1,12 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import { storage } from '../../utils/firebaseConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { state } = req.query;
   
-  if (!state) {
-    return res.status(400).json({ error: 'State parameter is required' });
+  if (!state || Array.isArray(state)) {
+    return res.status(400).json({ error: 'State parameter is required and must be a string' });
   }
 
   try {

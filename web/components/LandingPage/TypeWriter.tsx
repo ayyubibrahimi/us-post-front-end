@@ -3,8 +3,20 @@ import { motion } from 'framer-motion';
 import { cn } from "@/utils/cn";
 import styles from './TypeWriter.module.scss';
 
-export const TypewriterEffectSmooth = ({ words, className, cursorClassName }) => {
-  const containerRef = useRef(null);
+interface Word {
+  text: string;
+  className?: string;
+  textColor?: string;
+}
+
+interface TypewriterEffectSmoothProps {
+  words: Word[];
+  className?: string;
+  cursorClassName?: string;
+}
+
+export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ words, className, cursorClassName }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [isComponentVisible, setIsComponentVisible] = useState(false);
 
   useEffect(() => {

@@ -7,13 +7,13 @@ import Header from '../components/Header/Header';
 import styles from './index.module.scss';
 
 export default function Home() {
-  const [selectedState, setSelectedState] = useState('');
-  const [agencyData, setAgencyData] = useState([]);
-  const [showLandingScreen, setShowLandingScreen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [agencyData, setAgencyData] = useState<any[]>([]);
+  const [showLandingScreen, setShowLandingScreen] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleStateSelection = async (state) => {
+  const handleStateSelection = async (state: string) => {
     setIsLoading(true);
     setError(null);
     setSelectedState(state);
