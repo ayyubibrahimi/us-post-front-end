@@ -115,7 +115,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
     {
       columns: filteredColumns,
       data: filteredData,
-      initialState: { pageIndex: 0, pageSize: 10 } as Partial<TableState<AgencyData>> & Partial<UsePaginationState<AgencyData>>,
+      initialState: { pageIndex: 0, pageSize: 50 } as Partial<TableState<AgencyData>> & Partial<UsePaginationState<AgencyData>>,
     },
     useSortBy,
     usePagination
