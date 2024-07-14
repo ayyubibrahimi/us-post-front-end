@@ -147,9 +147,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
     <div className={tableStyles.tableContainer}>
       <div className={tableStyles.tableHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
-          {[{ state: uidFilter, setState: setUidFilter, placeholder: 'UID starts with' },
-            { state: lastNameFilter, setState: setLastNameFilter, placeholder: 'Last name starts with' },
-            { state: firstNameFilter, setState: setFirstNameFilter, placeholder: 'First name starts with' },
+          {[{ state: uidFilter, setState: setUidFilter, placeholder: 'UID contains' },
+            { state: lastNameFilter, setState: setLastNameFilter, placeholder: 'Last name contains' },
+            { state: firstNameFilter, setState: setFirstNameFilter, placeholder: 'First name contains' },
             { state: agencyFilter, setState: setAgencyFilter, placeholder: 'Agency contains' }].map((filter, index) => (
               <div key={index} className={tableStyles.searchBarContainer} style={{ position: 'relative' }}>
                 <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'black' }} />
