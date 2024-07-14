@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowUp, faArrowDown, faSort, faSortUp, faSortDown  } from '@fortawesome/free-solid-svg-icons';
 import { TableInstance, UsePaginationInstanceProps, UsePaginationState, useTable, useSortBy, usePagination, Column, TableState, HeaderGroup } from 'react-table';
 
 interface AgencyData {
@@ -177,7 +177,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
                     <th key={column.id} {...restColumnProps}>
                       <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
                         <span>{column.render('Header')}</span>
-                        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
                           <FontAwesomeIcon icon={faArrowUp} className={tableStyles.arrowIcon} />
                           <FontAwesomeIcon icon={faArrowDown} className={`${tableStyles.arrowIcon} ${tableStyles.arrowDown}`} />
                         </div>
