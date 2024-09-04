@@ -131,7 +131,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
 
   const csvData = useMemo(() => {
     const data = filteredData.map(row => ({
-      'Agency Name': row.agcy_name,
+      'Agency Name': row.agency_name,
       'UID': row.person_nbr,
       'First Name': row.first_name,
       'Last Name': row.last_name,
