@@ -1,28 +1,30 @@
 .tableContainer {
-  background-color: #fff; /* Light background color */
+  background-color: #fff;
   overflow-x: auto;
-  overflow-y: auto; /* Add vertical scroll if content overflows */
+  overflow-y: auto;
   position: relative;
   font-family: 'Segoe UI';
-  flex-grow: 1; /* Ensure the container grows to take up available space */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 5rem; /* Add margin to avoid overlapping with the fixed header */
-  padding: 1rem; /* Add some padding for better spacing */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow for better separation */
-  height: calc(100vh - 5rem - 2rem); /* Adjust height to fit within the viewport */
+  margin-top: 5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: calc(100vh - 5rem - 2rem);
+  width: 100%;
+  max-width: 100%;
 }
 
 .tableWrapper {
   border-radius: 20px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Lighter shadow for contrast */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  background-color: #fff; /* Light background color */
+  background-color: #fff;
   margin: 20px;
   padding: 20px;
   position: relative;
   z-index: 5;
-  flex-grow: 1; /* Ensure the wrapper grows to take up available space */
+  flex-grow: 1;
 }
 
 .tableControls {
@@ -35,6 +37,7 @@
 
 .agencyTable {
   width: 100%;
+  max-width: 100%;
   table-layout: auto;
   border-collapse: separate;
   border-spacing: 0;
@@ -73,9 +76,12 @@
     padding: 10px;
     border-bottom: 1px solid #ddd;
     width: auto;
-    min-width: 120px;
-    white-space: nowrap;
+    min-width: auto;
+    white-space: normal;
     color: #333;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   th {
@@ -88,14 +94,6 @@
 
   tbody tr:nth-child(even) {
     background-color: #fff;
-  }
-
-  &:nth-child(1) {
-    width: 1000px;
-  }
-
-  &:nth-child(2) {
-    width: 1490px;
   }
 
   tbody tr:hover {
@@ -114,7 +112,7 @@
 .searchInput {
   padding: 0.5rem;
   padding-left: 30px;
-  width: 200px; /* Adjust as needed */
+  width: 150px;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
   color: #333;
@@ -132,7 +130,6 @@
   color: #999;
 }
 
-/* Ensure the icon style is also defined */
 .searchIcon {
   position: absolute;
   left: 10px;
@@ -141,6 +138,7 @@
   color: #999;
   pointer-events: none;
 }
+
 .pagination {
   color: #333;
 }
@@ -202,14 +200,11 @@
 }
 
 .tableFooter {
-  padding-bottom: 20px;
+  padding: 10px;
   margin-top: 30px;
 }
 
 .columnVisibilityButton {
-  position: absolute;
-  top: 3rem;
-  right: 20px;
   width: 10rem;
   height: 2.5rem;
   border-radius: 0.5rem;
@@ -218,6 +213,8 @@
   color: #333;
   font-size: 0.875rem;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: rgba(51, 51, 51, 0.1);
@@ -293,13 +290,11 @@
   font-size: .8rem;
 }
 
-
 .arrowRightIcon {
   color: #333;
   font-size: .8rem;
   margin-left: 1000px;
 }
-
 
 .arrowDown {
   margin-left: 10px;
@@ -342,8 +337,6 @@
 }
 
 .agencyVisibilityButton {
-  position: relative;
-  top: 30px;
   width: 6rem;
   height: 2.5rem;
   border-radius: 0.5rem;
@@ -352,7 +345,8 @@
   color: #333;
   font-size: 0.875rem;
   margin-right: 30px;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -412,6 +406,27 @@
 
 .modalHeader {
   color: #333;
-  margin-bottom: 10px; /* Adjust this value to reduce the space */
+  margin-bottom: 10px;
   text-align: center;
+}
+
+.tableHeader {
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .tableControls,
+  .tableFooter > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .arrowButton,
+  .csvLink,
+  .selectWrapper {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
