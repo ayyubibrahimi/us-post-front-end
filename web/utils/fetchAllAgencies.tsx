@@ -8,6 +8,7 @@ type StateMap = {
 
 const stateMap: StateMap = {
   'Washington': 'washington-processed.csv',
+  'Wyoming': 'wyoming-processed.csv',
   'Vermont': 'virginia-processed.csv',
   'Texas': 'texas-processed.csv',
   'Tennessee': 'tennessee-processed.csv',

@@ -2,11 +2,11 @@ import React, { useMemo, useState, useEffect } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faArrowUp, faArrowDown, faSort, faSortUp, faSortDown  } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { TableInstance, UsePaginationInstanceProps, UsePaginationState, useTable, useSortBy, usePagination, Column, TableState, HeaderGroup } from 'react-table';
 
 interface AgencyData {
-  agcy_name: string;
+  agency_name: string;
   person_nbr: string;
   first_name: string;
   last_name: string;
@@ -25,7 +25,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
   const [agencyFilter, setAgencyFilter] = useState('');
   const [uidFilter, setUidFilter] = useState('');
   const [columnVisibility, setColumnVisibility] = useState({
-    agcy_name: true,
+    agency_name: true,
     person_nbr: true,
     first_name: true,
     last_name: true,
@@ -62,11 +62,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
     const filtered = agencyData.filter(row =>
       row.last_name.toLowerCase().includes(lastNameFilter.toLowerCase()) &&
       row.first_name.toLowerCase().includes(firstNameFilter.toLowerCase()) &&
-      row.agcy_name.toLowerCase().includes(agencyFilter.toLowerCase()) &&
+      row.agency_name.toLowerCase().includes(agencyFilter.toLowerCase()) &&
       row.person_nbr.toLowerCase().includes(uidFilter.toLowerCase()) &&
-      ((agencyTypeFilter['Police Department'] && row.agcy_name.toLowerCase().includes('police')) ||
-      (agencyTypeFilter["Sheriff's Office"] && row.agcy_name.toLowerCase().includes('sheriff')) ||
-      (agencyTypeFilter['Corrections Department'] && row.agcy_name.toLowerCase().includes('corrections')))
+      ((agencyTypeFilter['Police Department'] && row.agency_name.toLowerCase().includes('police')) ||
+      (agencyTypeFilter["Sheriff's Office"] && row.agency_name.toLowerCase().includes('sheriff')) ||
+      (agencyTypeFilter['Corrections Department'] && row.agency_name.toLowerCase().includes('corrections')))
     );
     console.log('Filtered data:', filtered);
     return filtered;
@@ -74,7 +74,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
 
   const columns: Column<AgencyData>[] = useMemo(
     () => [
-      { Header: 'Agency Name', accessor: 'agcy_name' },
+      { Header: 'Agency Name', accessor: 'agency_name' },
       { Header: 'UID', accessor: 'person_nbr' },
       { Header: 'First Name', accessor: 'first_name' },
       { Header: 'Last Name', accessor: 'last_name' },
