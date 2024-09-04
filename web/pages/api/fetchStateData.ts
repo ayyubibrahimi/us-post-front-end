@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { storage } from '../../utils/firebaseConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 
-const CHUNK_SIZE = 100000; 
+const CHUNK_SIZE = 100000; // Adjust chunk size based on performance needs
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,16 +15,17 @@ export default async function handler(
   }
 
   const startOffset = offset ? parseInt(offset as string, 10) : 0;
-  const pageLimit = limit ? parseInt(limit as string, 10) : 100;
+  const pageLimit = limit ? parseInt(limit as string, 10) : 50;
 
   try {
     const fileName = `${state.toLowerCase()}-processed.csv`;
     const fileRef = ref(storage, fileName);
     const fileURL = await getDownloadURL(fileRef);
-    
+
+    let byteOffset = startOffset * CHUNK_SIZE; // Byte-based offset
     const response = await fetch(fileURL, {
       headers: {
-        Range: `bytes=${startOffset}-${startOffset + CHUNK_SIZE - 1}`
+        Range: `bytes=${byteOffset}-${byteOffset + CHUNK_SIZE - 1}`  // Fetch chunk by byte range
       }
     });
 
@@ -36,13 +37,24 @@ export default async function handler(
     const contentRange = response.headers.get('Content-Range');
     const totalSize = contentRange ? parseInt(contentRange.split('/')[1], 10) : 0;
 
-    // Simulate parsing only the requested number of rows
+    // Split the chunk by lines to ensure we have full rows
     const allRows = chunk.split('\n');
+    
+    // Extract the header from the first chunk (assumes header in the first chunk)
     const headerRow = allRows[0];
-    const dataRows = allRows.slice(1, pageLimit + 1);
-    const csvChunk = [headerRow, ...dataRows].join('\n');
+    let dataRows = allRows.slice(1); // Remove the header row from the current chunk
 
-    const hasMore = startOffset + chunk.length < totalSize;
+    // Ensure the last row is complete; discard incomplete rows
+    if (!dataRows[dataRows.length - 1].endsWith('\n')) {
+      dataRows = dataRows.slice(0, -1); // Remove incomplete row
+    }
+    // Limit the number of rows to match the requested page size
+    const slicedRows = dataRows.slice(0, pageLimit);
+
+    // Combine the header with the sliced rows
+    const csvChunk = [headerRow, ...slicedRows].join('\n');
+
+    const hasMore = startOffset + slicedRows.length < totalSize;
 
     res.status(200).json({
       data: csvChunk,

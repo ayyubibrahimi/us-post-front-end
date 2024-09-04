@@ -24,11 +24,7 @@ export default function Home() {
 
     try {
       const { data, totalCount: total } = await fetchAgencyDataByState(selectedState, page * pageSize, pageSize);
-      setAgencyData(prevData => {
-        const newData = [...prevData];
-        newData.splice(page * pageSize, pageSize, ...data);
-        return newData;
-      });
+      setAgencyData(data);  // Directly set the new page's data
       setTotalCount(total);
       setLoadedPages(prevPages => new Set(prevPages).add(page));
     } catch (error) {
@@ -37,7 +33,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedState, pageSize]);
+  }, [selectedState, pageSize, isLoading]);
 
   useEffect(() => {
     if (selectedState && !showLandingScreen && !loadedPages.has(pageIndex)) {
@@ -47,25 +43,24 @@ export default function Home() {
 
   const handleStateSelection = (state: string) => {
     setSelectedState(state);
-    setAgencyData([]);
-    setPageIndex(0);
-    setTotalCount(0);
-    setLoadedPages(new Set());
+    setAgencyData([]); // Clear agency data
+    setPageIndex(0); // Reset page index
+    setTotalCount(0); 
+    setLoadedPages(new Set()); // Clear loaded pages
     setShowLandingScreen(false);
   };
 
   const handlePageChange = (newPageIndex: number) => {
-    setPageIndex(newPageIndex);
-    fetchPageData(newPageIndex);
+    setPageIndex(newPageIndex); // No need to explicitly call fetchPageData
   };
 
   const handlePageSizeChange = (newPageSize: number) => {
-  setPageSize(newPageSize);
-  setPageIndex(0);
-  setLoadedPages(new Set());
-  setAgencyData([]);
-  fetchPageData(0);
-};
+    setPageSize(newPageSize);
+    setPageIndex(0);
+    setLoadedPages(new Set()); // Reset loaded pages when changing page size
+    setAgencyData([]); // Clear agency data for fresh fetch
+    fetchPageData(0); // Fetch for the first page with the new page size
+  };
 
   if (showLandingScreen) {
     return <LandingScreen onButtonClick={handleStateSelection} />;
@@ -81,7 +76,7 @@ export default function Home() {
           ) : (
             <div className="tableWrapper">
               <AgencyTable 
-                agencyData={agencyData.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)}
+                agencyData={agencyData}  // Use the current page's data
                 totalCount={totalCount}
                 isLoading={isLoading}
                 pageIndex={pageIndex}

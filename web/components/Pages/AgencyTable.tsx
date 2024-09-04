@@ -57,6 +57,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     return typeof value === 'string' ? value : '';
   };
 
+  console.log('agencyData', agencyData);
+
   const safeLowerCase = (value: any): string => {
     return safeString(value).toLowerCase();
   };
