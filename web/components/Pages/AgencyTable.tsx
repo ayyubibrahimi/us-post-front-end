@@ -1,25 +1,39 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { TableInstance, UsePaginationInstanceProps, UsePaginationState, useTable, useSortBy, usePagination, Column, TableState, HeaderGroup } from 'react-table';
+import { useTable, useSortBy, Column } from 'react-table';
 
 interface AgencyData {
-  agency_name: string;
-  person_nbr: string;
-  first_name: string;
-  last_name: string;
-  start_date: string;
-  end_date: string;
-  separation_reason: string;
+  agency_name?: string;
+  person_nbr?: string;
+  first_name?: string;
+  last_name?: string;
+  start_date?: string;
+  end_date?: string;
+  separation_reason?: string;
 }
 
 interface AgencyTableProps {
   agencyData: AgencyData[];
+  totalCount: number;
+  isLoading: boolean;
+  pageIndex: number;
+  pageSize: number;
+  onPageChange: (newPageIndex: number) => void;
+  onPageSizeChange: (newPageSize: number) => void;
 }
 
-const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
+const AgencyTable: React.FC<AgencyTableProps> = ({
+  agencyData,
+  totalCount,
+  isLoading,
+  pageIndex,
+  pageSize,
+  onPageChange,
+  onPageSizeChange
+}) => {
   const [lastNameFilter, setLastNameFilter] = useState('');
   const [firstNameFilter, setFirstNameFilter] = useState('');
   const [agencyFilter, setAgencyFilter] = useState('');
@@ -33,43 +47,30 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
     end_date: true,
     separation_reason: true,
   });
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isAgencyTypeModalVisible, setIsAgencyTypeModalVisible] = useState(false);
   const [agencyTypeFilter, setAgencyTypeFilter] = useState({
     'Police Department': true,
     "Sheriff's Office": true,
     'Corrections Department': true,
   });
 
-  useEffect(() => {
-    console.log('AgencyTable component mounted');
-    console.log('Initial agencyData:', agencyData);
-  }, [agencyData]);
+  const safeString = (value: any): string => {
+    return typeof value === 'string' ? value : '';
+  };
 
-  useEffect(() => {
-    console.log('agencyData updated:', agencyData);
-  }, [agencyData]);
-
-  const toggleColumnVisibility = (columnName: keyof AgencyData) => {
-    setColumnVisibility(prev => ({
-      ...prev,
-      [columnName]: !prev[columnName],
-    }));
+  const safeLowerCase = (value: any): string => {
+    return safeString(value).toLowerCase();
   };
 
   const filteredData = useMemo(() => {
-    console.log('Filtering data with:', { lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter });
-    const filtered = agencyData.filter(row =>
-      row.last_name.toLowerCase().includes(lastNameFilter.toLowerCase()) &&
-      row.first_name.toLowerCase().includes(firstNameFilter.toLowerCase()) &&
-      row.agency_name.toLowerCase().includes(agencyFilter.toLowerCase()) &&
-      row.person_nbr.toLowerCase().includes(uidFilter.toLowerCase()) &&
-      ((agencyTypeFilter['Police Department'] && row.agency_name.toLowerCase().includes('police')) ||
-      (agencyTypeFilter["Sheriff's Office"] && row.agency_name.toLowerCase().includes('sheriff')) ||
-      (agencyTypeFilter['Corrections Department'] && row.agency_name.toLowerCase().includes('corrections')))
+    return agencyData.filter(row =>
+      safeLowerCase(row.last_name).includes(lastNameFilter.toLowerCase()) &&
+      safeLowerCase(row.first_name).includes(firstNameFilter.toLowerCase()) &&
+      safeLowerCase(row.agency_name).includes(agencyFilter.toLowerCase()) &&
+      safeLowerCase(row.person_nbr).includes(uidFilter.toLowerCase()) &&
+      ((agencyTypeFilter['Police Department'] && safeLowerCase(row.agency_name).includes('police')) ||
+      (agencyTypeFilter["Sheriff's Office"] && safeLowerCase(row.agency_name).includes('sheriff')) ||
+      (agencyTypeFilter['Corrections Department'] && safeLowerCase(row.agency_name).includes('corrections')))
     );
-    console.log('Filtered data:', filtered);
-    return filtered;
   }, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter]);
 
   const columns: Column<AgencyData>[] = useMemo(
@@ -86,51 +87,27 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
   );
 
   const filteredColumns = useMemo(() => {
-    const filtered = columns.filter(column => columnVisibility[column.accessor as keyof AgencyData]);
-    console.log('Filtered columns:', filtered);
-    return filtered;
+    return columns.filter(column => columnVisibility[column.accessor as keyof AgencyData]);
   }, [columns, columnVisibility]);
-
-  type TableInstanceWithHooks<T extends object> = TableInstance<T> & 
-    UsePaginationInstanceProps<T> & 
-    { state: UsePaginationState<T> } & 
-    {
-      headerGroups: HeaderGroup<T>[];
-    };
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    page,
+    rows,
     prepareRow,
-    state: { pageIndex, pageSize },
-    nextPage,
-    previousPage,
-    canPreviousPage,
-    canNextPage,
-    gotoPage,
-    setPageSize,
   } = useTable(
     {
       columns: filteredColumns,
       data: filteredData,
-      initialState: { pageIndex: 0, pageSize: 50 } as Partial<TableState<AgencyData>> & Partial<UsePaginationState<AgencyData>>,
     },
-    useSortBy,
-    usePagination
-  ) as TableInstanceWithHooks<AgencyData>;
-  
+    useSortBy
+  );
 
-  useEffect(() => {
-    console.log('Table state updated:', { pageIndex, pageSize });
-    console.log('Current page data:', page);
-  }, [page, pageIndex, pageSize]);
-
-  const pageCount = Math.ceil(filteredData.length / pageSize);
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   const csvData = useMemo(() => {
-    const data = filteredData.map(row => ({
+    return filteredData.map(row => ({
       'Agency Name': row.agency_name,
       'UID': row.person_nbr,
       'First Name': row.first_name,
@@ -139,8 +116,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
       'Separation Date': row.end_date,
       'Separation Reason': row.separation_reason,
     }));
-    console.log('CSV data prepared:', data);
-    return data;
   }, [filteredData]);
 
   return (
@@ -167,42 +142,32 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
   
       <table className={tableStyles.agencyTable} {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => {
-            const { key, ...restHeaderGroupProps } = headerGroup.getHeaderGroupProps();
-            return (
-              <tr key={headerGroup.id} {...restHeaderGroupProps}>
-                {headerGroup.headers.map(column => {
-                  const { key, ...restColumnProps } = column.getHeaderProps((column as any).getSortByToggleProps());
-                  return (
-                    <th key={column.id} {...restColumnProps}>
-                      <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
-                        <span>{column.render('Header')}</span>
-                        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
-                          <FontAwesomeIcon icon={faArrowUp} className={tableStyles.arrowIcon} />
-                          <FontAwesomeIcon icon={faArrowDown} className={`${tableStyles.arrowIcon} ${tableStyles.arrowDown}`} />
-                        </div>
-                      </div>
-                    </th>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th {...column.getHeaderProps((column as any).getSortByToggleProps())}>
+                  <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
+                    <span>{column.render('Header')}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
+                      <FontAwesomeIcon icon={faArrowUp} className={tableStyles.arrowIcon} />
+                      <FontAwesomeIcon icon={faArrowDown} className={`${tableStyles.arrowIcon} ${tableStyles.arrowDown}`} />
+                    </div>
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map(row => {
+          {rows.map(row => {
             prepareRow(row);
-            const { key, ...restRowProps } = row.getRowProps(); // Destructure to remove key
             return (
-              <tr key={row.id} {...restRowProps}>
-                {row.cells.map(cell => {
-                  const { key, ...restCellProps } = cell.getCellProps(); // Destructure to remove key
-                  return (
-                    <td key={cell.column.id} {...restCellProps}>
-                      {cell.render('Cell')}
-                    </td>
-                  );
-                })}
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => (
+                  <td {...cell.getCellProps()}>
+                    {cell.render('Cell')}
+                  </td>
+                ))}
               </tr>
             );
           })}
@@ -211,24 +176,32 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
       <div className={tableStyles.tableFooter}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', padding: '0 20px' }}>
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            <button className={tableStyles.arrowButton} onClick={previousPage} disabled={!canPreviousPage}>
-              {'Previous'}
+            <button
+              className={tableStyles.arrowButton}
+              onClick={() => onPageChange(pageIndex - 1)}
+              disabled={pageIndex === 0}
+            >
+              Previous
             </button>
-            <button className={tableStyles.arrowButton} onClick={nextPage} disabled={!canNextPage}>
-              {'Next'}
+            <button
+              className={tableStyles.arrowButton}
+              onClick={() => onPageChange(pageIndex + 1)}
+              disabled={pageIndex === totalPages - 1}
+            >
+              Next
             </button>
             <span className={tableStyles.pageNumber}>
-              Page {pageIndex + 1} of {pageCount}
+              Page {pageIndex + 1} of {totalPages}
             </span>
             <div className={tableStyles.selectWrapper}>
               <select
                 className={tableStyles.showPages}
                 value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
+                onChange={(e) => onPageSizeChange(Number(e.target.value))}
               >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
+                {[10, 20, 30, 40, 50].map(size => (
+                  <option key={size} value={size}>
+                    Show {size}
                   </option>
                 ))}
               </select>
@@ -239,6 +212,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({ agencyData }) => {
           </CSVLink>
         </div>
       </div>
+      {isLoading && <p>Loading more data...</p>}
     </div>
   );
 };
