@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { storage } from '../../utils/firebaseConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 
-const CHUNK_SIZE = 100000; // Adjust chunk size based on performance needs
+const CHUNK_SIZE = 1000000; // Adjust chunk size based on performance needs
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,12 +22,21 @@ export default async function handler(
     const fileRef = ref(storage, fileName);
     const fileURL = await getDownloadURL(fileRef);
 
-    let byteOffset = startOffset * CHUNK_SIZE; // Byte-based offset
+    let byteOffset = startOffset;
     const response = await fetch(fileURL, {
       headers: {
-        Range: `bytes=${byteOffset}-${byteOffset + CHUNK_SIZE - 1}`  // Fetch chunk by byte range
+        Range: `bytes=${byteOffset}-${byteOffset + CHUNK_SIZE - 1}`
       }
     });
+
+    if (response.status === 416) {
+      // We've reached the end of the file
+      return res.status(200).json({
+        data: '',
+        totalCount: byteOffset,
+        hasMore: false
+      });
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -54,12 +63,16 @@ export default async function handler(
     // Combine the header with the sliced rows
     const csvChunk = [headerRow, ...slicedRows].join('\n');
 
-    const hasMore = startOffset + slicedRows.length < totalSize;
+    // Calculate the new byte offset for the next request
+    const newByteOffset = byteOffset + chunk.length;
+
+    const hasMore = newByteOffset < totalSize;
 
     res.status(200).json({
       data: csvChunk,
       totalCount: totalSize,
-      hasMore
+      hasMore,
+      nextOffset: newByteOffset // Send this back to the client for the next request
     });
   } catch (error) {
     console.error('Error fetching state data:', error);

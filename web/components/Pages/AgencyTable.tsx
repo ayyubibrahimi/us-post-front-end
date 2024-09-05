@@ -57,8 +57,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     return typeof value === 'string' ? value : '';
   };
 
-  console.log('agencyData', agencyData);
-
   const safeLowerCase = (value: any): string => {
     return safeString(value).toLowerCase();
   };
@@ -74,6 +72,13 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       (agencyTypeFilter['Corrections Department'] && safeLowerCase(row.agency_name).includes('corrections')))
     );
   }, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter]);
+
+  // Paginate the filtered data
+  const paginatedData = useMemo(() => {
+    const startRow = pageIndex * pageSize;
+    const endRow = startRow + pageSize;
+    return filteredData.slice(startRow, endRow); // Only show the current page's data
+  }, [filteredData, pageIndex, pageSize]);
 
   const columns: Column<AgencyData>[] = useMemo(
     () => [
@@ -101,7 +106,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   } = useTable(
     {
       columns: filteredColumns,
-      data: filteredData,
+      data: paginatedData, // Only the current page's data is passed to the table
     },
     useSortBy
   );
