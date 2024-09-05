@@ -1,18 +1,26 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { useTable, useSortBy, Column } from 'react-table';
+import { debounce } from 'lodash';
 
 interface AgencyData {
-  agency_name?: string;
-  person_nbr?: string;
-  first_name?: string;
-  last_name?: string;
-  start_date?: string;
-  end_date?: string;
-  separation_reason?: string;
+  agency_name: string;
+  person_nbr: string;
+  first_name: string;
+  last_name: string;
+  start_date: string;
+  end_date: string;
+  separation_reason: string;
+}
+
+interface Filters {
+  lastName: string;
+  firstName: string;
+  agencyName: string;
+  uid: string;
 }
 
 interface AgencyTableProps {
@@ -23,6 +31,8 @@ interface AgencyTableProps {
   pageSize: number;
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
+  onFilterChange: (filters: Filters) => void;
+  filters: Filters;
 }
 
 const AgencyTable: React.FC<AgencyTableProps> = ({
@@ -33,25 +43,27 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   pageSize,
   onPageChange,
   onPageSizeChange,
+  onFilterChange,
+  filters,
 }) => {
-  const [filters, setFilters] = useState({
-    person_nbr: '',
-    last_name: '',
-    first_name: '',
-    agency_name: ''
-  });
+  const [localFilters, setLocalFilters] = useState<Filters>(filters);
 
-  const handleFilterChange = useCallback((key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  }, []);
+  const debouncedFilterChange = useCallback(
+    debounce((newFilters: Filters) => {
+      onFilterChange(newFilters);
+    }, 300),
+    [onFilterChange]
+  );
 
-  const filteredData = useMemo(() => {
-    return agencyData.filter(item => {
-      return Object.entries(filters).every(([key, value]) => {
-        return item[key as keyof AgencyData]?.toLowerCase().includes(value.toLowerCase());
-      });
-    });
-  }, [agencyData, filters]);
+  useEffect(() => {
+    setLocalFilters(filters);
+  }, [filters]);
+
+  const handleFilterChange = useCallback((key: keyof Filters, value: string) => {
+    const newFilters = { ...localFilters, [key]: value };
+    setLocalFilters(newFilters);
+    debouncedFilterChange(newFilters);
+  }, [localFilters, debouncedFilterChange]);
 
   const columns: Column<AgencyData>[] = useMemo(
     () => [
@@ -75,7 +87,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   } = useTable(
     {
       columns,
-      data: filteredData,
+      data: agencyData,
     },
     useSortBy
   );
@@ -88,17 +100,17 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       <div className={tableStyles.tableHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
           {[
-            { key: 'person_nbr', placeholder: 'UID contains' },
-            { key: 'last_name', placeholder: 'Last name contains' },
-            { key: 'first_name', placeholder: 'First name contains' },
-            { key: 'agency_name', placeholder: 'Agency contains' }
+            { key: 'uid', placeholder: 'UID contains', filterKey: 'uid' },
+            { key: 'lastName', placeholder: 'Last name contains', filterKey: 'lastName' },
+            { key: 'firstName', placeholder: 'First name contains', filterKey: 'firstName' },
+            { key: 'agencyName', placeholder: 'Agency contains', filterKey: 'agencyName' }
           ].map((filter) => (
             <div key={filter.key} className={tableStyles.searchBarContainer} style={{ position: 'relative' }}>
               <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'black' }} />
               <input
                 type="text"
-                value={filters[filter.key as keyof typeof filters]}
-                onChange={(e) => handleFilterChange(filter.key, e.target.value)}
+                value={localFilters[filter.filterKey as keyof Filters]}
+                onChange={(e) => handleFilterChange(filter.filterKey as keyof Filters, e.target.value)}
                 placeholder={filter.placeholder}
                 className={tableStyles.searchInput}
               />
@@ -185,7 +197,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               </select>
             </div>
           </div>
-          <CSVLink data={filteredData} filename={"agency_data.csv"} className={tableStyles.csvLink}>
+          <CSVLink data={agencyData} filename={"agency_data.csv"} className={tableStyles.csvLink}>
             Download CSV
           </CSVLink>
         </div>
