@@ -62,17 +62,35 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   };
 
   const filteredData = useMemo(() => {
-    return agencyData.filter(row =>
-      safeLowerCase(row.last_name).includes(lastNameFilter.toLowerCase()) &&
-      safeLowerCase(row.first_name).includes(firstNameFilter.toLowerCase()) &&
-      safeLowerCase(row.agency_name).includes(agencyFilter.toLowerCase()) &&
-      safeLowerCase(row.person_nbr).includes(uidFilter.toLowerCase()) &&
-      ((agencyTypeFilter['Police Department'] && safeLowerCase(row.agency_name).includes('police')) ||
-      (agencyTypeFilter["Sheriff's Office"] && safeLowerCase(row.agency_name).includes('sheriff')) ||
-      (agencyTypeFilter['Corrections Department'] && safeLowerCase(row.agency_name).includes('corrections')))
-    );
-  }, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter]);
+  if (!agencyData) return [];
 
+  return agencyData.filter(row => {
+    if (lastNameFilter && (!row.last_name || !row.last_name.toLowerCase().startsWith(lastNameFilter.toLowerCase()))) {
+      return false;
+    }
+    
+    if (firstNameFilter && (!row.first_name || !row.first_name.toLowerCase().startsWith(firstNameFilter.toLowerCase()))) {
+      return false;
+    }
+
+    if (agencyFilter && (!row.agency_name || !row.agency_name.toLowerCase().startsWith(agencyFilter.toLowerCase()))) {
+      return false;
+    }
+
+    if (uidFilter && (!row.person_nbr || !row.person_nbr.toLowerCase().startsWith(uidFilter.toLowerCase()))) {
+      return false;
+    }
+
+    const agencyTypeMatches = 
+      (!agencyTypeFilter['Police Department'] && !agencyTypeFilter["Sheriff's Office"] && !agencyTypeFilter['Corrections Department']) ||
+      (agencyTypeFilter['Police Department'] && row.agency_name && row.agency_name.toLowerCase().includes('police')) ||
+      (agencyTypeFilter["Sheriff's Office"] && row.agency_name && row.agency_name.toLowerCase().includes('sheriff')) ||
+      (agencyTypeFilter['Corrections Department'] && row.agency_name && row.agency_name.toLowerCase().includes('corrections'));
+    
+    return agencyTypeMatches;
+  });
+}, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter]);
+  
   // Paginate the filtered data
   const paginatedData = useMemo(() => {
     const startRow = pageIndex * pageSize;
