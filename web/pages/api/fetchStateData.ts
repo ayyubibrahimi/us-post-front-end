@@ -15,7 +15,8 @@ export default async function handler(
   }
 
   try {
-    const fileName = `${state.toLowerCase()}-processed.csv.gz`;
+    const formattedState = state.toLowerCase().replace(/\s+/g, '-');
+    const fileName = `${formattedState}-processed.csv.gz`;
     const fileRef = ref(storage, fileName);
     const fileURL = await getDownloadURL(fileRef);
 
