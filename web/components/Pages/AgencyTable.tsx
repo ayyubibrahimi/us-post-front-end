@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,42 +19,39 @@ interface AgencyTableProps {
   agencyData: AgencyData[];
   totalCount: number;
   isLoading: boolean;
+  currentPage: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
 }
 
 const AgencyTable: React.FC<AgencyTableProps> = ({
   agencyData,
   totalCount,
-  isLoading
+  isLoading,
+  currentPage,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
 }) => {
-  const [lastNameFilter, setLastNameFilter] = useState('');
-  const [firstNameFilter, setFirstNameFilter] = useState('');
-  const [agencyFilter, setAgencyFilter] = useState('');
-  const [uidFilter, setUidFilter] = useState('');
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [filters, setFilters] = useState({
+    person_nbr: '',
+    last_name: '',
+    first_name: '',
+    agency_name: ''
+  });
+
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  }, []);
 
   const filteredData = useMemo(() => {
-    return agencyData.filter(row => {
-      if (lastNameFilter && (!row.last_name || !row.last_name.toLowerCase().startsWith(lastNameFilter.toLowerCase()))) {
-        return false;
-      }
-      if (firstNameFilter && (!row.first_name || !row.first_name.toLowerCase().startsWith(firstNameFilter.toLowerCase()))) {
-        return false;
-      }
-      if (agencyFilter && (!row.agency_name || !row.agency_name.toLowerCase().startsWith(agencyFilter.toLowerCase()))) {
-        return false;
-      }
-      if (uidFilter && (!row.person_nbr || !row.person_nbr.toLowerCase().startsWith(uidFilter.toLowerCase()))) {
-        return false;
-      }
-      return true;
+    return agencyData.filter(item => {
+      return Object.entries(filters).every(([key, value]) => {
+        return item[key as keyof AgencyData]?.toLowerCase().includes(value.toLowerCase());
+      });
     });
-  }, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter]);
-
-  const paginatedData = useMemo(() => {
-    const startRow = pageIndex * pageSize;
-    return filteredData.slice(startRow, startRow + pageSize);
-  }, [filteredData, pageIndex, pageSize]);
+  }, [agencyData, filters]);
 
   const columns: Column<AgencyData>[] = useMemo(
     () => [
@@ -78,24 +75,12 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   } = useTable(
     {
       columns,
-      data: paginatedData,
+      data: filteredData,
     },
     useSortBy
   );
 
-  const totalPages = Math.ceil(filteredData.length / pageSize);
-
-  const csvData = useMemo(() => {
-    return filteredData.map(row => ({
-      'Agency Name': row.agency_name,
-      'UID': row.person_nbr,
-      'First Name': row.first_name,
-      'Last Name': row.last_name,
-      'Start Date': row.start_date,
-      'Separation Date': row.end_date,
-      'Separation Reason': row.separation_reason,
-    }));
-  }, [filteredData]);
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <div className={tableStyles.tableContainer}>
@@ -103,17 +88,17 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       <div className={tableStyles.tableHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
           {[
-            { state: uidFilter, setState: setUidFilter, placeholder: 'UID contains' },
-            { state: lastNameFilter, setState: setLastNameFilter, placeholder: 'Last name contains' },
-            { state: firstNameFilter, setState: setFirstNameFilter, placeholder: 'First name contains' },
-            { state: agencyFilter, setState: setAgencyFilter, placeholder: 'Agency contains' }
-          ].map((filter, index) => (
-            <div key={index} className={tableStyles.searchBarContainer} style={{ position: 'relative' }}>
+            { key: 'person_nbr', placeholder: 'UID contains' },
+            { key: 'last_name', placeholder: 'Last name contains' },
+            { key: 'first_name', placeholder: 'First name contains' },
+            { key: 'agency_name', placeholder: 'Agency contains' }
+          ].map((filter) => (
+            <div key={filter.key} className={tableStyles.searchBarContainer} style={{ position: 'relative' }}>
               <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'black' }} />
               <input
                 type="text"
-                value={filter.state}
-                onChange={(e) => filter.setState(e.target.value)}
+                value={filters[filter.key as keyof typeof filters]}
+                onChange={(e) => handleFilterChange(filter.key, e.target.value)}
                 placeholder={filter.placeholder}
                 className={tableStyles.searchInput}
               />
@@ -132,8 +117,14 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
                   <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
                     <span>{column.render('Header')}</span>
                     <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
-                      <FontAwesomeIcon icon={faArrowUp} className={tableStyles.arrowIcon} />
-                      <FontAwesomeIcon icon={faArrowDown} className={`${tableStyles.arrowIcon} ${tableStyles.arrowDown}`} />
+                      <FontAwesomeIcon 
+                        icon={faArrowUp} 
+                        className={`${tableStyles.arrowIcon} ${(column as any).isSorted && !(column as any).isSortedDesc ? tableStyles.activeSortIcon : ''}`}
+                      />
+                      <FontAwesomeIcon 
+                        icon={faArrowDown} 
+                        className={`${tableStyles.arrowIcon} ${tableStyles.arrowDown} ${(column as any).isSorted && (column as any).isSortedDesc ? tableStyles.activeSortIcon : ''}`}
+                      />
                     </div>
                   </div>
                 </th>
@@ -163,28 +154,27 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
             <button
               className={tableStyles.arrowButton}
-              onClick={() => setPageIndex(prev => Math.max(0, prev - 1))}
-              disabled={pageIndex === 0}
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1}
             >
               Previous
             </button>
             <button
               className={tableStyles.arrowButton}
-              onClick={() => setPageIndex(prev => Math.min(totalPages - 1, prev + 1))}
-              disabled={pageIndex === totalPages - 1}
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
             >
               Next
             </button>
             <span className={tableStyles.pageNumber}>
-              Page {pageIndex + 1} of {totalPages}
+              Page {currentPage} of {totalPages}
             </span>
             <div className={tableStyles.selectWrapper}>
               <select
                 className={tableStyles.showPages}
                 value={pageSize}
                 onChange={(e) => {
-                  setPageSize(Number(e.target.value));
-                  setPageIndex(0);
+                  onPageSizeChange(Number(e.target.value));
                 }}
               >
                 {[10, 20, 30, 40, 50].map(size => (
@@ -195,7 +185,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               </select>
             </div>
           </div>
-          <CSVLink data={csvData} filename={"agency_data.csv"} className={tableStyles.csvLink}>
+          <CSVLink data={filteredData} filename={"agency_data.csv"} className={tableStyles.csvLink}>
             Download CSV
           </CSVLink>
         </div>

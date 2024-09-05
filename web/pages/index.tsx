@@ -1,11 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import AgencyTable from '../components/Pages/AgencyTable';
-import { fetchAgencyDataByState } from '../utils/fetchData';
 import LandingScreen from '../components/LandingPage/LandingScreen';
 import Header from '../components/Header/Header';
 import styles from './index.module.scss';
-
-const dataCache = new Map();
 
 export default function Home() {
   const [selectedState, setSelectedState] = useState<string>('');
@@ -14,29 +11,24 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
 
-  const fetchStateData = useCallback(async () => {
+  const fetchStateData = useCallback(async (page: number, size: number) => {
     if (!selectedState || isLoading) return;
-
-    const cacheKey = selectedState;
-    
-    if (dataCache.has(cacheKey)) {
-      const cachedData = dataCache.get(cacheKey);
-      setAgencyData(cachedData.data);
-      setTotalCount(cachedData.totalCount);
-      return;
-    }
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const { data, totalCount } = await fetchAgencyDataByState(selectedState);
+      const response = await fetch(`/api/fetchStateData?state=${selectedState}&page=${page}&pageSize=${size}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch state data');
+      }
+      const { data, totalCount } = await response.json();
       setAgencyData(data);
       setTotalCount(totalCount);
       setShowLandingScreen(false);
-      
-      dataCache.set(cacheKey, { data, totalCount });
     } catch (error) {
       console.error("Error fetching state data:", error);
       setError("Failed to load data. Please try again.");
@@ -47,14 +39,23 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedState) {
-      fetchStateData();
+      fetchStateData(currentPage, pageSize);
     }
-  }, [selectedState, fetchStateData]);
+  }, [selectedState, currentPage, pageSize, fetchStateData]);
 
   const handleStateSelection = (state: string) => {
     setSelectedState(state);
     setAgencyData([]);
-    dataCache.clear();
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
   };
 
   if (showLandingScreen) {
@@ -74,6 +75,10 @@ export default function Home() {
                 agencyData={agencyData}
                 totalCount={totalCount}
                 isLoading={isLoading}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onPageChange={handlePageChange}
+                onPageSizeChange={handlePageSizeChange}
               />
             </div>
           )}

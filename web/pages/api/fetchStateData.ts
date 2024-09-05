@@ -3,16 +3,20 @@ import { storage } from '../../utils/firebaseConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { createGunzip } from 'zlib';
 import { Readable } from 'stream';
+import Papa from 'papaparse';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { state } = req.query;
+  const { state, page = '1', pageSize = '10' } = req.query;
   
   if (!state || Array.isArray(state)) {
     return res.status(400).json({ error: 'State parameter is required and must be a string' });
   }
+
+  const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
+  const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
@@ -26,11 +30,8 @@ export default async function handler(
     }
 
     const gunzip = createGunzip();
-
-    // Convert the ReadableStream to a Node.js Readable stream
     const responseBuffer = await response.arrayBuffer();
     const responseStream = Readable.from(Buffer.from(responseBuffer));
-
     const decompressedStream = responseStream.pipe(gunzip);
 
     let csvData = '';
@@ -38,13 +39,19 @@ export default async function handler(
       csvData += chunk.toString();
     }
 
-    const rows = csvData.split('\n');
-    const headerRow = rows.shift()!;
-    const dataRows = rows.filter(row => row.trim() !== ''); // Remove any empty rows
+    const parsedData = Papa.parse(csvData, { header: true, skipEmptyLines: true });
+    const totalCount = parsedData.data.length;
+
+    const startIndex = (currentPage - 1) * size;
+    const endIndex = startIndex + size;
+    const paginatedData = parsedData.data.slice(startIndex, endIndex);
 
     res.status(200).json({
-      data: csvData,
-      totalCount: dataRows.length
+      data: paginatedData,
+      totalCount: totalCount,
+      currentPage: currentPage,
+      pageSize: size,
+      totalPages: Math.ceil(totalCount / size)
     });
   } catch (error) {
     console.error('Error fetching state data:', error);
