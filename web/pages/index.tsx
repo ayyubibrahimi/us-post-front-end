@@ -5,63 +5,57 @@ import LandingScreen from '../components/LandingPage/LandingScreen';
 import Header from '../components/Header/Header';
 import styles from './index.module.scss';
 
+const dataCache = new Map();
+
 export default function Home() {
   const [selectedState, setSelectedState] = useState<string>('');
   const [agencyData, setAgencyData] = useState<any[]>([]);
   const [showLandingScreen, setShowLandingScreen] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [pageIndex, setPageIndex] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(50);
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const fetchStateData = useCallback(async () => {
     if (!selectedState || isLoading) return;
 
+    const cacheKey = selectedState;
+    
+    if (dataCache.has(cacheKey)) {
+      const cachedData = dataCache.get(cacheKey);
+      setAgencyData(cachedData.data);
+      setTotalCount(cachedData.totalCount);
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const { data, totalCount } = await fetchAgencyDataByState(
-        selectedState,
-        { pageIndex, pageSize },
-        (progressData, progressTotalCount) => {
-          setAgencyData(progressData);
-          setTotalCount(progressTotalCount);
-        }
-      );
+      const { data, totalCount } = await fetchAgencyDataByState(selectedState);
       setAgencyData(data);
       setTotalCount(totalCount);
       setShowLandingScreen(false);
+      
+      dataCache.set(cacheKey, { data, totalCount });
     } catch (error) {
       console.error("Error fetching state data:", error);
       setError("Failed to load data. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }, [selectedState, pageIndex, pageSize, isLoading]);
+  }, [selectedState, isLoading]);
 
   useEffect(() => {
     if (selectedState) {
       fetchStateData();
     }
-  }, [selectedState, pageIndex, pageSize, fetchStateData]);
+  }, [selectedState, fetchStateData]);
 
   const handleStateSelection = (state: string) => {
     setSelectedState(state);
     setAgencyData([]);
-    setPageIndex(0);
+    dataCache.clear();
   };
-
-  const handlePageChange = (newPageIndex: number) => {
-    setPageIndex(newPageIndex);
-  };
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize);
-    setPageIndex(0);
-  };
-
 
   if (showLandingScreen) {
     return <LandingScreen onButtonClick={handleStateSelection} />;
@@ -80,10 +74,6 @@ export default function Home() {
                 agencyData={agencyData}
                 totalCount={totalCount}
                 isLoading={isLoading}
-                pageIndex={pageIndex}
-                pageSize={pageSize}
-                onPageChange={handlePageChange}
-                onPageSizeChange={handlePageSizeChange}
               />
             </div>
           )}

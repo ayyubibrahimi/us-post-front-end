@@ -19,83 +19,41 @@ interface AgencyTableProps {
   agencyData: AgencyData[];
   totalCount: number;
   isLoading: boolean;
-  pageIndex: number;
-  pageSize: number;
-  onPageChange: (newPageIndex: number) => void;
-  onPageSizeChange: (newPageSize: number) => void;
 }
 
 const AgencyTable: React.FC<AgencyTableProps> = ({
   agencyData,
   totalCount,
-  isLoading,
-  pageIndex,
-  pageSize,
-  onPageChange,
-  onPageSizeChange
+  isLoading
 }) => {
   const [lastNameFilter, setLastNameFilter] = useState('');
   const [firstNameFilter, setFirstNameFilter] = useState('');
   const [agencyFilter, setAgencyFilter] = useState('');
   const [uidFilter, setUidFilter] = useState('');
-  const [columnVisibility, setColumnVisibility] = useState({
-    agency_name: true,
-    person_nbr: true,
-    first_name: true,
-    last_name: true,
-    start_date: true,
-    end_date: true,
-    separation_reason: true,
-  });
-  const [agencyTypeFilter, setAgencyTypeFilter] = useState({
-    'Police Department': true,
-    "Sheriff's Office": true,
-    'Corrections Department': true,
-  });
-
-  const safeString = (value: any): string => {
-    return typeof value === 'string' ? value : '';
-  };
-
-  const safeLowerCase = (value: any): string => {
-    return safeString(value).toLowerCase();
-  };
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(50);
 
   const filteredData = useMemo(() => {
-  if (!agencyData) return [];
+    return agencyData.filter(row => {
+      if (lastNameFilter && (!row.last_name || !row.last_name.toLowerCase().startsWith(lastNameFilter.toLowerCase()))) {
+        return false;
+      }
+      if (firstNameFilter && (!row.first_name || !row.first_name.toLowerCase().startsWith(firstNameFilter.toLowerCase()))) {
+        return false;
+      }
+      if (agencyFilter && (!row.agency_name || !row.agency_name.toLowerCase().startsWith(agencyFilter.toLowerCase()))) {
+        return false;
+      }
+      if (uidFilter && (!row.person_nbr || !row.person_nbr.toLowerCase().startsWith(uidFilter.toLowerCase()))) {
+        return false;
+      }
+      return true;
+    });
+  }, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter]);
 
-  return agencyData.filter(row => {
-    if (lastNameFilter && (!row.last_name || !row.last_name.toLowerCase().startsWith(lastNameFilter.toLowerCase()))) {
-      return false;
-    }
-    
-    if (firstNameFilter && (!row.first_name || !row.first_name.toLowerCase().startsWith(firstNameFilter.toLowerCase()))) {
-      return false;
-    }
-
-    if (agencyFilter && (!row.agency_name || !row.agency_name.toLowerCase().startsWith(agencyFilter.toLowerCase()))) {
-      return false;
-    }
-
-    if (uidFilter && (!row.person_nbr || !row.person_nbr.toLowerCase().startsWith(uidFilter.toLowerCase()))) {
-      return false;
-    }
-
-    const agencyTypeMatches = 
-      (!agencyTypeFilter['Police Department'] && !agencyTypeFilter["Sheriff's Office"] && !agencyTypeFilter['Corrections Department']) ||
-      (agencyTypeFilter['Police Department'] && row.agency_name && row.agency_name.toLowerCase().includes('police')) ||
-      (agencyTypeFilter["Sheriff's Office"] && row.agency_name && row.agency_name.toLowerCase().includes('sheriff')) ||
-      (agencyTypeFilter['Corrections Department'] && row.agency_name && row.agency_name.toLowerCase().includes('corrections'));
-    
-    return agencyTypeMatches;
-  });
-}, [agencyData, lastNameFilter, firstNameFilter, agencyFilter, uidFilter, agencyTypeFilter]);
-  
-  // Paginate the filtered data
   const paginatedData = useMemo(() => {
     const startRow = pageIndex * pageSize;
-    const endRow = startRow + pageSize;
-    return filteredData.slice(startRow, endRow); // Only show the current page's data
+    return filteredData.slice(startRow, startRow + pageSize);
   }, [filteredData, pageIndex, pageSize]);
 
   const columns: Column<AgencyData>[] = useMemo(
@@ -111,10 +69,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     []
   );
 
-  const filteredColumns = useMemo(() => {
-    return columns.filter(column => columnVisibility[column.accessor as keyof AgencyData]);
-  }, [columns, columnVisibility]);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -123,13 +77,13 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     prepareRow,
   } = useTable(
     {
-      columns: filteredColumns,
-      data: paginatedData, // Only the current page's data is passed to the table
+      columns,
+      data: paginatedData,
     },
     useSortBy
   );
 
-  const totalPages = Math.ceil(totalCount / pageSize);
+  const totalPages = Math.ceil(filteredData.length / pageSize);
 
   const csvData = useMemo(() => {
     return filteredData.map(row => ({
@@ -145,6 +99,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
 
   return (
     <div className={tableStyles.tableContainer}>
+      {/* Filters */}
       <div className={tableStyles.tableHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
           {[
@@ -166,7 +121,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           ))}
         </div>
       </div>
-  
+
+      {/* Table */}
       <table className={tableStyles.agencyTable} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -200,19 +156,21 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           })}
         </tbody>
       </table>
+
+      {/* Pagination */}
       <div className={tableStyles.tableFooter}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', padding: '0 20px' }}>
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
             <button
               className={tableStyles.arrowButton}
-              onClick={() => onPageChange(pageIndex - 1)}
+              onClick={() => setPageIndex(prev => Math.max(0, prev - 1))}
               disabled={pageIndex === 0}
             >
               Previous
             </button>
             <button
               className={tableStyles.arrowButton}
-              onClick={() => onPageChange(pageIndex + 1)}
+              onClick={() => setPageIndex(prev => Math.min(totalPages - 1, prev + 1))}
               disabled={pageIndex === totalPages - 1}
             >
               Next
@@ -224,7 +182,10 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               <select
                 className={tableStyles.showPages}
                 value={pageSize}
-                onChange={(e) => onPageSizeChange(Number(e.target.value))}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setPageIndex(0);
+                }}
               >
                 {[10, 20, 30, 40, 50].map(size => (
                   <option key={size} value={size}>
@@ -239,7 +200,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           </CSVLink>
         </div>
       </div>
-      {isLoading && <p>Loading more data...</p>}
+      {isLoading && <p>Loading data...</p>}
     </div>
   );
 };
