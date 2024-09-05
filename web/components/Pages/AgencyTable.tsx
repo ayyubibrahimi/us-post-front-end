@@ -147,30 +147,32 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     <div className={tableStyles.tableContainer}>
       <div className={tableStyles.tableHeader} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
-          {[{ state: uidFilter, setState: setUidFilter, placeholder: 'UID contains' },
+          {[
+            { state: uidFilter, setState: setUidFilter, placeholder: 'UID contains' },
             { state: lastNameFilter, setState: setLastNameFilter, placeholder: 'Last name contains' },
             { state: firstNameFilter, setState: setFirstNameFilter, placeholder: 'First name contains' },
-            { state: agencyFilter, setState: setAgencyFilter, placeholder: 'Agency contains' }].map((filter, index) => (
-              <div key={index} className={tableStyles.searchBarContainer} style={{ position: 'relative' }}>
-                <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'black' }} />
-                <input
-                  type="text"
-                  value={filter.state}
-                  onChange={(e) => filter.setState(e.target.value)}
-                  placeholder={filter.placeholder}
-                  className={tableStyles.searchInput}
-                />
-              </div>
-            ))}
+            { state: agencyFilter, setState: setAgencyFilter, placeholder: 'Agency contains' }
+          ].map((filter, index) => (
+            <div key={index} className={tableStyles.searchBarContainer} style={{ position: 'relative' }}>
+              <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'black' }} />
+              <input
+                type="text"
+                value={filter.state}
+                onChange={(e) => filter.setState(e.target.value)}
+                placeholder={filter.placeholder}
+                className={tableStyles.searchInput}
+              />
+            </div>
+          ))}
         </div>
       </div>
   
       <table className={tableStyles.agencyTable} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps((column as any).getSortByToggleProps())}>
+                <th {...column.getHeaderProps((column as any).getSortByToggleProps())} key={column.id}>
                   <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
                     <span>{column.render('Header')}</span>
                     <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
@@ -187,9 +189,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           {rows.map(row => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} key={row.id}>
                 {row.cells.map(cell => (
-                  <td {...cell.getCellProps()}>
+                  <td {...cell.getCellProps()} key={cell.column.id}>
                     {cell.render('Cell')}
                   </td>
                 ))}

@@ -1,13 +1,19 @@
 import Papa from 'papaparse';
 
+export interface FetchOptions {
+  pageIndex: number;
+  pageSize: number;
+}
+
 export const fetchAgencyDataByState = async (
   state: string,
-  onProgress?: (data: any) => void // A callback function for progressive updates
+  options: FetchOptions,
+  onProgress?: (data: any[], totalCount: number) => void
 ) => {
   try {
-    console.log(`Starting data fetch for state: ${state}`);
+    console.log(`Starting data fetch for state: ${state}, page: ${options.pageIndex + 1}, size: ${options.pageSize}`);
 
-    const response = await fetch(`/api/fetchStateData?state=${state}`);
+    const response = await fetch(`/api/fetchStateData?state=${state}&page=${options.pageIndex + 1}&size=${options.pageSize}`);
 
     if (!response.ok) {
       throw new Error('Failed to fetch state data');
@@ -22,11 +28,11 @@ export const fetchAgencyDataByState = async (
 
     // Update the table progressively
     if (onProgress) {
-      onProgress(parsedData.data);
+      onProgress(parsedData.data, totalCount);
       console.log(`Progress callback called with ${parsedData.data.length} rows`);
     }
 
-    return parsedData.data;
+    return { data: parsedData.data, totalCount };
   } catch (error) {
     console.error('Error fetching state data:', error);
     throw error;

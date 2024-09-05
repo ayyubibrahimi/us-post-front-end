@@ -1,11 +1,8 @@
-"use client";
-// pages/_app.tsx
-import '../styles/global.css'; // Adjust the path to where your global.css file is located
-import { AppProps } from 'next/app';
-import 'tailwindcss/tailwind.css';
+import type { AppProps } from 'next/app'
+import '../styles/global.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return <Component {...pageProps} />
 }
 
-export default MyApp;
+export default MyApp

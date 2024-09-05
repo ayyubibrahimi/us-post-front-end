@@ -25,7 +25,11 @@ export default async function handler(
     }
 
     const gunzip = createGunzip();
-    const responseStream = Readable.from(response.body!);
+
+    // Convert the ReadableStream to a Node.js Readable stream
+    const responseBuffer = await response.arrayBuffer();
+    const responseStream = Readable.from(Buffer.from(responseBuffer));
+
     const decompressedStream = responseStream.pipe(gunzip);
 
     let csvData = '';

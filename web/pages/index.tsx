@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import AgencyTable from '../components/Pages/AgencyTable';
 import { fetchAgencyDataByState } from '../utils/fetchData';
 import LandingScreen from '../components/LandingPage/LandingScreen';
@@ -13,32 +13,44 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(50);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
-  const fetchStateData = useCallback(async (state: string) => {
-    if (!state || isLoading) return;
+  const fetchStateData = useCallback(async () => {
+    if (!selectedState || isLoading) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const data = await fetchAgencyDataByState(state, (progressData) => {
-        setAgencyData(prevData => [...prevData, ...progressData]);
-      });
+      const { data, totalCount } = await fetchAgencyDataByState(
+        selectedState,
+        { pageIndex, pageSize },
+        (progressData, progressTotalCount) => {
+          setAgencyData(progressData);
+          setTotalCount(progressTotalCount);
+        }
+      );
       setAgencyData(data);
+      setTotalCount(totalCount);
+      setShowLandingScreen(false);
     } catch (error) {
       console.error("Error fetching state data:", error);
       setError("Failed to load data. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading]);
+  }, [selectedState, pageIndex, pageSize, isLoading]);
+
+  useEffect(() => {
+    if (selectedState) {
+      fetchStateData();
+    }
+  }, [selectedState, pageIndex, pageSize, fetchStateData]);
 
   const handleStateSelection = (state: string) => {
     setSelectedState(state);
     setAgencyData([]);
     setPageIndex(0);
-    setShowLandingScreen(false);
-    fetchStateData(state);
   };
 
   const handlePageChange = (newPageIndex: number) => {
@@ -49,6 +61,7 @@ export default function Home() {
     setPageSize(newPageSize);
     setPageIndex(0);
   };
+
 
   if (showLandingScreen) {
     return <LandingScreen onButtonClick={handleStateSelection} />;
@@ -65,7 +78,7 @@ export default function Home() {
             <div className="tableWrapper">
               <AgencyTable 
                 agencyData={agencyData}
-                totalCount={agencyData.length}
+                totalCount={totalCount}
                 isLoading={isLoading}
                 pageIndex={pageIndex}
                 pageSize={pageSize}
