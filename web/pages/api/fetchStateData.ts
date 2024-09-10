@@ -44,16 +44,16 @@ export default async function handler(
 
     if (uid && typeof uid === 'string') {
       filterField = 'person_nbr';
-      filterValue = uid;
+      filterValue = uid.toLowerCase(); // Convert to lowercase
     } else if (firstName && typeof firstName === 'string') {
       filterField = 'first_name';
-      filterValue = firstName.toUpperCase();
+      filterValue = firstName.toLowerCase(); // Convert to lowercase
     } else if (lastName && typeof lastName === 'string') {
       filterField = 'last_name';
-      filterValue = lastName.toUpperCase();
+      filterValue = lastName.toLowerCase(); // Convert to lowercase
     } else if (agencyName && typeof agencyName === 'string') {
       filterField = 'agency_name';
-      filterValue = agencyName.toUpperCase();
+      filterValue = agencyName.toLowerCase(); // Convert to lowercase
     }
 
     if (filterField && filterValue) {
