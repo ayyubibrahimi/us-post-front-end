@@ -78,9 +78,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         { Header: 'Separation Date', accessor: 'end_date' },
       ];
       
-      if (hasSeparationReason) {
-        baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
-      }
+      // if (hasSeparationReason) {
+      //   baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
+      // }
       
       return baseColumns;
     },

@@ -25,7 +25,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   // ];
 
   const states = [
-    "Arizona", 'California', "Illinois", "Tennessee", 'Utah', 'West Virginia', 
+    "Arizona", 'California', "Illinois", "Tennessee", 'Utah', 'West Virginia', 'Georgia', 'Florida', 'Indiana', 'Wyoming'
   ];
 
   return (
