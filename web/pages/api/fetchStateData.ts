@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { storage } from '../../utils/firebaseConfig';
-import { ref, getDownloadURL } from 'firebase/storage';
-import { createGunzip } from 'zlib';
-import { Readable } from 'stream';
-import Papa from 'papaparse';
+import { db } from '../../utils/firebaseConfig';
+import { collection, query, where, orderBy, limit, startAfter, getDocs, Query, DocumentData } from 'firebase/firestore';
 
 type AgencyData = {
   agency_name: string;
@@ -38,50 +35,84 @@ export default async function handler(
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
-    const fileName = `${formattedState}-processed.csv.gz`;
-    const fileRef = ref(storage, fileName);
-    const fileURL = await getDownloadURL(fileRef);
+    const uploadsRef = collection(db, 'uploads');
+    let firestoreQuery: Query<DocumentData> = query(uploadsRef, where('__name__', '>=', `${formattedState}-processed.csv_`), where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`));
 
-    const response = await fetch(fileURL);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Apply single field filter
+    let filterField = '';
+    let filterValue = '';
+
+    if (uid && typeof uid === 'string') {
+      filterField = 'person_nbr';
+      filterValue = uid;
+    } else if (firstName && typeof firstName === 'string') {
+      filterField = 'first_name';
+      filterValue = firstName.toUpperCase();
+    } else if (lastName && typeof lastName === 'string') {
+      filterField = 'last_name';
+      filterValue = lastName.toUpperCase();
+    } else if (agencyName && typeof agencyName === 'string') {
+      filterField = 'agency_name';
+      filterValue = agencyName.toUpperCase();
     }
 
-    const gunzip = createGunzip();
-    const responseBuffer = await response.arrayBuffer();
-    const responseStream = Readable.from(Buffer.from(responseBuffer));
-    const decompressedStream = responseStream.pipe(gunzip);
-
-    let csvData = '';
-    for await (const chunk of decompressedStream) {
-      csvData += chunk.toString();
+    if (filterField && filterValue) {
+      firestoreQuery = query(firestoreQuery, 
+        where(filterField, '>=', filterValue), 
+        where(filterField, '<=', filterValue + '\uf8ff'),
+        orderBy(filterField)
+      );
+    } else {
+      firestoreQuery = query(firestoreQuery, orderBy('__name__'));
     }
-
-    const parsedData = Papa.parse(csvData, { header: true, skipEmptyLines: true });
-
-    const typedData = parsedData.data as AgencyData[];
-
-    // Apply filters
-    const filteredData = typedData.filter(item => 
-      (!lastName || item.last_name.toLowerCase().includes(lastName.toString().toLowerCase())) &&
-      (!firstName || item.first_name.toLowerCase().includes(firstName.toString().toLowerCase())) &&
-      (!agencyName || item.agency_name.toLowerCase().includes(agencyName.toString().toLowerCase())) &&
-      (!uid || item.person_nbr.includes(uid.toString()))
-    );
-
-    const totalCount = filteredData.length;
 
     // Apply pagination
-    const startIndex = (currentPage - 1) * size;
-    const endIndex = startIndex + size;
-    const paginatedData = filteredData.slice(startIndex, endIndex);
+    if (currentPage > 1) {
+      const previousPageQuery = query(firestoreQuery, limit((currentPage - 1) * size));
+      const previousPageSnapshot = await getDocs(previousPageQuery);
+      const lastVisible = previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
+      firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+    }
+
+    firestoreQuery = query(firestoreQuery, limit(size));
+
+    const snapshot = await getDocs(firestoreQuery);
+
+    // Perform client-side filtering for additional fields
+    let filteredData = snapshot.docs.map(doc => {
+      const docData = doc.data();
+      return {
+        agency_name: docData.agency_name,
+        person_nbr: docData.person_nbr,
+        first_name: docData.first_name,
+        last_name: docData.last_name,
+        start_date: docData.start_date,
+        end_date: docData.end_date,
+        separation_reason: docData.separation_reason,
+      } as AgencyData;
+    });
+
+    const firstNameStr = typeof firstName === 'string' ? firstName : Array.isArray(firstName) ? firstName[0] : '';
+    const lastNameStr = typeof lastName === 'string' ? lastName : Array.isArray(lastName) ? lastName[0] : '';
+    const agencyNameStr = typeof agencyName === 'string' ? agencyName : Array.isArray(agencyName) ? agencyName[0] : '';
+
+    if (firstNameStr && filterField !== 'first_name') {
+      filteredData = filteredData.filter(d => d.first_name.toUpperCase().includes(firstNameStr.toUpperCase()));
+    }
+    if (lastNameStr && filterField !== 'last_name') {
+      filteredData = filteredData.filter(d => d.last_name.toUpperCase().includes(lastNameStr.toUpperCase()));
+    }
+    if (agencyNameStr && filterField !== 'agency_name') {
+      filteredData = filteredData.filter(d => d.agency_name.toUpperCase().includes(agencyNameStr.toUpperCase()));
+    }
+
+    const hasNextPage = filteredData.length === size;
 
     res.status(200).json({
-      data: paginatedData,
-      totalCount: totalCount,
+      data: filteredData,
       currentPage: currentPage,
       pageSize: size,
-      totalPages: Math.ceil(totalCount / size)
+      hasNextPage: hasNextPage
     });
   } catch (error) {
     console.error('Error fetching state data:', error);

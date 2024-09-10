@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styles from './headerLight.module.scss';
+import AboutModal from './AboutModal';
 
 const states = [
-  "Arizona", "California", "Florida", "Georgia", "Illinois", "Maryland",
-  "Ohio", "Oregon", "South Carolina", "Tennessee", "Texas", "Vermont",
-  "Washington"
+  "Arizona", "California", "Illinois", "Tennessee", "Utah", "West Virginia",
 ];
 
 interface HeaderProps {
@@ -14,6 +13,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -24,12 +24,20 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
     setIsDropdownOpen(false);
   };
 
+  const handleAboutClick = () => {
+    setIsAboutModalOpen(true);
+  };
+
+  const handleCloseAboutModal = () => {
+    setIsAboutModalOpen(false);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
           <h1 className={styles.headerTitle}>
-            {"Peace Officer Employment History Database"}
+            Peace Officer Employment History Database
           </h1>
           <div className={styles.dropdown}>
             <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>
@@ -38,15 +46,27 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
             {isDropdownOpen && (
               <ul className={styles.dropdownMenu}>
                 {states.map((state) => (
-                  <li key={state} className={styles.dropdownItem} onClick={() => handleStateSelection(state)}>
+                  <li 
+                    key={state} 
+                    className={`${styles.dropdownItem} ${state === selectedState ? styles.active : ''}`} 
+                    onClick={() => handleStateSelection(state)}
+                  >
                     {state}
                   </li>
                 ))}
               </ul>
             )}
           </div>
+          <button className={styles.aboutButton} onClick={handleAboutClick}>
+            About
+          </button>
         </div>
       </div>
+      <AboutModal 
+        isOpen={isAboutModalOpen} 
+        onClose={handleCloseAboutModal} 
+        selectedState={selectedState} 
+      />
     </header>
   );
 };

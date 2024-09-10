@@ -1,13 +1,13 @@
 .tableContainer {
   background-color: #fff;
   overflow-x: auto;
-  overflow-y: auto;
-  position: relative;
+  overflow-y: hidden;
+  position: flex;
   font-family: 'Segoe UI';
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 5rem;
+  margin-top: 2rem;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: calc(100vh - 5rem - 2rem);
@@ -18,14 +18,23 @@
 .tableWrapper {
   border-radius: 20px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   background-color: #fff;
-  margin: 20px;
+  margin-top: -10px;
+  margin-bottom: -25px;
   padding: 20px;
   position: relative;
   z-index: 5;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
+
+.tableBodyContainer {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
 
 .tableControls {
   display: flex;
@@ -77,15 +86,21 @@
     border-bottom: 1px solid #ddd;
     width: auto;
     min-width: auto;
-    white-space: normal;
+    white-space: nowrap;
     color: #333;
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 40px;
+    line-height: 20px;
   }
 
   th {
     color: #333;
+  }
+
+  tbody tr {
+    height: 40px;
   }
 
   tbody tr:nth-child(odd) {
@@ -100,6 +115,30 @@
     background-color: #f0f0f0;
     cursor: pointer;
   }
+}
+
+.tableBodyWrapper {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+}
+
+.cellTooltip {
+  position: relative;
+}
+
+.cellTooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  white-space: normal;
+  max-width: 200px;
+  z-index: 10;
 }
 
 .searchBarContainer {
