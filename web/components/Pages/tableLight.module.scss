@@ -82,17 +82,23 @@
   td {
     border: none;
     text-align: left;
-    padding: 10px;
+    padding: 8px; /* Increased padding for better readability */
     border-bottom: 1px solid #ddd;
     width: auto;
     min-width: auto;
-    white-space: nowrap;
     color: #333;
     max-width: 200px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    height: 40px;
-    line-height: 20px;
+    height: auto; /* Changed from fixed height to auto */
+    line-height: 1.4; /* Adjusted line height for wrapped text */
+  }
+
+  /* New styles for Agency Name column */
+  th:first-child,
+  td:first-child {
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 150px; /* Adjust as needed */
   }
 
   th {
@@ -361,7 +367,7 @@
   border: 1px solid #333;
   border-radius: 0.5rem;
   color: #333;
-  padding: 0 30px 0 10px;
+  padding: 0 30px 0 7px;
 }
 
 .selectWrapper::after {

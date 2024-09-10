@@ -8,10 +8,16 @@ interface AgencyData {
   agency_name: string;
   person_nbr: string;
   first_name: string;
+  middle_name?: string;
   last_name: string;
   start_date: string;
   end_date: string;
-  separation_reason: string;
+  separation_reason?: string;
+  race?: string;
+  sex?: string;
+  employment_status?: string;
+  year_of_birth?: string;
+  rank?: string;
 }
 
 interface Filters {

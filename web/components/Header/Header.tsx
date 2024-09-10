@@ -3,9 +3,13 @@ import styles from './headerLight.module.scss';
 import AboutModal from './AboutModal';
 
 const states = [
-  "Arizona", "California", "Illinois", "Tennessee", "Utah", "West Virginia",
+  "Arizona", 'California', "Florida",
+  "Georgia", "Illinois", "Kentucky",
+   "Maryland", "Ohio", "Tennessee", 
+   "Texas", "Utah", "Washington", 
+   "West Virginia", "Wyoming"
+  
 ];
-
 interface HeaderProps {
   selectedState: string;
   onStateChange: (state: string) => void;
@@ -37,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
           <h1 className={styles.headerTitle}>
-            Peace Officer Employment History Database
+            National Police Employment History Database
           </h1>
           <div className={styles.dropdown}>
             <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>

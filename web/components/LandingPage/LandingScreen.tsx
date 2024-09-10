@@ -10,7 +10,7 @@ interface LandingScreenProps {
 const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   const words = [
     { text: "Explore", textColor: '#000000' },
-    { text: "peace", textColor: '#000000' },
+    { text: "police", textColor: '#000000' },
     { text: "officer", textColor: '#000000' },
     { text: "employment", textColor: '#000000' },
     { text: "history", textColor: '#000000' },
@@ -25,13 +25,18 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   // ];
 
   const states = [
-    "Arizona", 'California', "Illinois", "Tennessee", 'Utah', 'West Virginia', 'Georgia', 'Florida', 'Indiana', 'Wyoming'
+    "Arizona", 'California', "Florida",
+    "Georgia", "Illinois", "Kentucky",
+     "Maryland", "Ohio", "Tennessee", 
+     "Texas", "Utah", "Washington", 
+     "West Virginia", "Wyoming"
+    
   ];
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-screen space-y-4 ${styles.landingScreenContainer}`}>
       <p className={`${styles.peaceOfficerText} text-xs sm:text-base`}>
-        Peace Officer Employment History Database
+        National Police Employment History Database
       </p>
       <TypewriterEffectSmooth
         words={words}

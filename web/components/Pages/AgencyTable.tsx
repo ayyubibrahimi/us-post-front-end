@@ -1,19 +1,25 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { useTable, useSortBy, Column, UseSortByColumnOptions, UseSortByColumnProps, HeaderGroup } from 'react-table';
+import { useTable, useSortBy, Column, UseSortByColumnProps, HeaderGroup } from 'react-table';
 import { debounce } from 'lodash';
 
 interface AgencyData {
   agency_name: string;
   person_nbr: string;
   first_name: string;
+  middle_name?: string;
   last_name: string;
   start_date: string;
   end_date: string;
-  separation_reason: string;
+  separation_reason?: string;
+  race?: string;
+  sex?: string;
+  employment_status?: string;
+  year_of_birth?: string;
+  rank?: string;
 }
 
 interface Filters {
@@ -44,27 +50,26 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   onFilterChange,
   filters,
 }) => {
-  const [localFilters, setLocalFilters] = useState<Filters>(filters);
+  // Local state for input values
+  const [localInputs, setLocalInputs] = useState(filters);
 
-  const debouncedFilterChange = useCallback(
-    debounce((newFilters: Filters) => {
+  const debouncedFilterChange = useMemo(
+    () => debounce((newFilters: Filters) => {
       onFilterChange(newFilters);
     }, 300),
     [onFilterChange]
   );
 
-  useEffect(() => {
-    setLocalFilters(filters);
-  }, [filters]);
-
   const handleFilterChange = useCallback((key: keyof Filters, value: string) => {
-    const newFilters = { ...localFilters, [key]: value };
-    setLocalFilters(newFilters);
-    debouncedFilterChange(newFilters);
-  }, [localFilters, debouncedFilterChange]);
+    // Update local input state immediately
+    setLocalInputs(prev => ({ ...prev, [key]: value }));
+    
+    // Debounce the actual filter change
+    debouncedFilterChange({ ...localInputs, [key]: value });
+  }, [debouncedFilterChange, localInputs]);
 
-  const hasSeparationReason = useMemo(() => {
-    return agencyData.some(row => row.separation_reason && row.separation_reason.trim() !== '');
+  const hasColumn = useCallback((columnName: keyof AgencyData) => {
+    return agencyData.some(row => row[columnName] && row[columnName]!.trim() !== '');
   }, [agencyData]);
 
   const columns = useMemo<Column<AgencyData>[]>(
@@ -75,18 +80,32 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         { Header: 'First Name', accessor: 'first_name' },
         { Header: 'Last Name', accessor: 'last_name' },
         { Header: 'Start Date', accessor: 'start_date' },
-        { Header: 'Separation Date', accessor: 'end_date' },
+        { Header: 'End Date', accessor: 'end_date' },
       ];
       
-      // if (hasSeparationReason) {
-      //   baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
-      // }
+      if (hasColumn('separation_reason')) {
+        baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
+      }
+      if (hasColumn('race')) {
+        baseColumns.push({ Header: 'Race', accessor: 'race' });
+      }
+      if (hasColumn('sex')) {
+        baseColumns.push({ Header: 'Sex', accessor: 'sex' });
+      }
+      if (hasColumn('employment_status')) {
+        baseColumns.push({ Header: 'Employment Status', accessor: 'employment_status' });
+      }
+      if (hasColumn('year_of_birth')) {
+        baseColumns.push({ Header: 'Birth Year', accessor: 'year_of_birth' });
+      }
+      if (hasColumn('rank')) {
+        baseColumns.push({ Header: 'Rank', accessor: 'rank' });
+      }
       
       return baseColumns;
     },
-    [hasSeparationReason]
+    [hasColumn]
   );
-
 
   const {
     getTableProps,
@@ -117,7 +136,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'black' }} />
               <input
                 type="text"
-                value={localFilters[filter.filterKey as keyof Filters]}
+                value={localInputs[filter.filterKey as keyof Filters]}
                 onChange={(e) => handleFilterChange(filter.filterKey as keyof Filters, e.target.value)}
                 placeholder={filter.placeholder}
                 className={tableStyles.searchInput}
@@ -210,7 +229,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
                   onPageSizeChange(Number(e.target.value));
                 }}
               >
-                {[10, 20, 30, 40, 50].map(size => (
+                {[10, 20, 30, 40, 50, 100].map(size => (
                   <option key={size} value={size}>
                     Show {size}
                   </option>

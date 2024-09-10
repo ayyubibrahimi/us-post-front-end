@@ -9,7 +9,12 @@ type AgencyData = {
   last_name: string;
   start_date: string;
   end_date: string;
-  separation_reason: string;
+  separation_reason?: string;
+  race?: string;
+  sex?: string;
+  employment_status?: string;
+  year_of_birth?: string;
+  rank?: string;
 };
 
 export default async function handler(
@@ -44,16 +49,16 @@ export default async function handler(
 
     if (uid && typeof uid === 'string') {
       filterField = 'person_nbr';
-      filterValue = uid.toLowerCase(); // Convert to lowercase
+      filterValue = uid.toLowerCase();
     } else if (firstName && typeof firstName === 'string') {
       filterField = 'first_name';
-      filterValue = firstName.toLowerCase(); // Convert to lowercase
+      filterValue = firstName.toLowerCase();
     } else if (lastName && typeof lastName === 'string') {
       filterField = 'last_name';
-      filterValue = lastName.toLowerCase(); // Convert to lowercase
+      filterValue = lastName.toLowerCase();
     } else if (agencyName && typeof agencyName === 'string') {
       filterField = 'agency_name';
-      filterValue = agencyName.toLowerCase(); // Convert to lowercase
+      filterValue = agencyName.toLowerCase();
     }
 
     if (filterField && filterValue) {
@@ -89,6 +94,11 @@ export default async function handler(
         start_date: docData.start_date,
         end_date: docData.end_date,
         separation_reason: docData.separation_reason,
+        race: docData.race,
+        sex: docData.sex,
+        employment_status: docData.employment_status,
+        year_of_birth: docData.year_of_birth,
+        rank: docData.rank,
       } as AgencyData;
     });
 
