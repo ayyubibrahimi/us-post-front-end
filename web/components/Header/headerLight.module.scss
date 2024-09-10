@@ -84,3 +84,33 @@
   background-color: #ccc; /* Lighter background color for active state */
   color: #333; /* Dark text color for contrast */
 }
+
+
+.aboutButton {
+  font-size: 1.1rem;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: rgba(51, 51, 51, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .aboutButton {
+    margin-top: 1rem;
+    margin-left: 0;
+    align-self: flex-end;
+  }
+}

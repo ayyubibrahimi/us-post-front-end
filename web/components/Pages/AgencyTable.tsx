@@ -3,7 +3,7 @@ import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { useTable, useSortBy, Column } from 'react-table';
+import { useTable, useSortBy, Column, UseSortByColumnOptions, UseSortByColumnProps, HeaderGroup } from 'react-table';
 import { debounce } from 'lodash';
 
 interface AgencyData {
@@ -25,7 +25,6 @@ interface Filters {
 
 interface AgencyTableProps {
   agencyData: AgencyData[];
-  totalCount: number;
   isLoading: boolean;
   currentPage: number;
   pageSize: number;
@@ -37,7 +36,6 @@ interface AgencyTableProps {
 
 const AgencyTable: React.FC<AgencyTableProps> = ({
   agencyData,
-  totalCount,
   isLoading,
   currentPage,
   pageSize,
@@ -65,18 +63,30 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     debouncedFilterChange(newFilters);
   }, [localFilters, debouncedFilterChange]);
 
-  const columns: Column<AgencyData>[] = useMemo(
-    () => [
-      { Header: 'Agency Name', accessor: 'agency_name' },
-      { Header: 'UID', accessor: 'person_nbr' },
-      { Header: 'First Name', accessor: 'first_name' },
-      { Header: 'Last Name', accessor: 'last_name' },
-      { Header: 'Start Date', accessor: 'start_date' },
-      { Header: 'Separation Date', accessor: 'end_date' },
-      { Header: 'Separation Reason', accessor: 'separation_reason' },
-    ],
-    []
+  const hasSeparationReason = useMemo(() => {
+    return agencyData.some(row => row.separation_reason && row.separation_reason.trim() !== '');
+  }, [agencyData]);
+
+  const columns = useMemo<Column<AgencyData>[]>(
+    () => {
+      const baseColumns: Column<AgencyData>[] = [
+        { Header: 'Agency Name', accessor: 'agency_name' },
+        { Header: 'UID', accessor: 'person_nbr' },
+        { Header: 'First Name', accessor: 'first_name' },
+        { Header: 'Last Name', accessor: 'last_name' },
+        { Header: 'Start Date', accessor: 'start_date' },
+        { Header: 'Separation Date', accessor: 'end_date' },
+      ];
+      
+      if (hasSeparationReason) {
+        baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
+      }
+      
+      return baseColumns;
+    },
+    [hasSeparationReason]
   );
+
 
   const {
     getTableProps,
@@ -84,15 +94,13 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     headerGroups,
     rows,
     prepareRow,
-  } = useTable(
+  } = useTable<AgencyData>(
     {
       columns,
       data: agencyData,
     },
     useSortBy
   );
-
-  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <div className={tableStyles.tableContainer}>
@@ -118,48 +126,62 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           ))}
         </div>
       </div>
-
+  
       {/* Table */}
-      <table className={tableStyles.agencyTable} {...getTableProps()}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps((column as any).getSortByToggleProps())} key={column.id}>
-                  <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
-                    <span>{column.render('Header')}</span>
-                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
-                      <FontAwesomeIcon 
-                        icon={faArrowUp} 
-                        className={`${tableStyles.arrowIcon} ${(column as any).isSorted && !(column as any).isSortedDesc ? tableStyles.activeSortIcon : ''}`}
-                      />
-                      <FontAwesomeIcon 
-                        icon={faArrowDown} 
-                        className={`${tableStyles.arrowIcon} ${tableStyles.arrowDown} ${(column as any).isSorted && (column as any).isSortedDesc ? tableStyles.activeSortIcon : ''}`}
-                      />
-                    </div>
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} key={row.id}>
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()} key={cell.column.id}>
-                    {cell.render('Cell')}
-                  </td>
-                ))}
+      <div className={tableStyles.tableWrapper}>
+        <table className={tableStyles.agencyTable} {...getTableProps()}>
+          <thead>
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+                {headerGroup.headers.map(column => {
+                  const columnWithSort = column as HeaderGroup<AgencyData> & UseSortByColumnProps<AgencyData>;
+                  return (
+                    <th {...column.getHeaderProps(columnWithSort.getSortByToggleProps())} key={column.id}>
+                      <div style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}>
+                        <span>{column.render('Header')}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
+                          <FontAwesomeIcon 
+                            icon={faArrowUp} 
+                            className={`${tableStyles.arrowIcon} ${(columnWithSort.isSorted && !columnWithSort.isSortedDesc) ? tableStyles.activeSortIcon : ''}`}
+                          />
+                          <FontAwesomeIcon 
+                            icon={faArrowDown} 
+                            className={`${tableStyles.arrowIcon} ${(columnWithSort.isSorted && columnWithSort.isSortedDesc) ? tableStyles.activeSortIcon : ''}`}
+                          />
+                        </div>
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
+            ))}
+          </thead>
+        </table>
+        <div className={tableStyles.tableBodyContainer}>
+          <table className={tableStyles.agencyTable} {...getTableProps()}>
+            <tbody {...getTableBodyProps()}>
+              {rows.map(row => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()} key={row.id}>
+                    {row.cells.map(cell => (
+                      <td 
+                        {...cell.getCellProps()} 
+                        key={cell.column.id}
+                        className={tableStyles.cellTooltip}
+                        data-tooltip={cell.value}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
       {/* Pagination */}
       <div className={tableStyles.tableFooter}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', padding: '0 20px' }}>
@@ -174,12 +196,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             <button
               className={tableStyles.arrowButton}
               onClick={() => onPageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
             >
               Next
             </button>
             <span className={tableStyles.pageNumber}>
-              Page {currentPage} of {totalPages}
+              Page {currentPage} 
             </span>
             <div className={tableStyles.selectWrapper}>
               <select
