@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
           <h1 className={styles.headerTitle}>
-            National Police Employment History Database
+            National Police Index
           </h1>
           <div className={styles.dropdown}>
             <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>

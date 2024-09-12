@@ -36,7 +36,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   return (
     <div className={`flex flex-col items-center justify-center min-h-screen space-y-4 ${styles.landingScreenContainer}`}>
       <p className={`${styles.peaceOfficerText} text-xs sm:text-base`}>
-        National Police Employment History Database
+        National Police Index
       </p>
       <TypewriterEffectSmooth
         words={words}
