@@ -5,19 +5,25 @@ import Header from '../../components/Header/Header';
 import styles from '../index.module.scss';
 
 interface AgencyData {
-  agency_name: string;
+  case_id?: string;
   person_nbr: string;
-  first_name: string;
-  middle_name?: string;
-  last_name: string;
+  sanction?: string;
+  sanction_date?: string;
+  violation?: string;
+  violation_date?: string;
+  agency_name: string;
+  employment_status?: string;
+  employment_change?: string;
   start_date: string;
   end_date: string;
-  separation_reason?: string;
+  last_name: string;
+  first_name: string;
+  middle_name?: string;
+  suffix?: string;
+  year_of_birth?: string;
   race?: string;
   sex?: string;
-  employment_status?: string;
-  year_of_birth?: string;
-  rank?: string;
+  separation_reason?: string;
 }
 
 interface Filters {

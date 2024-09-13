@@ -7,19 +7,25 @@ import { useTable, useSortBy, Column, UseSortByColumnProps, HeaderGroup } from '
 import { debounce } from 'lodash';
 
 interface AgencyData {
-  agency_name: string;
+  case_id?: string;
   person_nbr: string;
-  first_name: string;
-  middle_name?: string;
-  last_name: string;
+  sanction?: string;
+  sanction_date?: string;
+  violation?: string;
+  violation_date?: string;
+  agency_name: string;
+  employment_status?: string;
+  employment_change?: string;
   start_date: string;
   end_date: string;
-  separation_reason?: string;
+  last_name: string;
+  first_name: string;
+  middle_name?: string;
+  suffix?: string;
+  year_of_birth?: string;
   race?: string;
   sex?: string;
-  employment_status?: string;
-  year_of_birth?: string;
-  rank?: string;
+  separation_reason?: string;
 }
 
 interface Filters {
@@ -39,6 +45,7 @@ interface AgencyTableProps {
   onFilterChange: (filters: Filters) => void;
   filters: Filters;
 }
+
 
 const AgencyTable: React.FC<AgencyTableProps> = ({
   agencyData,
@@ -68,44 +75,60 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     debouncedFilterChange({ ...localInputs, [key]: value });
   }, [debouncedFilterChange, localInputs]);
 
-  const hasColumn = useCallback((columnName: keyof AgencyData) => {
+  const hasNonEmptyColumn = useCallback((columnName: keyof AgencyData) => {
     return agencyData.some(row => row[columnName] && row[columnName]!.trim() !== '');
   }, [agencyData]);
 
   const columns = useMemo<Column<AgencyData>[]>(
     () => {
       const baseColumns: Column<AgencyData>[] = [
-        { Header: 'Agency Name', accessor: 'agency_name' },
-        { Header: 'UID', accessor: 'person_nbr' },
         { Header: 'First Name', accessor: 'first_name' },
-        { Header: 'Last Name', accessor: 'last_name' },
-        { Header: 'Start Date', accessor: 'start_date' },
-        { Header: 'End Date', accessor: 'end_date' },
       ];
       
-      if (hasColumn('separation_reason')) {
-        baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
+      if (hasNonEmptyColumn('middle_name')) {
+        baseColumns.push({ Header: 'Middle Name', accessor: 'middle_name' });
       }
-      if (hasColumn('race')) {
-        baseColumns.push({ Header: 'Race', accessor: 'race' });
+      
+      baseColumns.push({ Header: 'Last Name', accessor: 'last_name' });
+      
+      if (hasNonEmptyColumn('suffix')) {
+        baseColumns.push({ Header: 'Suffix', accessor: 'suffix' });
       }
-      if (hasColumn('sex')) {
-        baseColumns.push({ Header: 'Sex', accessor: 'sex' });
-      }
-      if (hasColumn('employment_status')) {
-        baseColumns.push({ Header: 'Employment Status', accessor: 'employment_status' });
-      }
-      if (hasColumn('year_of_birth')) {
-        baseColumns.push({ Header: 'Birth Year', accessor: 'year_of_birth' });
-      }
-      if (hasColumn('rank')) {
-        baseColumns.push({ Header: 'Rank', accessor: 'rank' });
-      }
+      
+      baseColumns.push(
+        { Header: 'Start Date', accessor: 'start_date' },
+        { Header: 'End Date', accessor: 'end_date' },
+        { Header: 'Agency Name', accessor: 'agency_name' },
+        { Header: 'UID', accessor: 'person_nbr' }
+      );
+      
+      // Add other conditional columns
+      const conditionalColumns: [string, keyof AgencyData][] = [
+        ['Birth Year', 'year_of_birth'],
+        ['Race', 'race'],
+        ['Sex', 'sex'],
+        ['Case ID', 'case_id'],
+        ['Violation', 'violation'],
+        ['Violation Date', 'violation_date'],
+        ['Sanction', 'sanction'],
+        ['Sanction Date', 'sanction_date'],
+        ['Employment Status', 'employment_status'],
+        ['Employment Status', 'employment_change'],
+        ['Separation Reason', 'separation_reason'],
+      ];
+
+      conditionalColumns.forEach(([header, accessor]) => {
+        if (hasNonEmptyColumn(accessor)) {
+          baseColumns.push({ Header: header, accessor });
+        }
+      });
       
       return baseColumns;
     },
-    [hasColumn]
+    [hasNonEmptyColumn]
   );
+
+
 
   const {
     getTableProps,

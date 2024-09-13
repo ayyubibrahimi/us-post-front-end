@@ -3,18 +3,25 @@ import { db } from '../../utils/firebaseConfig';
 import { collection, query, where, orderBy, limit, startAfter, getDocs, Query, DocumentData } from 'firebase/firestore';
 
 type AgencyData = {
-  agency_name: string;
+  case_id?: string;
   person_nbr: string;
-  first_name: string;
-  last_name: string;
+  sanction?: string;
+  sanction_date?: string;
+  violation?: string;
+  violation_date?: string;
+  agency_name: string;
+  employment_status?: string;
+  employment_change?: string;
   start_date: string;
   end_date: string;
-  separation_reason?: string;
+  last_name: string;
+  first_name: string;
+  middle_name?: string;
+  suffix?: string;
+  year_of_birth?: string;
   race?: string;
   sex?: string;
-  employment_status?: string;
-  year_of_birth?: string;
-  rank?: string;
+  separation_reason?: string;
 };
 
 export default async function handler(
@@ -87,18 +94,26 @@ export default async function handler(
     let filteredData = snapshot.docs.map(doc => {
       const docData = doc.data();
       return {
-        agency_name: docData.agency_name,
+        case_id: docData.case_id,
         person_nbr: docData.person_nbr,
-        first_name: docData.first_name,
-        last_name: docData.last_name,
+        sanction: docData.sanction,
+        sanction_date: docData.sanction_date,
+        violation: docData.violation,
+        violation_date: docData.violation_date,
+        full_name: docData.full_name,
+        agency_name: docData.agency_name,
+        employment_status: docData.employment_status,
+        employment_change: docData.employment_change,
         start_date: docData.start_date,
         end_date: docData.end_date,
-        separation_reason: docData.separation_reason,
+        last_name: docData.last_name,
+        first_name: docData.first_name,
+        middle_name: docData.middle_name,
+        suffix: docData.suffix,
+        year_of_birth: docData.year_of_birth,
         race: docData.race,
         sex: docData.sex,
-        employment_status: docData.employment_status,
-        year_of_birth: docData.year_of_birth,
-        rank: docData.rank,
+        separation_reason: docData.separation_reason,
       } as AgencyData;
     });
 
