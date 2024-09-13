@@ -4,20 +4,25 @@ import AboutModal from "./AboutModal";
 import Link from "next/link";
 
 const states = [
-  "Arizona",
-  "California",
-  "Florida",
-  "Georgia",
-  "Illinois",
-  "Kentucky",
-  "Maryland",
-  "Ohio",
-  "Tennessee",
-  "Texas",
-  "Utah",
-  "Washington",
-  "West Virginia",
-  "Wyoming",
+    "Arizona",
+    "California",
+    "Florida",
+    "Georgia",
+    "Illinois",
+    "Kentucky",
+    "Maryland",
+    "Idaho",
+    "Ohio",
+    "Oregon",
+    "New Mexico",
+    "South Carolina",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Washington",
+    "Vermont",
+    "West Virginia",
+    "Wyoming",
 ];
 interface HeaderProps {
   selectedState: string;
@@ -50,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
           <h1 className={styles.headerTitle}>
-            <Link href="/">National Police Employment History Database</Link>
+            <Link href="/"> National Police Index</Link>
           </h1>
           <div className={styles.dropdown}>
             <button

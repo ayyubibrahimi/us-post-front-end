@@ -72,6 +72,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         <Map data={data} availableStates={states} />
       </div>
       <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full max-w-screen-lg">
+
         {states.map((state) => (
           <button
             key={state}
