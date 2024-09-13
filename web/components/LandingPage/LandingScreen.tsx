@@ -1,53 +1,81 @@
-import React from 'react';
-import { TypewriterEffectSmooth } from "./TypeWriter";
-import styles from './LandingScreenLight.module.scss';
-import buttonStyles from './LandingScreenLight.module.scss';
+import React, { useState, useEffect } from "react";
+import styles from "./LandingScreenLight.module.scss";
+import Map from "../Map";
+import { FeatureCollection, MultiLineString, Geometry } from "geojson";
+
+interface MapData {
+  land: FeatureCollection<Geometry> | null;
+  interiors: MultiLineString | null;
+}
+
+export async function fetchMapData(): Promise<MapData> {
+  try {
+    const response = await fetch("/api/fetchMapData");
+    if (!response.ok) {
+      throw new Error("Failed to fetch map data");
+    }
+    const data: MapData = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching map data:", error);
+    throw new Error("Failed to fetch map data");
+  }
+}
 
 interface LandingScreenProps {
   onButtonClick: (state: string) => void;
 }
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
-  const words = [
-    { text: "Explore", textColor: '#000000' },
-    { text: "police", textColor: '#000000' },
-    { text: "officer", textColor: '#000000' },
-    { text: "employment", textColor: '#000000' },
-    { text: "history", textColor: '#000000' },
-    { text: "data", textColor: '#000000' }
-  ];
-
-  // const states = [
-  //   "Arizona", "California", "Florida", "Georgia", "Illinois", "Maryland",
-  //   "Ohio", "Oregon", "South Carolina", "Tennessee", "Texas", "Vermont",
-  //   "Washington", 'Wyoming', 'Alaska', 'Idaho', 'Indiana', 'Kentucky', 
-  //   'New Mexico', 'North Carolina', 'Utah', 'West Virginia'
-  // ];
-
+  const [data, setData] = useState<MapData | null>(null);
   const states = [
-    "Arizona", 'California', "Florida",
-    "Georgia", "Illinois", "Kentucky",
-     "Maryland", "Ohio", "Tennessee", 
-     "Texas", "Utah", "Washington", 
-     "West Virginia", "Wyoming"
-    
+    "Arizona",
+    "California",
+    "Florida",
+    "Georgia",
+    "Illinois",
+    "Kentucky",
+    "Maryland",
+    "Idaho",
+    "Ohio",
+    "Oregon",
+    "New Mexico",
+    "South Carolina",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Washington",
+    "Vermont",
+    "West Virginia",
+    "Wyoming",
   ];
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const mapData = await fetchMapData();
+        setData(mapData);
+      } catch (error) {
+        console.log("Failed to load map data");
+      }
+    };
+    getData();
+  }, []);
 
   return (
-    <div className={`flex flex-col items-center justify-center min-h-screen space-y-4 ${styles.landingScreenContainer}`}>
-      <p className={`${styles.peaceOfficerText} text-xs sm:text-base`}>
-        National Police Employment History Database
-      </p>
-      <TypewriterEffectSmooth
-        words={words}
-        className={`text-2xl md:text-4xl lg:text-5xl font-bold text-center ${styles.typewriterBase}`}
-        cursorClassName={`w-2 h-8 md:h-10 lg:h-12 ${styles.black}`}
-      />
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8">
+    <div
+      className={
+        "flex flex-col items-center justify-center min-h-screen bg-white p-4"
+      }
+    >
+      <div className="w-full max-w-screen-lg relative mt-16">
+        <Map data={data} availableStates={states} />
+      </div>
+      <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full max-w-screen-lg">
         {states.map((state) => (
           <button
             key={state}
-            className={`${buttonStyles.georgiaButton}`}
+            className={styles.georgiaButton}
             onClick={() => onButtonClick(state)}
           >
             {state}

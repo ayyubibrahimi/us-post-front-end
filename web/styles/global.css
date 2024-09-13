@@ -15,6 +15,17 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+.tooltip {
+  position: absolute;
+  fill: black !important;
+  background-color: rgb(246, 255, 201);
+  border: #fff;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px rgb(200, 205, 176);
+  font-family: "Segoe UI";
+}
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -31,4 +42,3 @@ body {
     text-wrap: balance;
   }
 }
-

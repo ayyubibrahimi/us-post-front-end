@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import styles from './headerLight.module.scss';
-import AboutModal from './AboutModal';
+import React, { useState } from "react";
+import styles from "./headerLight.module.scss";
+import AboutModal from "./AboutModal";
+import Link from "next/link";
 
 const states = [
-  "Arizona", 'California', "Florida",
-  "Georgia", "Illinois", "Kentucky",
-   "Maryland", "Ohio", "Tennessee", 
-   "Texas", "Utah", "Washington", 
-   "West Virginia", "Wyoming"
-  
+  "Arizona",
+  "California",
+  "Florida",
+  "Georgia",
+  "Illinois",
+  "Kentucky",
+  "Maryland",
+  "Ohio",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Washington",
+  "West Virginia",
+  "Wyoming",
 ];
 interface HeaderProps {
   selectedState: string;
@@ -41,18 +50,23 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
           <h1 className={styles.headerTitle}>
-            National Police Employment History Database
+            <Link href="/">National Police Employment History Database</Link>
           </h1>
           <div className={styles.dropdown}>
-            <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>
+            <button
+              className={styles.dropdownToggle}
+              onClick={handleDropdownToggle}
+            >
               {selectedState || "Select a State"}
             </button>
             {isDropdownOpen && (
               <ul className={styles.dropdownMenu}>
                 {states.map((state) => (
-                  <li 
-                    key={state} 
-                    className={`${styles.dropdownItem} ${state === selectedState ? styles.active : ''}`} 
+                  <li
+                    key={state}
+                    className={`${styles.dropdownItem} ${
+                      state === selectedState ? styles.active : ""
+                    }`}
                     onClick={() => handleStateSelection(state)}
                   >
                     {state}
@@ -66,10 +80,10 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
           </button>
         </div>
       </div>
-      <AboutModal 
-        isOpen={isAboutModalOpen} 
-        onClose={handleCloseAboutModal} 
-        selectedState={selectedState} 
+      <AboutModal
+        isOpen={isAboutModalOpen}
+        onClose={handleCloseAboutModal}
+        selectedState={selectedState}
       />
     </header>
   );
