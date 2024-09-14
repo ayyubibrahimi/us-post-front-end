@@ -17,22 +17,12 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     { text: "data", textColor: '#000000' }
   ];
 
-  // const states = [
-  //   "Arizona", "California", "Florida", "Georgia", "Illinois", "Maryland",
-  //   "Ohio", "Oregon", "South Carolina", "Tennessee", "Texas", "Vermont",
-  //   "Washington", 'Wyoming', 'Alaska', 'Idaho', 'Indiana', 'Kentucky', 
-  //   'New Mexico', 'North Carolina', 'Utah', 'West Virginia'
-  // ];
-
   const states = [
     "Arizona", 'California', "Florida",
-    "Georgia", "Georgia Misconduct", "Illinois", "Kentucky",
-     "Maryland", "Idaho", "Ohio", "Oregon", "New Mexico", "South Carolina", "Tennessee", 
+    "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
+     "Maryland", "Idaho", "Ohio", "Oregon", "South Carolina", "Tennessee", 
      "Texas", "Utah", "Washington", "Vermont",
      "West Virginia", "Wyoming"
-
-
-    
   ];
 
   return (

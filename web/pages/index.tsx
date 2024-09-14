@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import LandingScreen from '../components/LandingPage/LandingScreen';
 import styles from './index.module.scss';
+import Header from "@/components/Header/LandingPageHeader";
 
 export default function Home() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function Home() {
 
   return (
     <div className={`${styles.pageContainer} flex flex-col h-screen`}>
+       <Header />
       <main className="flex-grow">
         <LandingScreen onButtonClick={handleStateSelection} />
       </main>

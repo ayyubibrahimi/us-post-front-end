@@ -42,6 +42,14 @@ export default async function handler(
     return res.status(400).json({ error: 'State parameter is required and must be a string' });
   }
 
+  function toTitleCase(str: string) {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
   const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
 
@@ -53,21 +61,20 @@ export default async function handler(
     // Apply single field filter
     let filterField = '';
     let filterValue = '';
-
+    
     if (uid && typeof uid === 'string') {
       filterField = 'person_nbr';
-      filterValue = uid.toLowerCase();
+      filterValue = uid; // No need for title case on UID if it's a number
     } else if (firstName && typeof firstName === 'string') {
       filterField = 'first_name';
-      filterValue = firstName.toLowerCase();
+      filterValue = toTitleCase(firstName);
     } else if (lastName && typeof lastName === 'string') {
       filterField = 'last_name';
-      filterValue = lastName.toLowerCase();
+      filterValue = toTitleCase(lastName);
     } else if (agencyName && typeof agencyName === 'string') {
       filterField = 'agency_name';
-      filterValue = agencyName.toLowerCase();
+      filterValue = toTitleCase(agencyName);
     }
-
     if (filterField && filterValue) {
       firestoreQuery = query(firestoreQuery, 
         where(filterField, '>=', filterValue), 

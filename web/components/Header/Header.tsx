@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 import styles from './headerLight.module.scss';
 import AboutModal from './AboutModal';
 
 const states = [
   "Arizona", 'California', "Florida",
-  "Georgia", "Illinois", "Kentucky",
-   "Maryland", "Ohio", "Tennessee", 
-   "Texas", "Utah", "Washington", 
+  "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
+   "Maryland", "Idaho", "Ohio", "Oregon", "South Carolina", "Tennessee", 
+   "Texas", "Utah", "Washington", "Vermont",
    "West Virginia", "Wyoming"
-  
 ];
+
 interface HeaderProps {
   selectedState: string;
   onStateChange: (state: string) => void;
@@ -40,9 +41,11 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
-          <h1 className={styles.headerTitle}>
-            National Police Index
-          </h1>
+          <Link href="/" className={styles.headerTitleLink}>
+            <h1 className={styles.headerTitle}>
+              National Police Index
+            </h1>
+          </Link>
           <div className={styles.dropdown}>
             <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>
               {selectedState || "Select a State"}

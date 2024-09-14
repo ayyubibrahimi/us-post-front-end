@@ -1,0 +1,113 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+  }
+  
+  .modalContent {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid #333;
+    position: relative;
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+    color: #000;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .modalCloseButton {
+    font-size: 1.1rem;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #333;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: rgba(51, 51, 51, 0.1);
+    }
+  }
+  
+  .modalDescription {
+    color: #333;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+  
+  .teamSectionTitle {
+    font-size: 1.25rem;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  
+  .teamMembersContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .teamMemberCard {
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+  }
+  
+  .teamMemberName {
+    font-size: 1.125rem;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .teamMemberRole {
+    color: #4b5563;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  
+  .teamMemberBio {
+    color: #1f2937;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  @media (max-width: 768px) {
+    .modalContent {
+      padding: 1.5rem;
+    }
+  
+    .modalTitle {
+      font-size: 1.25rem;
+    }
+  
+    .teamMemberCard {
+      padding: 1rem;
+    }
+  }
