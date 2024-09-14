@@ -73,41 +73,35 @@
   }
   
   .teamMemberCard {
-    background-color: #f3f4f6;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .teamMemberPhoto {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .teamMemberInfo {
+    flex: 1;
   }
   
   .teamMemberName {
-    font-size: 1.125rem;
+    margin: 0 0 5px 0;
     color: #000;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
   }
   
   .teamMemberRole {
-    color: #4b5563;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
+    font-style: italic;
+    margin: 0 0 10px 0;
+    color: #000;
   }
   
   .teamMemberBio {
-    color: #1f2937;
-    font-size: 0.875rem;
-    line-height: 1.5;
-  }
-  
-  @media (max-width: 768px) {
-    .modalContent {
-      padding: 1.5rem;
-    }
-  
-    .modalTitle {
-      font-size: 1.25rem;
-    }
-  
-    .teamMemberCard {
-      padding: 1rem;
-    }
+    margin: 0;
+    color: #000;
   }

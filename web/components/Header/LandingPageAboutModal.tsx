@@ -5,6 +5,7 @@ interface TeamMember {
   name: string;
   role: string;
   bio: string;
+  photoUrl?: string;
 }
 
 interface AboutModalProps {
@@ -14,44 +15,35 @@ interface AboutModalProps {
 
 const teamMembers: TeamMember[] = [
   {
-    name: "Sam Stecklow",
-    role: "",
-    bio: "ceo"
+    name: "cabra",
+    role: "Chief Public Records Officer",
+    bio: "esta cabra es indigenous a las montanas de peru",
+    photoUrl: "https://storage.googleapis.com/jlabs-images/goat.jpg"
   },
   {
-    name: "Maheen Khan",
-    role: "",
-    bio: "le goat"
+    name: "cabra",
+    role: "Has called POST more than anyone alive",
+    bio: "esta cabra es indigenous a las montanas de chile",
+    photoUrl: "https://storage.googleapis.com/jlabs-images/goat2.jpg"
   },
-  {
-    name: "Tarak Shah",
-    role: "",
-    bio: "la cabra"
-  },
-  {
-    name: "Ayyub Ibrahim",
-    role: "",
-    bio: "papas y chorizo o papas y carne molida"
-  },
-  {
-    name: "Lisa",
-    role: "",
-    bio: "?"
-  },
-  {
-    name: "BLN",
-    role: "",
-    bio: "?"
-  }
 ];
 
 const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
   <div className={styles.teamMemberCard}>
-    <h3 className={styles.teamMemberName}>
-      {member.name}
-    </h3>
-    {member.role && <p className={styles.teamMemberRole}>{member.role}</p>}
-    <p className={styles.teamMemberBio}>{member.bio}</p>
+    {member.photoUrl && (
+      <img
+        src={member.photoUrl}
+        alt={`${member.name}'s photo`}
+        className={styles.teamMemberPhoto}
+      />
+    )}
+    <div className={styles.teamMemberInfo}>
+      <h3 className={styles.teamMemberName}>
+        {member.name}
+      </h3>
+      {member.role && <p className={styles.teamMemberRole}>{member.role}</p>}
+      <p className={styles.teamMemberBio}>{member.bio}</p>
+    </div>
   </div>
 );
 
