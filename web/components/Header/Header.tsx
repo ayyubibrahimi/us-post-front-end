@@ -3,10 +3,19 @@ import Link from 'next/link';
 import styles from './headerLight.module.scss';
 import AboutModal from './AboutModal';
 
+// const states = [
+//   "Arizona", 'California', "Florida",
+//   "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
+//    "Maryland", "Idaho", "Ohio", "Oregon", "South Carolina", "Tennessee", 
+//    "Texas", "Utah", "Washington", "Vermont",
+//    "West Virginia", "Wyoming"
+// ];
+
+
 const states = [
-  "Arizona", 'California', "Florida",
+  "Arizona", 'California', "Florida", "Florida Discipline",
   "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
-   "Maryland", "Idaho", "Ohio", "Oregon", "South Carolina", "Tennessee", 
+   "Maryland", "Ohio", "Oregon", "South Carolina", "Tennessee", 
    "Texas", "Utah", "Washington", "Vermont",
    "West Virginia", "Wyoming"
 ];

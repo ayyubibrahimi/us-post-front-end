@@ -24,6 +24,11 @@ interface AgencyData {
   race?: string;
   sex?: string;
   separation_reason?: string;
+  case_opened_date?: string;
+  case_closed_date?: string;
+  offense?: string;
+  discipline_imposed?: string;
+  discipline_comments?: string;
 }
 
 interface Filters {

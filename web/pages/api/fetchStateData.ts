@@ -22,6 +22,11 @@ type AgencyData = {
   race?: string;
   sex?: string;
   separation_reason?: string;
+  case_opened_date?: string;
+  case_closed_date?: string;
+  offense?: string;
+  discipline_imposed?: string;
+  discipline_comments?: string;
 };
 
 export default async function handler(
@@ -121,6 +126,11 @@ export default async function handler(
         race: docData.race,
         sex: docData.sex,
         separation_reason: docData.separation_reason,
+        case_opened_date: docData.case_opened_date,
+        case_closed_date: docData.case_closed_date,
+        offense: docData.offense,
+        discipline_imposed: docData.discipline_imposed,
+        discipline_comments: docData.discipline_comments
       } as AgencyData;
     });
 

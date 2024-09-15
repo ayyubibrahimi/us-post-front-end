@@ -26,6 +26,11 @@ interface AgencyData {
   race?: string;
   sex?: string;
   separation_reason?: string;
+  case_opened_date?: string;
+  case_closed_date?: string;
+  offense?: string;
+  discipline_imposed?: string;
+  discipline_comments?: string;
 }
 
 interface Filters {
@@ -115,6 +120,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         ['Employment Status', 'employment_status'],
         ['Employment Status', 'employment_change'],
         ['Separation Reason', 'separation_reason'],
+        ['Offense', 'offense'],
+        ['Discipline Imposed', 'discipline_imposed'],
+        ['Discipline Comments', 'discipline_comments'],
+        ['Case Open Date', 'case_opened_date'],
+        ['Case Close Date', 'case_closed_date'],
       ];
 
       conditionalColumns.forEach(([header, accessor]) => {
