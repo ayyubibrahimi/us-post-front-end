@@ -91,6 +91,7 @@
     overflow: hidden;
     height: auto; /* Changed from fixed height to auto */
     line-height: 1.4; /* Adjusted line height for wrapped text */
+    font-size: 0.75rem;
   }
 
   /* New styles for Agency Name column */
@@ -333,16 +334,7 @@
 .arrowIcon {
   color: #333;
   font-size: .8rem;
-}
-
-.arrowRightIcon {
-  color: #333;
-  font-size: .8rem;
-  margin-left: 1000px;
-}
-
-.arrowDown {
-  margin-left: 10px;
+  margin-right: 1px;
 }
 
 .pageNumber {
@@ -361,7 +353,7 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 100%;
+  width: 120%;
   height: 100%;
   background-color: #fff;
   border: 1px solid #333;
@@ -373,7 +365,7 @@
 .selectWrapper::after {
   content: '▼';
   position: absolute;
-  right: 10px;
+  right: -10px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;

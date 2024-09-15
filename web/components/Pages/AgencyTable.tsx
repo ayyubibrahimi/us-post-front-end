@@ -262,7 +262,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
                   onPageSizeChange(Number(e.target.value));
                 }}
               >
-                {[10, 20, 30, 40, 50, 100].map(size => (
+                {[10, 20, 30, 40, 50, 100, 10000].map(size => (
                   <option key={size} value={size}>
                     Show {size}
                   </option>
