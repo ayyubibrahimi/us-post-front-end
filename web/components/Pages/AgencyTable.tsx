@@ -2,7 +2,17 @@ import React, { useState, useCallback, useMemo } from 'react';
 import tableStyles from './tableLight.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowUp, faArrowDown, 
+  faChevronUp, 
+  faChevronDown, 
+  faCaretUp, 
+  faCaretDown,
+  faLongArrowAltUp,
+  faLongArrowAltDown,
+  faSortUp,
+  faSortDown,
+  faAngleUp,
+  faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { useTable, useSortBy, Column, UseSortByColumnProps, HeaderGroup } from 'react-table';
 import { debounce } from 'lodash';
 
@@ -193,11 +203,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
                         <span>{column.render('Header')}</span>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>
                           <FontAwesomeIcon 
-                            icon={faArrowUp} 
+                            icon={faChevronUp} 
                             className={`${tableStyles.arrowIcon} ${(columnWithSort.isSorted && !columnWithSort.isSortedDesc) ? tableStyles.activeSortIcon : ''}`}
                           />
                           <FontAwesomeIcon 
-                            icon={faArrowDown} 
+                            icon={faChevronDown} 
                             className={`${tableStyles.arrowIcon} ${(columnWithSort.isSorted && columnWithSort.isSortedDesc) ? tableStyles.activeSortIcon : ''}`}
                           />
                         </div>
