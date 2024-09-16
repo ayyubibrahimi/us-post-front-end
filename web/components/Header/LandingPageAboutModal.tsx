@@ -50,7 +50,7 @@ const LandingPageAboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) =
           </section>
 
           <section className={styles.modalSection}>
-            <p>Access to this data helps show potential "wandering officers," and is intended for use by residents, journalists, researchers, attorneys, and other stakeholders. Information about the age, source, and other specifics for each state is available on each page.</p>
+            <p>Access to this data helps show potential &quot;wandering officers,&quot; and is intended for use by residents, journalists, researchers, attorneys, and other stakeholders. Information about the age, source, and other specifics for each state is available on each page.</p>
           </section>
 
           <section className={styles.modalSection}>
@@ -62,7 +62,7 @@ const LandingPageAboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) =
           </section>
 
           <section className={styles.modalSection}>
-            <p>The data files were collected over the course of over two years by a coalition of news and legal organizations. In addition to Invisible Institute, these included reporters, students, attorneys, and others with Big Local News at Stanford, CBS News, Hearst Newspapers, California Reporting Project, Howard Center for Investigative Journalism at the University of Maryland, ABC Owned & Operated Stations, American Public Media Research Lab, WPLN, Utah Investigative Journalism Project/Utah Freedom of Information Hotline, University of North Carolina at Chapel Hill, Oregon Public Broadcasting, Washington City Paper/George Washington University Public Justice Advocacy Clinic, Tony Webster, and Mirror Indy.</p>
+            <p>The data files were collected over the course of over two years by a coalition of news and legal organizations. In addition to Invisible Institute, these included reporters, students, attorneys, and others with Big Local News at Stanford, CBS News, Hearst Newspapers, California Reporting Project, Howard Center for Investigative Journalism at the University of Maryland, ABC Owned &amp; Operated Stations, American Public Media Research Lab, WPLN, Utah Investigative Journalism Project/Utah Freedom of Information Hotline, University of North Carolina at Chapel Hill, Oregon Public Broadcasting, Washington City Paper/George Washington University Public Justice Advocacy Clinic, Tony Webster, and Mirror Indy.</p>
           </section>
 
           <section className={styles.modalSection}>
