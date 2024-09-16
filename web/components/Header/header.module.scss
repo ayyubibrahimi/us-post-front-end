@@ -1,6 +1,6 @@
 .header {
   width: 100%;
-  background: #FFFFFF; // Corrected double semicolon
+  background: #FFFFFF;
   color: #252525;
   padding: 1rem 0;
 }
@@ -40,31 +40,66 @@
   }
 }
 
-.dropdownCaret {
-  display: none; // Hide the caret as the dropdown functionality is removed
+.dropdown {
+  position: relative;
+  display: inline-block;
 }
 
-.stateButtons {
-  display: flex;
-  gap: 8px; // Adjust the gap between buttons as needed
-}
-
-.stateButton {
-  background-color: #f0f0f0; // Light grey background
-  color: #252525; // Dark text for readability
-  border: 1px solid #ccc; // Slight border to match the dropdownButton style
-  border-radius: 5px; // Rounded corners
-  padding: 8px 16px; // Slightly larger padding for better touch target
+.dropdownToggle {
+  background-color: #f0f0f0;
+  color: #252525;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 16px;
   cursor: pointer;
-  font-size: 1rem; // Match the navLink size for consistency
-  transition: background-color 0.3s ease; // Smooth background color transition on hover
+  font-size: 1rem;
+}
+
+.dropdownMenuWrapper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 200px; // Adjusted to show about 5 items
+  overflow-y: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownMenu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdownItem {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem; // Slightly smaller font size
 
   &:hover {
-    background-color: #e0e0e0; // Slightly darker on hover
+    background-color: #f0f0f0;
+  }
+
+  &.active {
+    background-color: #e0e0e0;
+    font-weight: bold;
   }
 }
 
-.active {
-  background-color: rgb(94, 90, 90); // Indicate the active state with a darker background
-  color: #ffffff; // White text for contrast
+.aboutButton {
+  background-color: #f0f0f0;
+  color: #252525;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 20px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
 }

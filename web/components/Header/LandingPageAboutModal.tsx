@@ -1,51 +1,10 @@
 import React, { useEffect, useCallback } from 'react';
 import styles from './LandingPageModal.module.scss';
 
-interface TeamMember {
-  name: string;
-  role: string;
-  bio: string;
-  photoUrl?: string;
-}
-
 interface AboutModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const teamMembers: TeamMember[] = [
-  {
-    name: "cabra",
-    role: "Chief Public Records Officer",
-    bio: "esta cabra es indigenous a las montanas de peru",
-    photoUrl: "https://storage.googleapis.com/jlabs-images/goat.jpg"
-  },
-  {
-    name: "cabra",
-    role: "Has called POST more than anyone alive",
-    bio: "esta cabra es indigenous a las montanas de chile",
-    photoUrl: "https://storage.googleapis.com/jlabs-images/goat2.jpg"
-  },
-];
-
-const TeamMemberCard: React.FC<{ member: TeamMember }> = ({ member }) => (
-  <div className={styles.teamMemberCard}>
-    {member.photoUrl && (
-      <img
-        src={member.photoUrl}
-        alt={`${member.name}'s photo`}
-        className={styles.teamMemberPhoto}
-      />
-    )}
-    <div className={styles.teamMemberInfo}>
-      <h3 className={styles.teamMemberName}>
-        {member.name}
-      </h3>
-      {member.role && <p className={styles.teamMemberRole}>{member.role}</p>}
-      <p className={styles.teamMemberBio}>{member.bio}</p>
-    </div>
-  </div>
-);
 
 const LandingPageAboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   const handleEscapeKey = useCallback((event: KeyboardEvent) => {
@@ -76,18 +35,39 @@ const LandingPageAboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) =
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>About the National Police Index</h2>
-          <button className={styles.modalCloseButton} onClick={onClose}>Close</button>
+          <button className={styles.modalCloseButton} onClick={onClose} aria-label="Close">
+            &times;
+          </button>
         </div>
         
-        <div className={styles.modalDescription}>
-          <p>The National Police Index is a comprehensive database that provides transparency and accountability in law enforcement. Our mission is to collect, analyze, and present data on police activities across the nation.</p>
-        </div>
+        <div className={styles.modalBody}>
+          <section className={styles.modalSection}>
+            <p>The National Police Index is a project and data tool showing police employment history data obtained from state police training and certification boards across the U.S. All but one state has such a system.</p>
+          </section>
 
-        <h3 className={styles.teamSectionTitle}>Our Team</h3>
-        <div className={styles.teamMembersContainer}>
-          {teamMembers.map((member, index) => (
-            <TeamMemberCard key={index} member={member} />
-          ))}
+          <section className={styles.modalSection}>
+            <p>The National Police Index is a public data project of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Louisiana Law Enforcement Accountability Database of Innocence Project New Orleans, and Tarak Shah of the Human Rights Data Analysis Group.</p>
+          </section>
+
+          <section className={styles.modalSection}>
+            <p>Access to this data helps show potential "wandering officers," and is intended for use by residents, journalists, researchers, attorneys, and other stakeholders. Information about the age, source, and other specifics for each state is available on each page.</p>
+          </section>
+
+          <section className={styles.modalSection}>
+            <p>In total, 27 states have released centralized employment history data, 17 of which are currently represented on the data tool. In addition, several states have released subsets of this data in their own lookup tools: Illinois, Massachusetts, Minnesota, Ohio, Oregon, and Texas.</p>
+          </section>
+
+          <section className={styles.modalSection}>
+            <p>The data tool was created by Ayyub Ibrahim with contributions from Tarak Shah, Olive Lavine and Maheen Khan.</p>
+          </section>
+
+          <section className={styles.modalSection}>
+            <p>The data files were collected over the course of over two years by a coalition of news and legal organizations. In addition to Invisible Institute, these included reporters, students, attorneys, and others with Big Local News at Stanford, CBS News, Hearst Newspapers, California Reporting Project, Howard Center for Investigative Journalism at the University of Maryland, ABC Owned & Operated Stations, American Public Media Research Lab, WPLN, Utah Investigative Journalism Project/Utah Freedom of Information Hotline, University of North Carolina at Chapel Hill, Oregon Public Broadcasting, Washington City Paper/George Washington University Public Justice Advocacy Clinic, Tony Webster, and Mirror Indy.</p>
+          </section>
+
+          <section className={styles.modalSection}>
+            <p>Efforts are being and were made to obtain data in states that have made it inaccessible by Invisible Institute and Colorado Springs Gazette/Reporters Committee for Freedom of the Press, Detroit Metro Times/University of Michigan Civil Rights Litigation Initiative, Delaware Call/ACLU of Delaware, Hearst Newspapers, MuckRock/University of Virginia First Amendment Clinic, The Badger Project/Wisconsin Transparency Project/University of Illinois First Amendment Clinic, Louisiana Law Enforcement Accountability Database/Innocence Project New Orleans, AL.com, Arkansas Advocate, The Frontier, SpotlightPA/Pennsylvania NewsMedia Association, and Sioux Falls Argus Leader.</p>
+          </section>
         </div>
       </div>
     </div>

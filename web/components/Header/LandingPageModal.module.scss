@@ -1,107 +1,73 @@
 .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 8px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.modalCloseButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f3f4f6;
   }
-  
-  .modalContent {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    font-family: 'Segoe UI', sans-serif;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border: 1px solid #333;
-    position: relative;
+}
+
+.modalBody {
+  padding: 2rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.modalSection {
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
   }
-  
-  .modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .modalTitle {
-    font-size: 1.5rem;
-    color: #000;
-    font-weight: bold;
+
+  p {
     margin: 0;
+    line-height: 1.6;
+    color: #374151;
   }
-  
-  .modalCloseButton {
-    font-size: 1.1rem;
-    color: #333;
-    background-color: #fff;
-    border: 1px solid #333;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-  
-    &:hover {
-      background-color: rgba(51, 51, 51, 0.1);
-    }
-  }
-  
-  .modalDescription {
-    color: #333;
-    margin-bottom: 2rem;
-    line-height: 1.5;
-  }
-  
-  .teamSectionTitle {
-    font-size: 1.25rem;
-    color: #000;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-  }
-  
-  .teamMembersContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .teamMemberCard {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
-  }
-  
-  .teamMemberPhoto {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 20px;
-  }
-  
-  .teamMemberInfo {
-    flex: 1;
-  }
-  
-  .teamMemberName {
-    margin: 0 0 5px 0;
-    color: #000;
-  }
-  
-  .teamMemberRole {
-    font-style: italic;
-    margin: 0 0 10px 0;
-    color: #000;
-  }
-  
-  .teamMemberBio {
-    margin: 0;
-    color: #000;
-  }
+}
