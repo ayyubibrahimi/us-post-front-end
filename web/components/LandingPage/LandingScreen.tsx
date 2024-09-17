@@ -3,7 +3,6 @@ import { TypewriterEffectSmooth } from "./TypeWriter";
 import styles from "./LandingScreenLight.module.scss";
 import buttonStyles from "./LandingScreenLight.module.scss";
 import LouisianaModal from "./LouisianaModal";
-import Footer from "../Footer/Footer";
 
 interface LandingScreenProps {
   onButtonClick: (state: string) => void;
