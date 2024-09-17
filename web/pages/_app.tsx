@@ -9,12 +9,14 @@ const sfFont = localFont({ src: "/fonts/SF-Pro.ttf" });
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className={sfFont.className}>
-      <Layout>
-        <Component {...pageProps} />
-        <GoogleAnalytics gaId={gaId} />
-      </Layout>
-    </div>
+    <>
+      <div className={sfFont.className}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </div>
+      <GoogleAnalytics gaId={gaId} />
+    </>
   );
 }
 

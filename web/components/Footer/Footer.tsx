@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useState } from "react";
 import styles from "./Footer.module.scss";
 import LegalModal from "../LegalModal/LegalModal";
@@ -68,7 +67,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           aria-label="Visit IPNO"
         >
-          <Image
+          <img
             src="/img/ipno.jpg"
             alt="IPNO Logo"
             width={155}
@@ -82,7 +81,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           aria-label="Visit Invisibile Institute"
         >
-          <Image
+          <img
             src="/img/invist-logo-black.png"
             alt="Invist Logo"
             width={110}
