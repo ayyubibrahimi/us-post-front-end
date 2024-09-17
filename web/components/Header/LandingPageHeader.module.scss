@@ -16,6 +16,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: nowrap;
+}
+
+.headerTitleLink {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
 }
 
 .headerTitle {
@@ -24,7 +33,9 @@
   margin: 0;
   padding: 0;
   cursor: pointer;
-  margin-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: "Segoe UI";
 }
 
@@ -36,84 +47,91 @@
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  margin-right: 5rem;
   white-space: nowrap;
+  margin-left: 1rem;
 
   &:hover {
     background-color: rgba(51, 51, 51, 0.1);
   }
 }
+
 .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
-  }
-  
-  .modalContent {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    max-width: 500px;
-    width: 90%;
-    font-family: 'Segoe UI', sans-serif;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border: 1px solid #333;
-    position: relative;
-  }
-  
-  .modalTitle {
-    font-size: 1.5rem;
-    color: #000;
-    margin-bottom: 1rem;
-    font-weight: bold;
-  }
-  
-  .modalText {
-    color: #000;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-  }
-  
-  .modalCloseButton {
-    font-size: 1.1rem;
-    color: #333;
-    background-color: #fff;
-    border: 1px solid #333;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  
-    &:hover {
-      background-color: rgba(51, 51, 51, 0.1);
-    }
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
 
-  
-@media (max-width: 768px) {
-  .headerContainer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.modalContent {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  max-width: 500px;
+  width: 90%;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #333;
+  position: relative;
+}
 
-  .aboutButton {
-    margin-top: 1rem;
-    margin-left: 0;
-    align-self: flex-end;
+.modalTitle {
+  font-size: 1.5rem;
+  color: #000;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.modalText {
+  color: #000;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.modalCloseButton {
+  font-size: 1.1rem;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #333;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  &:hover {
+    background-color: rgba(51, 51, 51, 0.1);
   }
 }
 
-.headerTitleLink {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+@media (max-width: 768px) {
+  .headerContainer {
+    padding: 0 0.5rem;
   }
+
+  .headerTitle {
+    font-size: 1.5rem;
+  }
+
+  .aboutButton {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerTitle {
+    font-size: 1.2rem;
+  }
+
+  .aboutButton {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
