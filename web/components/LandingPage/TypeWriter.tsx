@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { cn } from "@/utils/cn";
-import styles from './TypeWriter.module.scss';
 
 interface Word {
   text: string;
@@ -30,14 +28,22 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ 
     text: word.text.split(""),
   }));
 
+  const baseStyle = {
+    fontFamily: '"SF Pro"',
+    fontWeight: 'normal' as const,
+    color: '#ddd',
+  };
+
   const renderWords = () => {
     return wordsArray.map((word, idx) => (
-      <div key={`word-${idx}`} className="inline-block">
+      <div key={`word-${idx}`} style={{ display: 'inline-block' }}>
         {word.text.map((char, index) => (
           <span
             key={`char-${index}`}
-            className={cn(styles.black, word.className)}
-            style={{ color: word.textColor || styles.black }}
+            style={{
+              ...baseStyle,
+              color: word.textColor || baseStyle.color,
+            }}
           >
             {char}
           </span>
@@ -47,25 +53,45 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ 
     ));
   };
 
+  const containerStyle = {
+    ...baseStyle,
+    display: 'flex',
+    margin: '1.5rem 0',
+  };
+
+  const textContainerStyle = {
+    ...baseStyle,
+    whiteSpace: 'nowrap' as const,
+    fontSize: 'clamp(1rem, 3vw, 3rem)',
+  };
+
+  const cursorStyle = {
+    display: 'block',
+    width: '4px',
+    height: 'clamp(4rem, 3vw, 3rem)',
+    backgroundColor: '#3b82f6',
+    borderRadius: '2px',
+  };
+
   return (
-    <div className={cn("flex space-x-1 my-6", className, styles.typewriterBase)} ref={containerRef}>
+    <div ref={containerRef} style={containerStyle}>
       {isComponentVisible && (
         <motion.div
-          className="overflow-hidden pb-2"
+          style={{ overflow: 'hidden', paddingBottom: '0.5rem' }}
           initial={{ width: "0%" }}
           animate={{ width: "fit-content" }}
           transition={{ duration: 2, ease: "linear", delay: 0.5 }}
         >
-          <div className={`text-xs sm:text-base md:text-xl lg:text-3xl xl:text-5xl font-bold ${styles.black}`} style={{ whiteSpace: "nowrap" }}>
+          <div style={textContainerStyle}>
             {renderWords()}{" "}
-          </div>{" "}
+          </div>
         </motion.div>
       )}
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-        className={cn("block rounded-sm w-[4px] h-4 sm:h-6 xl:h-12 bg-blue-500", cursorClassName)}
+        style={cursorStyle}
       ></motion.span>
     </div>
   );
