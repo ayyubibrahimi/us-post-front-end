@@ -3,6 +3,7 @@ import { TypewriterEffectSmooth } from "./TypeWriter";
 import styles from "./LandingScreenLight.module.scss";
 import buttonStyles from "./LandingScreenLight.module.scss";
 import LouisianaModal from "./LouisianaModal";
+import Footer from "../Footer/Footer";
 
 interface LandingScreenProps {
   onButtonClick: (state: string) => void;
@@ -19,14 +20,6 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     { text: "history", textColor: "#000000" },
     { text: "data", textColor: "#000000" },
   ];
-
-  // const states = [
-  //   "Arizona", 'California', "Florida",
-  //   "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
-  //    "Maryland", "Idaho", "Ohio", "Oregon", "South Carolina", "Tennessee",
-  //    "Texas", "Utah", "Washington", "Vermont",
-  //    "West Virginia", "Wyoming"
-  // ];
 
   const states = [
     "Arizona",
@@ -61,7 +54,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-max space-y-4 my-28 md:my-56 2xl:my-72  ${styles.landingScreenContainer}`}
+      className={`flex flex-col items-center justify-center h-max space-y-4 my-28 md:my-56 2xl:my-72 ${styles.landingScreenContainer}`}
     >
       <TypewriterEffectSmooth
         words={words}

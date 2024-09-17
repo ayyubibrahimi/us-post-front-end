@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useState } from "react";
 import styles from "./Footer.module.scss";
 import LegalModal from "../LegalModal/LegalModal";
@@ -63,12 +62,26 @@ export default function Footer() {
       </div>
       <div className={styles["logo-wrapper"]}>
         <a
+          href="https://invisible.institute/national-police-index"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit Invisibile Institute"
+        >
+          <img
+            src="/img/invist-logo-black.png"
+            alt="Invist Logo"
+            width={110}
+            height={20}
+            className={styles["logo"]}
+          />
+        </a>
+        <a
           href="https://ip-no.org/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Visit IPNO"
         >
-          <Image
+          <img
             src="/img/ipno.jpg"
             alt="IPNO Logo"
             width={155}
@@ -77,15 +90,15 @@ export default function Footer() {
           />
         </a>
         <a
-          href="https://invisible.institute/police-data"
+          href="https://hrdag.org/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Visit Invisibile Institute"
+          aria-label="Visit HRDAG"
         >
-          <Image
-            src="/img/invist-logo-black.png"
-            alt="Invist Logo"
-            width={110}
+          <img
+            src="/img/hrdag.png"
+            alt="HRDAG Logo"
+            width={80}
             height={20}
             className={styles["logo"]}
           />
