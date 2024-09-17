@@ -2,7 +2,6 @@
   width: 100%;
   background: #fff; /* Light background color */
   padding: 1rem 0;
-  font-family: 'Segoe UI';
   position: fixed; /* Fix the header at the top */
   top: 0;
   left: 0;
@@ -28,7 +27,6 @@
   font-size: 2rem;
   color: #333; /* Dark text color for contrast */
   margin-right: 20px;
-  font-family: "Segoe UI";
   cursor: pointer;
 }
 
@@ -86,7 +84,6 @@
   background-color: #ccc; /* Lighter background color for active state */
   color: #333; /* Dark text color for contrast */
 }
-
 
 .aboutButton {
   font-size: 1.1rem;

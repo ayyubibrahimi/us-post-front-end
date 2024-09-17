@@ -2,7 +2,6 @@
   width: 100%;
   background: #121212; /* Dark background color */
   padding: 1rem 0;
-  font-family:'Segoe UI';
 }
 
 .headerContainer {
@@ -23,17 +22,15 @@
   font-size: 2rem;
   color: #ddd; /* Light text color for contrast */
   margin-right: 20px;
-  font-family: "Segoe UI";
   cursor: pointer;
 }
 
 .navLink {
   font-size: 1.1rem;
   color: #ddd; /* Light gray color */
-  margin-right: 20px; 
+  margin-right: 20px;
   text-decoration: none;
   cursor: pointer;
-  font-family: 'Segoe UI',;
 
   &:hover {
     color: #ddd; /* Slightly brighter text color on hover */
