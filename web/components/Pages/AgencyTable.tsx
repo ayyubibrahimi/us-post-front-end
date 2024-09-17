@@ -96,14 +96,19 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
 
   const columns = useMemo<Column<AgencyData>[]>(
     () => {
-      const baseColumns: Column<AgencyData>[] = [
-        { Header: 'First Name', accessor: 'first_name' },
+      const baseColumns: Column<AgencyData>[] = 
+      
+      [
+        { Header: 'UID', accessor: 'person_nbr' },
       ];
+
+      baseColumns.push({ Header: 'First Name', accessor: 'first_name' });
       
       if (hasNonEmptyColumn('middle_name')) {
         baseColumns.push({ Header: 'Middle Name', accessor: 'middle_name' });
       }
-      
+
+
       baseColumns.push({ Header: 'Last Name', accessor: 'last_name' });
       
       if (hasNonEmptyColumn('suffix')) {
@@ -114,11 +119,16 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         { Header: 'Start Date', accessor: 'start_date' },
         { Header: 'End Date', accessor: 'end_date' },
         { Header: 'Agency Name', accessor: 'agency_name' },
-        { Header: 'UID', accessor: 'person_nbr' }
       );
-      
+
+      if (hasNonEmptyColumn('separation_reason')) {
+        baseColumns.push({ Header: 'Separation Reason', accessor: 'separation_reason' });
+      }
+
       // Add other conditional columns
       const conditionalColumns: [string, keyof AgencyData][] = [
+        ['Employment Status', 'employment_status'],
+        ['Employment Status', 'employment_change'],
         ['Birth Year', 'year_of_birth'],
         ['Race', 'race'],
         ['Sex', 'sex'],
@@ -127,14 +137,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         ['Violation Date', 'violation_date'],
         ['Sanction', 'sanction'],
         ['Sanction Date', 'sanction_date'],
-        ['Employment Status', 'employment_status'],
-        ['Employment Status', 'employment_change'],
-        ['Separation Reason', 'separation_reason'],
-        ['Offense', 'offense'],
-        ['Discipline Imposed', 'discipline_imposed'],
-        ['Discipline Comments', 'discipline_comments'],
         ['Case Open Date', 'case_opened_date'],
         ['Case Close Date', 'case_closed_date'],
+        ['Offense', 'offense'],
+        ['Discipline', 'discipline_imposed'],
+        ['Discipline Comments', 'discipline_comments'],
       ];
 
       conditionalColumns.forEach(([header, accessor]) => {
