@@ -3,7 +3,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   position: flex;
-  font-family: 'Segoe UI';
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -34,7 +33,6 @@
   overflow-y: auto;
   flex-grow: 1;
 }
-
 
 .tableControls {
   display: flex;
@@ -72,7 +70,6 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    font-family: 'Segoe UI';
     color: #333;
     font-weight: normal;
     background-color: #f0f0f0;
@@ -162,7 +159,6 @@
   border: 1px solid #ddd;
   border-radius: 0.5rem;
   color: #333;
-  font-family: 'Segoe UI';
   font-size: 0.875rem;
   transition: border-color 0.3s ease;
 }
@@ -308,7 +304,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Segoe UI';
 
   button {
     margin-top: 20px;
@@ -333,7 +328,7 @@
 
 .arrowIcon {
   color: #333;
-  font-size: .8rem;
+  font-size: 0.8rem;
   margin-right: 1px;
 }
 
@@ -363,7 +358,7 @@
 }
 
 .selectWrapper::after {
-  content: '▼';
+  content: "▼";
   position: absolute;
   right: -10px;
   top: 50%;
@@ -414,7 +409,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Segoe UI';
   color: #333;
   max-width: 80%;
   max-height: 80%;

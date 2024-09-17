@@ -11,7 +11,6 @@
   border: 1px solid #333; /* Adjust as needed */
   color: #333;
   font-size: 0.875rem; /* Adjust as needed */
-  font-family: 'Segoe UI';
 }
 
 .georgiaButton:hover {
@@ -28,7 +27,6 @@
   border: 1px solid #333; /* Adjust as needed */
   color: #333;
   font-size: 0.875rem; /* Adjust as needed */
-  font-family: 'Segoe UI';
 }
 
 .floridaButton:hover {
@@ -39,16 +37,14 @@
 
 .peaceOfficerText {
   color: #000000; // Black
-  font-family: 'Segoe UI';
   font-size: 1.875rem; /* Adjust as needed */
 }
 
 .black {
   color: #ddd; // Keep your existing color definition
-  font-family: 'Segoe UI', 
 }
 
 // Add or update a base class for your component if necessary
 .typewriterBase {
-  font-family: 'Segoe UI', 
+  font-family: "SF-Pro";
 }

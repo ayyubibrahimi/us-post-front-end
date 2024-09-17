@@ -2,7 +2,6 @@
   background-color: #121212; /* Dark background color */
   overflow-x: auto;
   position: relative;
-  font-family: 'Segoe UI';
 }
 
 .tableWrapper {
@@ -51,7 +50,6 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    font-family: 'Segoe UI';
     color: #ddd;
     font-weight: normal;
     background-color: #1e1e1e;
@@ -108,10 +106,10 @@
   border: none;
   border-bottom: 2px solid #b3b3b3; /* Bottom border color */
   background-color: #121212; /* Background color */
-  font-family: 'Segoe UI';
 }
 
-.searchInput::placeholder { /* Styles for placeholder */
+.searchInput::placeholder {
+  /* Styles for placeholder */
   color: #ddd; /* Placeholder text color */
 }
 
@@ -144,12 +142,16 @@
   text-align: center; /* Ensure text is centered if it wraps */
 
   &:hover {
-    background-color: rgba(221, 221, 221, 0.1); /* Slight background fill to match */
+    background-color: rgba(
+      221,
+      221,
+      221,
+      0.1
+    ); /* Slight background fill to match */
     border-color: #bbb; /* Matches .columnVisibilityButton */
     color: #bbb; /* Matches .columnVisibilityButton */
   }
 }
-
 
 .arrowButton {
   width: 10rem; /* Adjust as needed */
@@ -253,7 +255,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Segoe UI',;
 
   button {
     margin-top: 20px;
@@ -278,7 +279,7 @@
 
 .arrowIcon {
   color: #ddd; /* Light gray color */
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .arrowDown {
@@ -311,7 +312,7 @@
 }
 
 .selectWrapper::after {
-  content: '▼'; /* Your custom arrow icon */
+  content: "▼"; /* Your custom arrow icon */
   position: absolute;
   right: 10px; /* Adjust the position of the custom arrow as needed */
   top: 50%;
@@ -363,7 +364,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Segoe UI';
   color: #ddd; /* Light gray text color */
   max-width: 80%; /* Limit the width of the modal */
   max-height: 80%; /* Limit the height of the modal */
