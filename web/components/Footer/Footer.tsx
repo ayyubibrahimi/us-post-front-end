@@ -83,9 +83,9 @@ export default function Footer() {
           aria-label="Visit Invisibile Institute"
         >
           <Image
-            src="/img/invist-logo-black.svg"
+            src="/img/invist-logo-black.png"
             alt="Invist Logo"
-            width={155}
+            width={110}
             height={20}
             className={styles["logo"]}
           />
