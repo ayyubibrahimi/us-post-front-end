@@ -4,11 +4,11 @@
   width: 100%;
 
   .nav-links-wrapper {
-    padding: 10px 16px 12px 16px;
+    padding: 10px 16px 12px 24px;
     font-size: 14px;
 
     .links {
-      margin-right: 24px;
+      margin-right: 28px;
       cursor: pointer;
       font-weight: 300;
       color: #767676;
@@ -20,12 +20,11 @@
 
   .logo-wrapper {
     background-color: #f5f4f4;
-    padding: 10px 16px 80px 16px;
+    padding: 20px 16px 80px 18px;
 
     .logo {
       display: inline-block;
-      margin-left: -2px;
-      margin-right: 10px;
+      margin-right: 28px;
       opacity: 1;
 
       &:hover {
