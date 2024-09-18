@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import styles from "./Footer.module.scss";
-import LegalModal from "../LegalModal/LegalModal";
 import LandingPageAboutModal from "../Header/LandingPageAboutModal";
 
 export default function Footer() {
-  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
-
-  const handleLegalClick = () => {
-    setIsLegalModalOpen(true);
-  };
-
-  const handleCloseLegalModal = () => {
-    setIsLegalModalOpen(false);
-  };
 
   const handleAboutClick = () => {
     setIsAboutModalOpen(true);
@@ -37,14 +27,6 @@ export default function Footer() {
           isOpen={isAboutModalOpen}
           onClose={handleCloseAboutModal}
         />
-        <button
-          className={styles["links"]}
-          onClick={handleLegalClick}
-          aria-label="Open Legal Modal"
-        >
-          Legal
-        </button>
-        <LegalModal isOpen={isLegalModalOpen} onClose={handleCloseLegalModal} />
         <a
           className={styles["links"]}
           href="https://invisible.institute/contact"
@@ -54,7 +36,7 @@ export default function Footer() {
         </a>
         <a
           className={styles["links"]}
-          href="https://github.com/ayyubibrahimi/us-post-front-end"
+          href="https://github.com/ayyubibrahimi/us-post-data"
           aria-label="View our GitHub repository"
         >
           Github
