@@ -12,12 +12,12 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   const [isLouisianaModalOpen, setIsLouisianaModalOpen] = useState(false);
 
   const words = [
-    { text: "Explore", textColor: "#000000" },
-    { text: "police", textColor: "#000000" },
-    { text: "officer", textColor: "#000000" },
-    { text: "employment", textColor: "#000000" },
-    { text: "history", textColor: "#000000" },
-    { text: "data", textColor: "#000000" },
+    { text: "Explore", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Rounded', 'Arial']" },
+    { text: "police", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Rounded']" },
+    { text: "officer", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Text']" },
+    { text: "employment", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Display']" },
+    { text: "history", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Display']" },
+    { text: "data", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Text']" },
   ];
 
   const states = [

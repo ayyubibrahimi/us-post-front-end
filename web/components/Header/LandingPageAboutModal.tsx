@@ -78,22 +78,15 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
             <>
               <section className={styles.modalSection}>
                 <p>
-                  The National Police Index is a project and data tool showing
-                  police employment history data obtained from state police
-                  training and certification boards across the U.S. All but one
-                  state has such a system.
+                The National Police Index is a project and data tool showing police employment history data obtained from state police training and certification boards across the U.S. All but one state has such a system. 
                 </p>
               </section>
 
               <section className={styles.modalSection}>
                 <p>
-                  The National Police Index is a public data project of
-                  Invisible Institute, a nonprofit public accountability
-                  journalism organization based in Chicago, created in
-                  partnership with Ayyub Ibrahim of the Louisiana Law
-                  Enforcement Accountability Database of Innocence Project New
-                  Orleans, and Tarak Shah of the Human Rights Data Analysis
-                  Group.
+                  
+                The National Police Index is a public data project led by reporter Sam Stecklow of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Louisiana Law Enforcement Accountability Database of Innocence Project New Orleans, and Tarak Shah of the Human Rights Data Analysis Group.
+
                 </p>
               </section>
 
@@ -107,13 +100,75 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 </p>
               </section>
 
+
+              <section className={styles.modalSection}>
+                <p>
+                  
+                Each state&apos;s database is closed to the others; names are common, and an officer&apos;s name appearing in two states does not necessarily mean they are the same person. Specific records should be sought from state training boards and individual police departments to confirm the identity of an individual whose name appears in multiple states.
+
+                </p>
+              </section>
+
               <section className={styles.modalSection}>
                 <p>
                   In total, 27 states have released centralized employment
                   history data, 17 of which are currently represented on the
                   data tool. In addition, several states have released subsets
-                  of this data in their own lookup tools: Illinois,
-                  Massachusetts, Minnesota, Ohio, Oregon, and Texas.
+                  of this data in their own lookup tools:{" "}
+                  <a
+                    href="https://www.ptb.illinois.gov/resources/officer-lookup/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Illinois
+                  </a>
+                  ,{" "}
+                  <a
+                    href="https://mapostcommission.gov/discipline-status-records/officer-status-lists/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Massachusetts
+                  </a>
+                  ,{" "}
+                  <a
+                    href="https://mnitservices.my.site.com/POSTLicenseSearch/s/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Minnesota
+                  </a>
+                  ,{" "}
+                  <a
+                    href="https://opota.ohioattorneygeneral.gov/PublicRecords"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Ohio
+                  </a>
+                  ,{" "}
+                  <a
+                    href="https://www.bpl-orsnapshot.net/PublicInquiry_CJ/EmployeeSearch.aspx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Oregon
+                  </a>
+                  , and{" "}
+                  <a
+                    href="https://www.tcole.texas.gov/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Texas
+                  </a>
+                  .
                 </p>
               </section>
 
@@ -161,8 +216,15 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
               <section className={styles.modalSection}>
                 <p>
-                  A special thanks goes out to Huy Dao, Bailey Passamore, and
-                  Eliora Henzler.
+                Access the underlying data files for the National Police Index at this  <a
+                    href="https://www.dropbox.com/scl/fo/qfzs3pias4v65fp34cdal/AE_taG3_K2QxaGOG1CGsrzU?rlkey=6n2he8t6i95cde1n51kn1l1v5&st=r7cct5rp&dl=0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    link.
+                  </a>
+              
                 </p>
               </section>
             </>
@@ -170,15 +232,40 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
           {activeTab === "team" && (
             <>
-              <h3>Core team</h3>
               <section className={styles.modalSection}>
                 <p>
-                  <strong>Sam Stecklow</strong> (he/him) is an investigative
-                  journalist and FOIA fellow with Invisible Institute. He works
-                  on Invisible Institute&apos;s Civic Police Data Project and
-                  investigations.
+                  <strong>
+                    <a
+                      href="https://invisible.institute/sam-stecklow"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={linkStyle}
+                    >
+                      Sam Stecklow
+                    </a>
+                  </strong>{" "}
+                  (he/him) is an investigative journalist and FOIA fellow with{" "}
+                  <a
+                    href="https://invisible.institute/introduction"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Invisible Institute
+                  </a>
+                  . He works on Invisible Institute&apos;s{" "}
+                  <a
+                    href="https://invisible.institute/police-data"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                    Civic Police Data Project
+                  </a>{" "}
+                  and investigations.
                 </p>
               </section>
+
               <section className={styles.modalSection}>
                 <p>
                   <strong>Ayyub Ibrahim</strong> (he/him) serves as the Director of Research for the
@@ -194,7 +281,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   </a>{" "}
                   and is the founder of{" "}
                   <a
-                    href="https://github.com/ayyubibrahimi/mljusticelab-tools"
+                    href="https://mljusticelab.com/"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={linkStyle}
@@ -219,22 +306,88 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   misconduct in California.
                 </p>
               </section>
+
               <section className={styles.modalSection}>
                 <p>
-                  <strong>Maheen Khan</strong> is Invisible Institute&apos;s
-                  Director of Technology. She studied Information Analysis and
-                  Computer Science at the University of Michigan. At the
-                  Invisible Institute, she primarily works to maintain the Civic
-                  Police Data Project, and to expand the police misconduct tool
-                  to other cities.
+                  <strong>Bailey Passmore</strong> (they/them) has been working as a Data Scientist at the Human Rights Data Analysis Group since 2022. 
                 </p>
               </section>
+
               <section className={styles.modalSection}>
                 <p>
-                  <strong>Chaclyn Hunt</strong> is Invisible Institute&apos;s
-                  legal director and a civil rights attorney.
+                  <strong>Olive Lavine </strong> (she/her) is a volunteer developer on this project. She studied mathematics at Tulane University and software engineering at Ada Developers Academy. 
                 </p>
               </section>
+
+              <section className={styles.modalSection}>
+                  <p>
+                    <strong>
+                      <a
+                        href="https://invisible.institute/maheen-khan"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={linkStyle}
+                      >
+                        Maheen Khan
+                      </a>
+                    </strong>{" "}
+                    (she/her) is Invisible Institute&apos;s Director of Technology. She studied 
+                    Information Analysis and Computer Science at the University of Michigan. At 
+                    Invisible Institute, she primarily works to maintain the Civic Police Data 
+                    Project, and to expand the police misconduct tool to other cities.
+                  </p>
+                </section>
+
+                <section className={styles.modalSection}>
+                    <p>
+                      <strong>
+                        <a
+                          href="https://invisible.institute/chaclyn"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={linkStyle}
+                        >
+                          Chaclyn Hunt
+                        </a>
+                      </strong>{" "}
+                      (she/her) is Invisible Institute&apos;s legal director and a civil rights attorney.
+                    </p>
+                  </section>       
+                  <section className={styles.modalSection}>
+                        <p>
+                          <strong>
+                            <a
+                              href="https://invisible.institute/maira-khwaja"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={linkStyle}
+                            >
+                              Maira Khwaja
+                            </a>
+                          </strong>{" "}
+                          (she/her) is Invisible Institute&apos;s director of public strategy.
+                        </p>
+                      </section>
+                           
+              <section className={styles.modalSection}>
+                <p>
+                  <strong>Kaitlynn Cassady</strong> (she/her) is the communications manager at Invisible Institute.
+                </p>
+              </section>
+
+              <section className={styles.modalSection}>
+                <p>
+                  <strong>Lisa Pickoff-White</strong>, California Reporting Project
+                </p>
+              </section>
+
+              <section className={styles.modalSection}>
+                <p>
+                  A special thanks goes out to Huy Dao and Eliora Henzler.
+                </p>
+              </section>
+              
+
             </>
           )}
         </div>

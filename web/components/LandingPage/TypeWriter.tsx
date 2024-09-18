@@ -29,7 +29,7 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ 
   }));
 
   const baseStyle = {
-    fontFamily: '"SF Pro"',
+    fontFamily: "'SF Pro', 'SF Pro Text', 'SF Pro Display', -apple-system,",
     fontWeight: 'normal' as const,
     color: '#ddd',
   };
