@@ -81,7 +81,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         className={`items-center ${buttonStyles.stateDataButton}`}
         onClick={() => window.open("https://invisible.institute/national-police-index", '_blank')}
       >
-        Why isn't my state's data here?
+        Why isn&apos;t my state&apos;s data here?
       </button>
       </div>
       <div 
