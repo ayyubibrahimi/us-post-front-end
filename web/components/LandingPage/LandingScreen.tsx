@@ -53,7 +53,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-max space-y-4 my-28 md:my-56 2xl:my-72 ${styles.landingScreenContainer}`}
+      className={`flex flex-col items-center justify-center h-max space-y-4 my-28 xl:my-52 2xl:my-72 ${styles.landingScreenContainer}`}
     >
       <TypewriterEffectSmooth
         words={words}
