@@ -12,12 +12,36 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   const [isLouisianaModalOpen, setIsLouisianaModalOpen] = useState(false);
 
   const words = [
-    { text: "Explore", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Rounded', 'Arial']" },
-    { text: "police", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Rounded']" },
-    { text: "officer", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Text']" },
-    { text: "employment", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Display']" },
-    { text: "history", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Display']" },
-    { text: "data", textColor: "#000000", className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Text']" },
+    {
+      text: "Explore",
+      textColor: "#000000",
+      className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Rounded', 'Arial']",
+    },
+    {
+      text: "police",
+      textColor: "#000000",
+      className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Rounded']",
+    },
+    {
+      text: "officer",
+      textColor: "#000000",
+      className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Text']",
+    },
+    {
+      text: "employment",
+      textColor: "#000000",
+      className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Display']",
+    },
+    {
+      text: "history",
+      textColor: "#000000",
+      className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Display']",
+    },
+    {
+      text: "data",
+      textColor: "#000000",
+      className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Text']",
+    },
   ];
 
   const states = [
@@ -60,6 +84,13 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         className={`text-2xl md:text-4xl lg:text-5xl font-bold text-center ${styles.typewriterBase}`}
         cursorClassName={`w-2 h-8 md:h-10 lg:h-12 ${styles.black}`}
       />
+      <div className="flex flex-col items-center justify-center">
+        <p className={`${styles.bottomText}`}>
+          The National Police Index is a project and data tool showing police
+          employment history data obtained from state police training and
+          certification boards across the U.S.
+        </p>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8">
         {states.map((state) => (
           <button
@@ -77,24 +108,19 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
       />
 
       <div>
-      <button
-        className={`items-center ${buttonStyles.stateDataButton}`}
-        onClick={() => window.open("https://invisible.institute/national-police-index", '_blank')}
-      >
-        Why isn&apos;t my state&apos;s data here?
-      </button>
+        <button
+          className={`items-center ${buttonStyles.stateDataButton}`}
+          onClick={() =>
+            window.open(
+              "https://invisible.institute/national-police-index#block-yui_3_17_2_1_1726594221053_11311",
+              "_blank"
+            )
+          }
+        >
+          Why isn&apos;t my state&apos;s data here?
+        </button>
       </div>
-      <div 
-      className="flex items-center justify-center"> 
-      <p
-      className={`${styles.bottomText}`}
-      >
-       The National Police Index is a project and data tool showing police employment history data obtained from state police training and certification boards across the U.S. 
-      </p>
-      </div>
-       
     </div>
-
   );
 };
 
