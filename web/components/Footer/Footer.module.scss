@@ -1,5 +1,4 @@
 .footer {
-  background: white;
   box-sizing: border-box;
   width: 100%;
 
@@ -20,15 +19,24 @@
 
   .logo-wrapper {
     background-color: #f5f4f4;
-    padding: 20px 16px 80px 18px;
+    padding: 20px 16px 100px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
 
     .logo {
-      display: inline-block;
       margin-right: 28px;
       opacity: 1;
 
       &:hover {
         opacity: 0.75;
+      }
+    }
+
+    @media (max-width: 462px) {
+      .logo {
+        margin-bottom: 16px;
       }
     }
   }
