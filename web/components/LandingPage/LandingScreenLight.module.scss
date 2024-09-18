@@ -36,14 +36,14 @@
 }
 
 .stateDataButton {
-  width: 21rem; /* Adjust as needed */
-  height: 3.5rem; /* Adjust as needed */
+  width: 14rem; /* Adjust as needed */
+  height: 3rem; /* Adjust as needed */
   border-radius: 0.5rem; /* Adjust as needed */
   background-color: #fff;
-  border: 1.8px solid #333; /* Adjust as needed */
   color: #333;
-  font-size: 1.4rem; /* Adjust as needed */
-  margin-top: 4.0rem;
+  margin-top: 2rem;
+  border: 1px solid #333;
+  font-size: 0.875rem;
 }
 
 .stateDataButton:hover {
@@ -67,9 +67,7 @@
 }
 
 .bottomText {
-  font-family: "SF-Pro";
-  margin-top: 2.3rem;
-  font-size: 1.6rem;
   width: 55%;
   text-align: center;
+  margin-bottom: 1rem;
 }
