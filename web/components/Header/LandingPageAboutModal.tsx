@@ -181,10 +181,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               </section>
               <section className={styles.modalSection}>
                 <p>
-                  <strong>Ayyub Ibrahim</strong> (he/him) is a software
-                  developer at the Berkeley Institute for Data Science on the
-                  California Law Enforcement Accountability Network (CLEAN)
-                  team. He previously served as the Director of Research for the
+                  <strong>Ayyub Ibrahim</strong> (he/him) is serves as the Director of Research for the
                   Innocence Project New Orleans&apos; Louisiana Law Enforcement
                   Accountability Database{" "}
                   <a
