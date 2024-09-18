@@ -21,6 +21,7 @@
     "@supabase/supabase-js": "^2.39.6",
     "@tanstack/react-table": "^8.13.2",
     "@types/react-table": "^7.7.19",
+    "mapbox-gl": "3.6.0",
     "axios": "^1.6.7",
     "buffer": "^6.0.3",
     "chart.js": "^4.4.1",
