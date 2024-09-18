@@ -75,7 +75,26 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         isOpen={isLouisianaModalOpen}
         onClose={() => setIsLouisianaModalOpen(false)}
       />
+
+      <div>
+      <button
+        className={`items-center ${buttonStyles.stateDataButton}`}
+        onClick={() => window.open("https://invisible.institute/national-police-index", '_blank')}
+      >
+        Why isn't my state's data here?
+      </button>
+      </div>
+      <div 
+      className="flex items-center justify-center"> 
+      <p
+      className={`${styles.bottomText}`}
+      >
+       The National Police Index is a project and data tool showing police employment history data obtained from state police training and certification boards across the U.S. 
+      </p>
+      </div>
+       
     </div>
+
   );
 };
 
