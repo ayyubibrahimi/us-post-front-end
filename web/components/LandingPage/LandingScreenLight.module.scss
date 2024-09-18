@@ -35,6 +35,23 @@
   color: #555;
 }
 
+.stateDataButton {
+  width: 21rem; /* Adjust as needed */
+  height: 3.5rem; /* Adjust as needed */
+  border-radius: 0.5rem; /* Adjust as needed */
+  background-color: #fff;
+  border: 1.8px solid #333; /* Adjust as needed */
+  color: #333;
+  font-size: 1.4rem; /* Adjust as needed */
+  margin-top: 4.0rem;
+}
+
+.stateDataButton:hover {
+  background-color: rgba(51, 51, 51, 0.1); /* Slight background fill */
+  border-color: #555;
+  color: #555;
+}
+
 .peaceOfficerText {
   color: #000000; // Black
   font-size: 1.875rem; /* Adjust as needed */
@@ -47,4 +64,12 @@
 // Add or update a base class for your component if necessary
 .typewriterBase {
   font-family: "SF-Pro";
+}
+
+.bottomText {
+  font-family: "SF-Pro";
+  margin-top: 2.3rem;
+  font-size: 1.6rem;
+  width: 55%;
+  text-align: center;
 }
