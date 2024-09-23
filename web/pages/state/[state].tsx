@@ -38,6 +38,14 @@ interface Filters {
   uid: string;
 }
 
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+  isLastPage: boolean;  // Add this line
+}
+
 const StatePage: React.FC = () => {
   const router = useRouter();
   const { state } = router.query;
@@ -45,9 +53,13 @@ const StatePage: React.FC = () => {
   const [agencyData, setAgencyData] = useState<AgencyData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
+    currentPage: 1,
+    pageSize: 10,
+    totalItems: 0,
+    totalPages: 1,
+    isLastPage: false  // Add this line
+  });
   const [filters, setFilters] = useState<Filters>({
     lastName: '',
     firstName: '',
@@ -57,60 +69,63 @@ const StatePage: React.FC = () => {
 
   const fetchStateData = useCallback(async (page: number, size: number, currentFilters: Filters) => {
     if (!state || typeof state !== 'string') return;
-
+  
     setIsLoading(true);
     setError(null);
-
+  
     const queryParams = new URLSearchParams({
       state: state,
       page: page.toString(),
       pageSize: size.toString(),
       ...Object.fromEntries(Object.entries(currentFilters).filter(([_, v]) => v !== ''))
     });
-
+  
     try {
       const response = await fetch(`../api/fetchStateData?${queryParams}`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to fetch state data');
       }
-      const { data, currentPage, pageSize, hasNextPage } = await response.json();
+      const { data, currentPage, pageSize, totalItems, totalPages, isLastPage } = await response.json();
       
       setAgencyData(data);
-      setCurrentPage(currentPage);
-      setPageSize(pageSize);
-      setHasNextPage(hasNextPage);
+      setPaginationInfo({
+        currentPage,
+        pageSize,
+        totalItems,
+        totalPages,
+        isLastPage
+      });
     } catch (error) {
-      console.error("Error fetching state data:", error);
       setError(error instanceof Error ? error.message : "An unknown error occurred");
     } finally {
       setIsLoading(false);
     }
   }, [state]);
-
+  
   useEffect(() => {
-    if (state && typeof state === 'string') {
-      fetchStateData(currentPage, pageSize, filters);
+    if (state && typeof state === 'string' && !paginationInfo.isLastPage) {
+      fetchStateData(paginationInfo.currentPage, paginationInfo.pageSize, filters);
     }
-  }, [state, currentPage, pageSize, filters, fetchStateData]);
+  }, [state, paginationInfo.currentPage, paginationInfo.pageSize, filters, fetchStateData, paginationInfo.isLastPage]);
 
   const handleStateSelection = (newState: string) => {
     router.push(`/state/${encodeURIComponent(newState)}`);
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    if (page <= paginationInfo.totalPages) {
+      setPaginationInfo(prev => ({ ...prev, currentPage: page }));
+    }
   };
 
   const handlePageSizeChange = (size: number) => {
-    setPageSize(size);
-    setCurrentPage(1);
+    setPaginationInfo(prev => ({ ...prev, pageSize: size, currentPage: 1, isLastPage: false }));
   };
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    setCurrentPage(1);
-    fetchStateData(1, pageSize, newFilters);
+    setPaginationInfo(prev => ({ ...prev, currentPage: 1, isLastPage: false }));
   };
 
   if (router.isFallback) {
@@ -129,8 +144,7 @@ const StatePage: React.FC = () => {
         <AgencyTable
           agencyData={agencyData}
           isLoading={isLoading}
-          currentPage={currentPage}
-          pageSize={pageSize}
+          paginationInfo={paginationInfo}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
           onFilterChange={handleFilterChange}

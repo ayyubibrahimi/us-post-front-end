@@ -1,18 +1,9 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import tableStyles from './tableLight.module.scss';
+import tableStyles from './table.module.scss';
 import { CSVLink } from 'react-csv';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faArrowUp, faArrowDown, 
-  faChevronUp, 
-  faChevronDown, 
-  faCaretUp, 
-  faCaretDown,
-  faLongArrowAltUp,
-  faLongArrowAltDown,
-  faSortUp,
-  faSortDown,
-  faAngleUp,
-  faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faChevronUp, faChevronDown
+} from '@fortawesome/free-solid-svg-icons';
 import { useTable, useSortBy, Column, UseSortByColumnProps, HeaderGroup } from 'react-table';
 import { debounce } from 'lodash';
 
@@ -50,11 +41,17 @@ interface Filters {
   uid: string;
 }
 
+interface PaginationInfo {
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+}
+
 interface AgencyTableProps {
   agencyData: AgencyData[];
   isLoading: boolean;
-  currentPage: number;
-  pageSize: number;
+  paginationInfo: PaginationInfo;
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
   onFilterChange: (filters: Filters) => void;
@@ -65,8 +62,7 @@ interface AgencyTableProps {
 const AgencyTable: React.FC<AgencyTableProps> = ({
   agencyData,
   isLoading,
-  currentPage,
-  pageSize,
+  paginationInfo,
   onPageChange,
   onPageSizeChange,
   onFilterChange,
@@ -127,8 +123,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
 
       // Add other conditional columns
       const conditionalColumns: [string, keyof AgencyData][] = [
-        ['Employment Status', 'employment_status'],
-        ['Employment Status', 'employment_change'],
+        ['Status', 'employment_status'],
+        ['Employment Change', 'employment_change'],
         ['Birth Year', 'year_of_birth'],
         ['Race', 'race'],
         ['Sex', 'sex'],
@@ -155,8 +151,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     [hasNonEmptyColumn]
   );
 
-
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -170,6 +164,48 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     },
     useSortBy
   );
+
+  const renderPagination = () => {
+    const { currentPage, pageSize, totalPages } = paginationInfo;
+    return (
+      <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+        <button
+          className={tableStyles.arrowButton}
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+          className={tableStyles.arrowButton}
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+        <span className={tableStyles.pageNumber}>
+          Page {currentPage} of {totalPages}
+        </span>
+        <div className={tableStyles.selectWrapper}>
+          <select
+            className={tableStyles.showPages}
+            value={pageSize}
+            onChange={(e) => {
+              const newSize = Number(e.target.value);
+              onPageSizeChange(newSize);
+              onPageChange(1); // Reset to first page when changing page size
+            }}
+          >
+            {[10, 20, 30, 40, 50, 100, 10000].map(size => (
+              <option key={size} value={size}>
+                Show {size}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className={tableStyles.tableContainer}>
@@ -254,39 +290,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {/* Pagination */}
       <div className={tableStyles.tableFooter}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', padding: '0 20px' }}>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            <button
-              className={tableStyles.arrowButton}
-              onClick={() => onPageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <button
-              className={tableStyles.arrowButton}
-              onClick={() => onPageChange(currentPage + 1)}
-            >
-              Next
-            </button>
-            <span className={tableStyles.pageNumber}>
-              Page {currentPage} 
-            </span>
-            <div className={tableStyles.selectWrapper}>
-              <select
-                className={tableStyles.showPages}
-                value={pageSize}
-                onChange={(e) => {
-                  onPageSizeChange(Number(e.target.value));
-                }}
-              >
-                {[10, 20, 30, 40, 50, 100, 10000].map(size => (
-                  <option key={size} value={size}>
-                    Show {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          {renderPagination()}
           <CSVLink data={agencyData} filename={"agency_data.csv"} className={tableStyles.csvLink}>
             Download CSV
           </CSVLink>

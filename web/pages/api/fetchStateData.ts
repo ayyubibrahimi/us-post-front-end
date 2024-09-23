@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../utils/firebaseConfig';
-import { collection, query, where, orderBy, limit, startAfter, getDocs, Query, DocumentData } from 'firebase/firestore';
+import { collection, query, where, orderBy, limit, startAfter, getDocs, Query, DocumentData, getCountFromServer } from 'firebase/firestore';
 
 type AgencyData = {
   case_id?: string;
@@ -58,6 +58,7 @@ export default async function handler(
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
   const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
 
+
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
     const uploadsRef = collection(db, 'uploads');
@@ -69,7 +70,7 @@ export default async function handler(
     
     if (uid && typeof uid === 'string') {
       filterField = 'person_nbr';
-      filterValue = uid; // No need for title case on UID if it's a number
+      filterValue = uid;
     } else if (firstName && typeof firstName === 'string') {
       filterField = 'first_name';
       filterValue = toTitleCase(firstName);
@@ -80,6 +81,7 @@ export default async function handler(
       filterField = 'agency_name';
       filterValue = toTitleCase(agencyName);
     }
+
     if (filterField && filterValue) {
       firestoreQuery = query(firestoreQuery, 
         where(filterField, '>=', filterValue), 
@@ -90,20 +92,60 @@ export default async function handler(
       firestoreQuery = query(firestoreQuery, orderBy('__name__'));
     }
 
-    // Apply pagination
-    if (currentPage > 1) {
-      const previousPageQuery = query(firestoreQuery, limit((currentPage - 1) * size));
-      const previousPageSnapshot = await getDocs(previousPageQuery);
-      const lastVisible = previousPageSnapshot.docs[previousPageSnapshot.docs.length - 1];
-      firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+    // Get total count
+    const countSnapshot = await getCountFromServer(firestoreQuery);
+    const totalItems = countSnapshot.data().count;
+    const totalPages = Math.ceil(totalItems / size);
+
+    // Adjust currentPage if it exceeds totalPages
+    const adjustedCurrentPage = Math.min(currentPage, totalPages);
+
+    // Calculate the number of items to skip
+    const itemsToSkip = (adjustedCurrentPage - 1) * size;
+
+    // Calculate the number of items to fetch
+    const itemsToFetch = Math.min(size, totalItems - itemsToSkip);
+
+    // Check if we're trying to fetch more items than available
+    if (itemsToSkip >= totalItems) {
+      return res.status(200).json({
+        data: [],
+        currentPage: adjustedCurrentPage,
+        pageSize: itemsToFetch,
+        totalItems: totalItems,
+        totalPages: totalPages,
+        isLastPage: true
+      });
     }
 
-    firestoreQuery = query(firestoreQuery, limit(size));
+    // Apply pagination
+    if (adjustedCurrentPage > 1) {
+      const batchSize = 1000; // Firestore limit
+      const batches = Math.floor(itemsToSkip / batchSize);
+      let lastVisible = null;
 
-    const snapshot = await getDocs(firestoreQuery);
+      for (let i = 0; i < batches; i++) {
+        const batchQuery = query(firestoreQuery, limit(batchSize));
+        const batchSnapshot = await getDocs(batchQuery);
+        lastVisible = batchSnapshot.docs[batchSnapshot.docs.length - 1];
+        firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+      }
+
+      const remainingToSkip = itemsToSkip % batchSize;
+      if (remainingToSkip > 0) {
+        const finalSkipQuery = query(firestoreQuery, limit(remainingToSkip));
+        const finalSkipSnapshot = await getDocs(finalSkipQuery);
+        lastVisible = finalSkipSnapshot.docs[finalSkipSnapshot.docs.length - 1];
+        firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+      }
+    }
+
+    firestoreQuery = query(firestoreQuery, limit(itemsToFetch));
+
+    const dataSnapshot = await getDocs(firestoreQuery);
 
     // Perform client-side filtering for additional fields
-    let filteredData = snapshot.docs.map(doc => {
+    let filteredData = dataSnapshot.docs.map(doc => {
       const docData = doc.data();
       return {
         case_id: docData.case_id,
@@ -148,16 +190,15 @@ export default async function handler(
       filteredData = filteredData.filter(d => d.agency_name.toUpperCase().includes(agencyNameStr.toUpperCase()));
     }
 
-    const hasNextPage = filteredData.length === size;
-
     res.status(200).json({
       data: filteredData,
-      currentPage: currentPage,
-      pageSize: size,
-      hasNextPage: hasNextPage
+      currentPage: adjustedCurrentPage,
+      pageSize: itemsToFetch,
+      totalItems: totalItems,
+      totalPages: totalPages,
+      isLastPage: adjustedCurrentPage === totalPages
     });
   } catch (error) {
-    console.error('Error fetching state data:', error);
     res.status(500).json({ error: 'Failed to fetch state data' });
   }
 }
