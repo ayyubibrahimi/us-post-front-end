@@ -55,7 +55,7 @@ const StatePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
     currentPage: 1,
-    pageSize: 10,
+    pageSize: 100,
     totalItems: 0,
     totalPages: 1,
     isLastPage: false  // Add this line
@@ -125,7 +125,17 @@ const StatePage: React.FC = () => {
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    setPaginationInfo(prev => ({ ...prev, currentPage: 1, isLastPage: false }));
+    
+    // Check if all filters are empty
+    const areAllFiltersEmpty = Object.values(newFilters).every(value => value === '');
+    
+    setPaginationInfo(prev => ({
+      ...prev,
+      currentPage: 1,
+      isLastPage: false,
+      // Reset pageSize to 100 if all filters are empty, otherwise keep the current pageSize
+      pageSize: areAllFiltersEmpty ? 100 : prev.pageSize
+    }));
   };
 
   if (router.isFallback) {
