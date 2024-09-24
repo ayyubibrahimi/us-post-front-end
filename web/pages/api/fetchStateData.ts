@@ -58,36 +58,27 @@ export default async function handler(
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
   const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
 
-
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
     const uploadsRef = collection(db, 'uploads');
     let firestoreQuery: Query<DocumentData> = query(uploadsRef, where('__name__', '>=', `${formattedState}-processed.csv_`), where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`));
 
-    // Apply single field filter
-    let filterField = '';
-    let filterValue = '';
-    
-    if (uid && typeof uid === 'string') {
-      filterField = 'person_nbr';
-      filterValue = uid;
-    } else if (firstName && typeof firstName === 'string') {
-      filterField = 'first_name';
-      filterValue = toTitleCase(firstName);
-    } else if (lastName && typeof lastName === 'string') {
-      filterField = 'last_name';
-      filterValue = toTitleCase(lastName);
-    } else if (agencyName && typeof agencyName === 'string') {
-      filterField = 'agency_name';
-      filterValue = toTitleCase(agencyName);
-    }
+    // Apply multiple field filters
+    const filters = [
+      { field: 'person_nbr', value: uid },
+      { field: 'first_name', value: firstName },
+      { field: 'last_name', value: lastName },
+      { field: 'agency_name', value: agencyName }
+    ].filter(f => f.value && typeof f.value === 'string');
 
-    if (filterField && filterValue) {
-      firestoreQuery = query(firestoreQuery, 
-        where(filterField, '>=', filterValue), 
-        where(filterField, '<=', filterValue + '\uf8ff'),
-        orderBy(filterField)
-      );
+    if (filters.length > 0) {
+      filters.forEach(filter => {
+        firestoreQuery = query(firestoreQuery, 
+          where(filter.field, '>=', toTitleCase(filter.value as string)), 
+          where(filter.field, '<=', toTitleCase(filter.value as string) + '\uf8ff')
+        );
+      });
+      firestoreQuery = query(firestoreQuery, orderBy(filters[0].field));
     } else {
       firestoreQuery = query(firestoreQuery, orderBy('__name__'));
     }
@@ -144,7 +135,7 @@ export default async function handler(
 
     const dataSnapshot = await getDocs(firestoreQuery);
 
-    // Perform client-side filtering for additional fields
+    // Map the data and apply any remaining client-side filtering
     let filteredData = dataSnapshot.docs.map(doc => {
       const docData = doc.data();
       return {
@@ -176,19 +167,13 @@ export default async function handler(
       } as AgencyData;
     });
 
-    const firstNameStr = typeof firstName === 'string' ? firstName : Array.isArray(firstName) ? firstName[0] : '';
-    const lastNameStr = typeof lastName === 'string' ? lastName : Array.isArray(lastName) ? lastName[0] : '';
-    const agencyNameStr = typeof agencyName === 'string' ? agencyName : Array.isArray(agencyName) ? agencyName[0] : '';
-
-    if (firstNameStr && filterField !== 'first_name') {
-      filteredData = filteredData.filter(d => d.first_name.toUpperCase().includes(firstNameStr.toUpperCase()));
-    }
-    if (lastNameStr && filterField !== 'last_name') {
-      filteredData = filteredData.filter(d => d.last_name.toUpperCase().includes(lastNameStr.toUpperCase()));
-    }
-    if (agencyNameStr && filterField !== 'agency_name') {
-      filteredData = filteredData.filter(d => d.agency_name.toUpperCase().includes(agencyNameStr.toUpperCase()));
-    }
+    // Additional client-side filtering for partial matches
+    filters.forEach(filter => {
+      const value = filter.value as string;
+      filteredData = filteredData.filter(d => 
+        d[filter.field as keyof AgencyData]?.toString().toUpperCase().includes(value.toUpperCase())
+      );
+    });
 
     res.status(200).json({
       data: filteredData,
