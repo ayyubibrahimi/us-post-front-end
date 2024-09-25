@@ -102,6 +102,27 @@ const StatePage: React.FC = () => {
       setIsLoading(false);
     }
   }, [state]);
+
+  const fetchEntireCSV = useCallback(async () => {
+    if (!state || typeof state !== 'string') return null;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`../api/downloadStateCSV?state=${encodeURIComponent(state)}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch CSV download URL');
+      }
+      const { downloadUrl } = await response.json();
+      return downloadUrl;
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An unknown error occurred");
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [state]);
   
   useEffect(() => {
     if (state && typeof state === 'string' && !paginationInfo.isLastPage) {
@@ -145,27 +166,6 @@ const StatePage: React.FC = () => {
   if (!state || typeof state !== 'string') {
     return <div>Invalid state</div>;
   }
-
-  const fetchEntireCSV = useCallback(async () => {
-    if (!state || typeof state !== 'string') return null;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(`../api/downloadStateCSV?state=${encodeURIComponent(state)}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch CSV download URL');
-      }
-      const { downloadUrl } = await response.json();
-      return downloadUrl;
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An unknown error occurred");
-      return null;
-    } finally {
-      setIsLoading(false);
-    }
-  }, [state]);
 
   return (
     <div className={`${styles.pageContainer} flex flex-col h-screen`}>
