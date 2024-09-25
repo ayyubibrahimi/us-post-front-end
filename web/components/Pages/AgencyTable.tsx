@@ -56,6 +56,7 @@ interface AgencyTableProps {
   onPageSizeChange: (size: number) => void;
   onFilterChange: (filters: Filters) => void;
   filters: Filters;
+  fetchEntireCSV: () => Promise<string | null>;
 }
 
 
@@ -67,7 +68,12 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   onPageSizeChange,
   onFilterChange,
   filters,
+  fetchEntireCSV,
 }) => {
+  // State for downloading entire CSV
+  const [isDownloadingCSV, setIsDownloadingCSV] = useState(false);
+  const [csvDownloadUrl, setCSVDownloadUrl] = useState<string | null>(null);
+  
   // Local state for input values
   const [localInputs, setLocalInputs] = useState(filters);
 
@@ -103,7 +109,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       if (hasNonEmptyColumn('middle_name')) {
         baseColumns.push({ Header: 'Middle Name', accessor: 'middle_name' });
       }
-
 
       baseColumns.push({ Header: 'Last Name', accessor: 'last_name' });
       
@@ -150,6 +155,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     },
     [hasNonEmptyColumn]
   );
+
 
   const {
     getTableProps,
@@ -206,6 +212,23 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       </div>
     );
   };
+
+  const handleDownloadEntireCSV = async () => {
+    setIsDownloadingCSV(true);
+    try {
+      const downloadUrl = await fetchEntireCSV();
+      setCSVDownloadUrl(downloadUrl);
+      if (downloadUrl) {
+        window.open(downloadUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Error fetching CSV download URL:', error);
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsDownloadingCSV(false);
+    }
+  };
+
 
   return (
     <div className={tableStyles.tableContainer}>
@@ -287,13 +310,20 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         </div>
       </div>
   
-      {/* Pagination */}
-      <div className={tableStyles.tableFooter}>
+      {/* Pagination and CSV download buttons */}
+           <div className={tableStyles.tableFooter}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', padding: '0 20px' }}>
           {renderPagination()}
-          <CSVLink data={agencyData} filename={"agency_data.csv"} className={tableStyles.csvLink}>
-            Download CSV
+          <CSVLink data={agencyData} filename={"filtered_agency_data.csv"} className={tableStyles.filteredcsvLink}>
+            Download Filtered CSV
           </CSVLink>
+          <button 
+            onClick={handleDownloadEntireCSV} 
+            className={tableStyles.fullcsvLink}
+            disabled={isDownloadingCSV}
+          >
+            {isDownloadingCSV ? 'Preparing Download...' : 'Download Entire CSV'}
+          </button>
         </div>
       </div>
       {isLoading && <p>Loading data...</p>}
