@@ -84,6 +84,9 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         className={`text-2xl md:text-4xl lg:text-5xl font-bold text-center ${styles.typewriterBase}`}
         cursorClassName={`w-2 h-8 md:h-10 lg:h-12 ${styles.black}`}
       />
+      <iframe src="https://data-access-map.netlify.app/" width="100%" height="700px"></iframe>
+      <div></div>
+      <div></div>
       <div className="flex flex-col items-center justify-center">
         <p className={`${styles.bottomText}`}>
           The National Police Index is a project and data tool showing police
