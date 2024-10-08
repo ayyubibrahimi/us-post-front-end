@@ -47,7 +47,10 @@ export default async function handler(
     return res.status(400).json({ error: 'State parameter is required and must be a string' });
   }
 
-  function toTitleCase(str: string) {
+  function toTitleCase(str: string | string[]): string {
+    if (Array.isArray(str)) {
+      str = str[0]; // Take the first element if it's an array
+    }
     return str
       .toLowerCase()
       .split(' ')
@@ -61,9 +64,12 @@ export default async function handler(
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
     const uploadsRef = collection(db, 'uploads');
-    let firestoreQuery: Query<DocumentData> = query(uploadsRef, where('__name__', '>=', `${formattedState}-processed.csv_`), where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`));
+    let firestoreQuery: Query<DocumentData> = query(uploadsRef, 
+      where('__name__', '>=', `${formattedState}-processed.csv_`), 
+      where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`)
+    );
 
-    // Apply multiple field filters
+    // Define filters
     const filters = [
       { field: 'person_nbr', value: uid },
       { field: 'first_name', value: firstName },
@@ -71,17 +77,19 @@ export default async function handler(
       { field: 'agency_name', value: agencyName }
     ].filter(f => f.value && typeof f.value === 'string');
 
-    if (filters.length > 0) {
-      filters.forEach(filter => {
-        firestoreQuery = query(firestoreQuery, 
-          where(filter.field, '>=', toTitleCase(filter.value as string)), 
-          where(filter.field, '<=', toTitleCase(filter.value as string) + '\uf8ff')
-        );
-      });
-      firestoreQuery = query(firestoreQuery, orderBy(filters[0].field));
+    // Apply the first non-empty filter at Firestore level
+    const primaryFilter = filters.find(f => f.value);
+    if (primaryFilter) {
+      const titleCaseValue = toTitleCase(primaryFilter.value);
+      firestoreQuery = query(firestoreQuery, 
+        where(primaryFilter.field, '>=', titleCaseValue),
+        where(primaryFilter.field, '<=', titleCaseValue + '\uf8ff'),
+        orderBy(primaryFilter.field)
+      );
     } else {
       firestoreQuery = query(firestoreQuery, orderBy('__name__'));
     }
+
 
     // Get total count
     const countSnapshot = await getCountFromServer(firestoreQuery);
@@ -135,7 +143,7 @@ export default async function handler(
 
     const dataSnapshot = await getDocs(firestoreQuery);
 
-    // Map the data and apply any remaining client-side filtering
+    // Map the data
     let filteredData = dataSnapshot.docs.map(doc => {
       const docData = doc.data();
       return {
@@ -167,12 +175,14 @@ export default async function handler(
       } as AgencyData;
     });
 
-    // Additional client-side filtering for partial matches
+    // Apply remaining filters at application level
     filters.forEach(filter => {
-      const value = filter.value as string;
-      filteredData = filteredData.filter(d => 
-        d[filter.field as keyof AgencyData]?.toString().toUpperCase().includes(value.toUpperCase())
-      );
+      if (filter !== primaryFilter) {
+        const value = filter.value as string;
+        filteredData = filteredData.filter(d => 
+          d[filter.field as keyof AgencyData]?.toString().toLowerCase().includes(value.toLowerCase())
+        );
+      }
     });
 
     res.status(200).json({
@@ -184,6 +194,7 @@ export default async function handler(
       isLastPage: adjustedCurrentPage === totalPages
     });
   } catch (error) {
+    console.error('Error in handler:', error);
     res.status(500).json({ error: 'Failed to fetch state data' });
   }
 }
