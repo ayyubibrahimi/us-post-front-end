@@ -268,7 +268,14 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
               <section className={styles.modalSection}>
                 <p>
-                  <strong>Ayyub Ibrahim</strong> (he/him) serves as the Director of Research for the
+                  <strong>Ayyub Ibrahim</strong> (he/him) is a programmer at the <a
+                    href="https://bids.berkeley.edu/home"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={linkStyle}
+                  >
+                  Berkeley Institute for Data Science (BIDS).
+                  </a>{" "} He previously served as the Director of Research for the
                   Innocence Project New Orleans&apos; Louisiana Law Enforcement
                   Accountability Database{" "}
                   <a
@@ -286,11 +293,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                     rel="noopener noreferrer"
                     style={linkStyle}
                   >
-                    Machine Learning Justice Lab
+                    Machine Learning Justice Lab.
                   </a>
-                  . He previously worked for the Amman Center for Human Rights
-                  Studies, the World Justice Project, and the Office of the
-                  Independent Police Monitor (New Orleans).
                 </p>
               </section>
               <section className={styles.modalSection}>

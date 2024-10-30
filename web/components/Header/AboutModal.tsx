@@ -536,6 +536,39 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
           >
             here
           </a>
+          , and read about the fight to obtain the records{" "}
+          <a 
+            href="https://www.utahinvestigative.org/new-data-tool-allows-journalists-and-the-public-to-track-wandering-cops-in-utah/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            here
+          </a>
+          .
+        </p>
+    
+        <br />
+    
+        <p>
+          Information about disciplinary actions taken by Utah POST is compiled by the{" "}
+          <a 
+            href="https://www.ucji.org/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            Utah Criminal Justice Institute
+          </a>
+          {" "}and is available in a{" "}
+          <a 
+            href="https://public.tableau.com/app/profile/ucji/viz/UtahPOSTDiscipline2009-Present_16461679612650/UtahPOSTDiscipline2009-Present" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            lookup tool here
+          </a>
           .
         </p>
       </>
@@ -618,7 +651,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
           >
             Wyoming Peace Officer Standards and Training Commission
           </a>
-          . The data were last updated in March 2023.
+          . The data were originally obtained by WyoFile and Invisible Institute. The data were last updated in March 2023.
         </p>
       </>
     ),
