@@ -39,6 +39,8 @@ export default async function handler(
     pageSize = '10',
     lastName = '',
     firstName = '',
+    startDate = '',
+    endDate = '',
     agencyName = '',
     uid = ''
   } = req.query;
@@ -74,7 +76,9 @@ export default async function handler(
       { field: 'person_nbr', value: uid },
       { field: 'first_name', value: firstName },
       { field: 'last_name', value: lastName },
-      { field: 'agency_name', value: agencyName }
+      { field: 'agency_name', value: agencyName },
+      { field: 'start_date', value: startDate },
+      { field: 'end_date', value: endDate }
     ].filter(f => f.value && typeof f.value === 'string');
 
     // Apply the first non-empty filter at Firestore level

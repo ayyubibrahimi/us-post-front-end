@@ -92,6 +92,7 @@
 }
 
 .searchBarContainer {
+  display: none;  /* Hidden for now */
   position: relative;
   display: inline-block;
   margin-right: 16px;
@@ -116,6 +117,7 @@
 }
 
 .searchInput {
+  display: none; 
   padding: 0.75rem 1rem;
   padding-left: 2.75rem;
   width: 220px;

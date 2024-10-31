@@ -41,6 +41,8 @@ interface Filters {
   firstName: string;
   agencyName: string;
   uid: string;
+  startDate: string;
+  endDate: string;
   columnFilters?: Record<string, any>;
 }
 
@@ -77,6 +79,38 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   const [localInputs, setLocalInputs] = useState(filters);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
 
+  // Update grid filters when top search inputs change
+  useEffect(() => {
+    if (gridApi) {
+      const filterModel = gridApi.getFilterModel();
+      
+      // Map of input fields to column fields
+      const fieldMapping = {
+        uid: 'person_nbr',
+        lastName: 'last_name',
+        firstName: 'first_name',
+        agencyName: 'agency_name',
+        startDate: 'start_date',
+        endDate: 'end_date',
+      };
+
+      // Update filter model based on search inputs
+      Object.entries(localInputs).forEach(([key, value]) => {
+        const columnField = fieldMapping[key as keyof typeof fieldMapping];
+        if (columnField && value) {
+          filterModel[columnField] = {
+            type: 'contains',
+            filter: value
+          };
+        } else if (columnField) {
+          delete filterModel[columnField];
+        }
+      });
+
+      gridApi.setFilterModel(filterModel);
+    }
+  }, [localInputs, gridApi]);
+
   const hasNonEmptyColumn = useCallback((columnName: keyof AgencyData) => {
     return agencyData.some(row => row[columnName] && row[columnName]!.trim() !== '');
   }, [agencyData]);
@@ -91,6 +125,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   const handleFilterChange = useCallback((key: keyof Filters, value: string) => {
     const updatedInputs = { ...localInputs, [key]: value };
     setLocalInputs(updatedInputs);
+    
+    // Always include the current column filters
     if (gridApi) {
       const filterModel = gridApi.getFilterModel();
       debouncedFilterChange({ 
@@ -105,8 +141,28 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   const onFilterChanged = useCallback(() => {
     if (gridApi) {
       const filterModel = gridApi.getFilterModel();
+      
+      // Update local inputs based on column filters for synchronized fields
+      const fieldMapping = {
+        person_nbr: 'uid',
+        last_name: 'lastName',
+        first_name: 'firstName',
+        agency_name: 'agencyName',
+        start_date: 'startDate',
+        end_date: 'endDate',
+      };
+
+      const updatedInputs = { ...localInputs };
+      Object.entries(filterModel).forEach(([field, filterValue]) => {
+        const inputField = fieldMapping[field as keyof typeof fieldMapping];
+        if (inputField && filterValue) {
+          updatedInputs[inputField as keyof Filters] = (filterValue as any).filter || '';
+        }
+      });
+
+      setLocalInputs(updatedInputs);
       debouncedFilterChange({
-        ...localInputs,
+        ...updatedInputs,
         columnFilters: filterModel
       });
     }
@@ -116,12 +172,17 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     return params.value;
   };
 
-  const getFilterParams = (): IFilterParams => ({
-    filterOptions: ['contains', 'notContains', 'equals', 'notEqual'],
-    defaultOption: 'contains',
-    buttons: ['apply', 'reset'],
-    debounceMs: 200,
-  });
+  const getFilterParams = (field: string): IFilterParams => {
+    const isSynchronizedField = ['person_nbr', 'last_name', 'first_name', 'agency_name', 'start_date', 'end_date'].includes(field);
+    
+    return {
+      filterOptions: ['contains'],
+      defaultOption: 'contains',
+      buttons: ['apply', 'reset'],
+      debounceMs: 200,
+      suppressAndOrCondition: true,
+    };
+  };
 
   const columnDefs = useMemo<ColDef[]>(() => {
     const baseColumns: ColDef[] = [
@@ -130,7 +191,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'person_nbr',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('person_nbr'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 1,
         minWidth: 100
@@ -140,7 +201,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'first_name',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('first_name'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 1,
         minWidth: 120
@@ -153,7 +214,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'middle_name',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('middle_name'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 1,
         minWidth: 120
@@ -165,7 +226,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       field: 'last_name',
       sortable: true,
       filter: true,
-      filterParams: getFilterParams(),
+      filterParams: getFilterParams('last_name'),
       tooltipValueGetter: tooltipValueGetter,
       flex: 1,
       minWidth: 120
@@ -177,7 +238,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'suffix',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('suffix'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 0.7,
         minWidth: 80
@@ -190,7 +251,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'start_date',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('start_date'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 1,
         minWidth: 110
@@ -200,7 +261,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'end_date',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('end_date'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 1,
         minWidth: 110
@@ -210,7 +271,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         field: 'agency_name',
         sortable: true,
         filter: true,
-        filterParams: getFilterParams(),
+        filterParams: getFilterParams('agency_name'),
         tooltipValueGetter: tooltipValueGetter,
         flex: 1.5,
         minWidth: 150
@@ -242,7 +303,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           field,
           sortable: true,
           filter: true,
-          filterParams: getFilterParams(),
+          filterParams: getFilterParams(field),
           tooltipValueGetter: tooltipValueGetter,
           flex: 1,
           minWidth: 120
@@ -328,6 +389,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     }
   };
 
+
   return (
     <div className={tableStyles.tableContainer}>
       <div className={tableStyles.tableHeader}>
@@ -336,10 +398,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             { key: 'uid', placeholder: 'UID contains', filterKey: 'uid' },
             { key: 'lastName', placeholder: 'Last name contains', filterKey: 'lastName' },
             { key: 'firstName', placeholder: 'First name contains', filterKey: 'firstName' },
-            { key: 'agencyName', placeholder: 'Agency contains', filterKey: 'agencyName' }
+            { key: 'agencyName', placeholder: 'Agency contains', filterKey: 'agencyName' },
+            { key: 'startDate', placeholder: 'Start date', filterKey: 'startDate' },
+            { key: 'endDate', placeholder: 'End date', filterKey: 'endDate' },
           ].map((filter) => (
             <div key={filter.key} className={tableStyles.searchBarContainer}>
-              <FontAwesomeIcon icon={faSearch} className={tableStyles.searchIcon} />
               <input
                 type="text"
                 value={localInputs[filter.filterKey as keyof Filters]}
@@ -368,6 +431,15 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             rowHeight={40}
             headerHeight={48}
             animateRows
+            pagination={true}
+            paginationPageSize={paginationInfo.pageSize}
+            cacheBlockSize={paginationInfo.pageSize}
+            onPaginationChanged={() => {
+              if (gridApi) {
+                const currentPage = gridApi.paginationGetCurrentPage();
+                onPageChange(currentPage + 1);
+              }
+            }}
           />
         </div>
       </div>
