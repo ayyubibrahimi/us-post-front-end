@@ -36,6 +36,8 @@ interface Filters {
   firstName: string;
   agencyName: string;
   uid: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface PaginationInfo {
@@ -64,7 +66,9 @@ const StatePage: React.FC = () => {
     lastName: '',
     firstName: '',
     agencyName: '',
-    uid: ''
+    uid: '',
+    startDate: '',
+    endDate: ''
   });
 
   const fetchStateData = useCallback(async (page: number, size: number, currentFilters: Filters) => {

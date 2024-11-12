@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import tableStyles from './table.module.scss';
 import { CSVLink } from 'react-csv';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef, GridReadyEvent, GridApi, IFilterParams } from 'ag-grid-community';
 import { debounce } from 'lodash';
@@ -43,7 +41,7 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
-  columnFilters?: Record<string, any>;
+  columnFilters?: any;
 }
 
 interface PaginationInfo {
@@ -126,9 +124,25 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     const updatedInputs = { ...localInputs, [key]: value };
     setLocalInputs(updatedInputs);
     
-    // Always include the current column filters
+    // Map the input fields to grid fields
+    const reverseFieldMapping = {
+      uid: 'person_nbr',
+      lastName: 'last_name',
+      firstName: 'first_name',
+      agencyName: 'agency_name',
+      startDate: 'start_date',
+      endDate: 'end_date',
+    };
+  
     if (gridApi) {
       const filterModel = gridApi.getFilterModel();
+      // If value is empty, remove the filter for this field
+      const gridField = reverseFieldMapping[key as keyof typeof reverseFieldMapping];
+      if (!value && gridField) {
+        delete filterModel[gridField];
+        gridApi.setFilterModel(filterModel);
+      }
+      
       debouncedFilterChange({ 
         ...updatedInputs,
         columnFilters: filterModel 
@@ -137,12 +151,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       debouncedFilterChange(updatedInputs);
     }
   }, [debouncedFilterChange, localInputs, gridApi]);
-
+  
   const onFilterChanged = useCallback(() => {
     if (gridApi) {
       const filterModel = gridApi.getFilterModel();
       
-      // Update local inputs based on column filters for synchronized fields
       const fieldMapping = {
         person_nbr: 'uid',
         last_name: 'lastName',
@@ -151,38 +164,73 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         start_date: 'startDate',
         end_date: 'endDate',
       };
-
+  
       const updatedInputs = { ...localInputs };
+      
+      // First, clear all synchronized fields
+      Object.values(fieldMapping).forEach(inputField => {
+        updatedInputs[inputField as keyof Filters] = '';
+      });
+  
+      // Then, only set values for fields that have active filters
       Object.entries(filterModel).forEach(([field, filterValue]) => {
         const inputField = fieldMapping[field as keyof typeof fieldMapping];
         if (inputField && filterValue) {
           updatedInputs[inputField as keyof Filters] = (filterValue as any).filter || '';
         }
       });
-
+  
       setLocalInputs(updatedInputs);
       debouncedFilterChange({
         ...updatedInputs,
-        columnFilters: filterModel
+        columnFilters: JSON.stringify(filterModel) // Convert filterModel to string
       });
     }
   }, [gridApi, localInputs, debouncedFilterChange]);
-
+  
   const tooltipValueGetter = (params: any) => {
     return params.value;
   };
-
+  
   const getFilterParams = (field: string): IFilterParams => {
     const isSynchronizedField = ['person_nbr', 'last_name', 'first_name', 'agency_name', 'start_date', 'end_date'].includes(field);
     
+     
     return {
-      filterOptions: ['contains'],
-      defaultOption: 'contains',
-      buttons: ['apply', 'reset'],
-      debounceMs: 200,
-      suppressAndOrCondition: true,
+      // Explicit casting as 'unknown' then 'IFilterParams' to bypass linting issues
+      ...( {
+        filterOptions: ['contains'],
+        defaultOption: 'contains',
+        buttons: ['apply', 'reset'],
+        debounceMs: 200,
+        suppressAndOrCondition: true,
+        onFilterChanged: (params: any) => {
+          if (!params.value) {
+            const fieldMapping: Record<string, keyof Filters> = {
+              'person_nbr': 'uid',
+              'last_name': 'lastName',
+              'first_name': 'firstName',
+              'agency_name': 'agencyName',
+              'start_date': 'startDate',
+              'end_date': 'endDate'
+            };
+    
+            if (isSynchronizedField) {
+              const inputField = fieldMapping[field];
+              if (inputField) {
+                const updatedInputs = { ...localInputs, [inputField]: '' };
+                setLocalInputs(updatedInputs);
+                debouncedFilterChange({
+                  ...updatedInputs,
+                  columnFilters: gridApi?.getFilterModel() || {}
+                });
+              }
+            }
+          }
+        }
+      } as unknown) as IFilterParams  
     };
-  };
+};
 
   const columnDefs = useMemo<ColDef[]>(() => {
     const baseColumns: ColDef[] = [
