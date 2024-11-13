@@ -51,7 +51,7 @@ export default async function handler(
 
   function toTitleCase(str: string | string[]): string {
     if (Array.isArray(str)) {
-      str = str[0]; // Take the first element if it's an array
+      str = str[0];
     }
     return str
       .toLowerCase()
@@ -66,34 +66,54 @@ export default async function handler(
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
     const uploadsRef = collection(db, 'uploads');
+    
+    // Start with base query for state
     let firestoreQuery: Query<DocumentData> = query(uploadsRef, 
       where('__name__', '>=', `${formattedState}-processed.csv_`), 
       where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`)
     );
 
-    // Define filters
-    const filters = [
-      { field: 'person_nbr', value: uid },
-      { field: 'first_name', value: firstName },
-      { field: 'last_name', value: lastName },
-      { field: 'agency_name', value: agencyName },
-      { field: 'start_date', value: startDate },
-      { field: 'end_date', value: endDate }
-    ].filter(f => f.value && typeof f.value === 'string');
+    // Build composite query based on provided filters
+    const filters = [];
 
-    // Apply the first non-empty filter at Firestore level
-    const primaryFilter = filters.find(f => f.value);
-    if (primaryFilter) {
-      const titleCaseValue = toTitleCase(primaryFilter.value);
-      firestoreQuery = query(firestoreQuery, 
-        where(primaryFilter.field, '>=', titleCaseValue),
-        where(primaryFilter.field, '<=', titleCaseValue + '\uf8ff'),
-        orderBy(primaryFilter.field)
+    // Handle name filters
+    if (firstName && lastName) {
+      // If both name parts are provided, use exact matches
+      const titleFirstName = toTitleCase(firstName);
+      const titleLastName = toTitleCase(lastName);
+      firestoreQuery = query(firestoreQuery,
+        where('first_name', '==', titleFirstName),
+        where('last_name', '==', titleLastName)
       );
+    } else if (firstName) {
+      // If only first name, use prefix search
+      const titleFirstName = toTitleCase(firstName);
+      firestoreQuery = query(firestoreQuery,
+        where('first_name', '>=', titleFirstName),
+        where('first_name', '<=', titleFirstName + '\uf8ff'),
+        orderBy('first_name')
+      );
+      // Add remaining filters for application-level filtering
+      if (lastName) filters.push({ field: 'last_name', value: lastName });
+    } else if (lastName) {
+      // If only last name, use prefix search
+      const titleLastName = toTitleCase(lastName);
+      firestoreQuery = query(firestoreQuery,
+        where('last_name', '>=', titleLastName),
+        where('last_name', '<=', titleLastName + '\uf8ff'),
+        orderBy('last_name')
+      );
+      if (firstName) filters.push({ field: 'first_name', value: firstName });
     } else {
+      // If no name filters, use default ordering
       firestoreQuery = query(firestoreQuery, orderBy('__name__'));
     }
 
+    // Add remaining non-name filters for application-level filtering
+    if (uid) filters.push({ field: 'person_nbr', value: uid });
+    if (agencyName) filters.push({ field: 'agency_name', value: agencyName });
+    if (startDate) filters.push({ field: 'start_date', value: startDate });
+    if (endDate) filters.push({ field: 'end_date', value: endDate });
 
     // Get total count
     const countSnapshot = await getCountFromServer(firestoreQuery);
@@ -181,12 +201,12 @@ export default async function handler(
 
     // Apply remaining filters at application level
     filters.forEach(filter => {
-      if (filter !== primaryFilter) {
-        const value = filter.value as string;
-        filteredData = filteredData.filter(d => 
-          d[filter.field as keyof AgencyData]?.toString().toLowerCase().includes(value.toLowerCase())
-        );
-      }
+      const value = filter.value as string;
+      filteredData = filteredData.filter(d => {
+        const fieldValue = d[filter.field as keyof AgencyData]?.toString().toLowerCase();
+        const searchValue = value.toLowerCase();
+        return fieldValue?.includes(searchValue);
+      });
     });
 
     res.status(200).json({
