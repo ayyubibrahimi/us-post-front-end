@@ -29,6 +29,72 @@ type AgencyData = {
   discipline_comments?: string;
 };
 
+function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+type Filter = {
+  field: string;
+  value: string | string[];
+  isPrefix?: boolean;
+};
+
+function buildNameQuery(
+  baseQuery: Query<DocumentData>,
+  firstName: string | string[] | undefined,
+  lastName: string | string[] | undefined
+): Query<DocumentData> {
+  // Convert potential array values to strings and clean
+  const cleanFirstName = (Array.isArray(firstName) ? firstName[0] : firstName || '').trim();
+  const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
+
+  let firestoreQuery = baseQuery;
+
+  // If both names are present, create a compound query
+  if (cleanFirstName && cleanLastName) {
+    const firstNameTitle = toTitleCase(cleanFirstName);
+    const lastNameTitle = toTitleCase(cleanLastName);
+
+    firestoreQuery = query(
+      firestoreQuery,
+      where('first_name', '>=', firstNameTitle),
+      where('first_name', '<=', firstNameTitle + '\uf8ff'),
+      where('last_name', '>=', lastNameTitle),
+      where('last_name', '<=', lastNameTitle + '\uf8ff'),
+      orderBy('first_name'),
+      orderBy('last_name')
+    );
+  } else if (cleanLastName) {
+    // Only last name present
+    const lastNameTitle = toTitleCase(cleanLastName);
+    firestoreQuery = query(
+      firestoreQuery,
+      where('last_name', '>=', lastNameTitle),
+      where('last_name', '<=', lastNameTitle + '\uf8ff'),
+      orderBy('last_name')
+    );
+  } else if (cleanFirstName) {
+    // Only first name present
+    const firstNameTitle = toTitleCase(cleanFirstName);
+    firestoreQuery = query(
+      firestoreQuery,
+      where('first_name', '>=', firstNameTitle),
+      where('first_name', '<=', firstNameTitle + '\uf8ff'),
+      orderBy('first_name')
+    );
+  } else {
+    // No names provided
+    firestoreQuery = query(firestoreQuery, orderBy('__name__'));
+  }
+
+  return firestoreQuery;
+}
+
+// Update the handler function to use the new query builder
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -49,17 +115,6 @@ export default async function handler(
     return res.status(400).json({ error: 'State parameter is required and must be a string' });
   }
 
-  function toTitleCase(str: string | string[]): string {
-    if (Array.isArray(str)) {
-      str = str[0];
-    }
-    return str
-      .toLowerCase()
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
-
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
   const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
 
@@ -73,43 +128,11 @@ export default async function handler(
       where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`)
     );
 
-    // Build composite query based on provided filters
-    const filters = [];
+    // Build the name query with compound filters
+    firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName);
 
-    // Handle name filters
-    if (firstName && lastName) {
-      // If both name parts are provided, use exact matches
-      const titleFirstName = toTitleCase(firstName);
-      const titleLastName = toTitleCase(lastName);
-      firestoreQuery = query(firestoreQuery,
-        where('first_name', '==', titleFirstName),
-        where('last_name', '==', titleLastName)
-      );
-    } else if (firstName) {
-      // If only first name, use prefix search
-      const titleFirstName = toTitleCase(firstName);
-      firestoreQuery = query(firestoreQuery,
-        where('first_name', '>=', titleFirstName),
-        where('first_name', '<=', titleFirstName + '\uf8ff'),
-        orderBy('first_name')
-      );
-      // Add remaining filters for application-level filtering
-      if (lastName) filters.push({ field: 'last_name', value: lastName });
-    } else if (lastName) {
-      // If only last name, use prefix search
-      const titleLastName = toTitleCase(lastName);
-      firestoreQuery = query(firestoreQuery,
-        where('last_name', '>=', titleLastName),
-        where('last_name', '<=', titleLastName + '\uf8ff'),
-        orderBy('last_name')
-      );
-      if (firstName) filters.push({ field: 'first_name', value: firstName });
-    } else {
-      // If no name filters, use default ordering
-      firestoreQuery = query(firestoreQuery, orderBy('__name__'));
-    }
-
-    // Add remaining non-name filters for application-level filtering
+    // Build remaining filters
+    const filters: Filter[] = [];
     if (uid) filters.push({ field: 'person_nbr', value: uid });
     if (agencyName) filters.push({ field: 'agency_name', value: agencyName });
     if (startDate) filters.push({ field: 'start_date', value: startDate });
@@ -119,6 +142,7 @@ export default async function handler(
     const countSnapshot = await getCountFromServer(firestoreQuery);
     const totalItems = countSnapshot.data().count;
     const totalPages = Math.ceil(totalItems / size);
+
 
     // Adjust currentPage if it exceeds totalPages
     const adjustedCurrentPage = Math.min(currentPage, totalPages);
@@ -199,13 +223,20 @@ export default async function handler(
       } as AgencyData;
     });
 
-    // Apply remaining filters at application level
+    // Apply filters at application level
     filters.forEach(filter => {
       const value = filter.value as string;
       filteredData = filteredData.filter(d => {
-        const fieldValue = d[filter.field as keyof AgencyData]?.toString().toLowerCase();
-        const searchValue = value.toLowerCase();
-        return fieldValue?.includes(searchValue);
+        const fieldValue = d[filter.field as keyof AgencyData]?.toString();
+        if (!fieldValue) return false;
+        
+        // Handle prefix matching for names
+        if (filter.isPrefix) {
+          return fieldValue.toLowerCase().startsWith(value.toLowerCase());
+        } else {
+          // Regular includes matching for other fields
+          return fieldValue.toLowerCase().includes(value.toLowerCase());
+        }
       });
     });
 
