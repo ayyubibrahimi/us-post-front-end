@@ -479,15 +479,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             rowHeight={40}
             headerHeight={48}
             animateRows
-            pagination={true}
-            paginationPageSize={paginationInfo.pageSize}
-            cacheBlockSize={paginationInfo.pageSize}
-            onPaginationChanged={() => {
-              if (gridApi) {
-                const currentPage = gridApi.paginationGetCurrentPage();
-                onPageChange(currentPage + 1);
-              }
-            }}
+            pagination={false}  // Change this to false
+            // Remove paginationPageSize and cacheBlockSize
+            suppressPaginationPanel={true}
           />
         </div>
       </div>

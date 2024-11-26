@@ -38,6 +38,7 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
+  columnFilters?: any;
 }
 
 interface PaginationInfo {
@@ -45,7 +46,7 @@ interface PaginationInfo {
   pageSize: number;
   totalItems: number;
   totalPages: number;
-  isLastPage: boolean;  // Add this line
+  isLastPage: boolean;
 }
 
 const StatePage: React.FC = () => {
@@ -60,7 +61,7 @@ const StatePage: React.FC = () => {
     pageSize: 100,
     totalItems: 0,
     totalPages: 1,
-    isLastPage: false  // Add this line
+    isLastPage: false
   });
   const [filters, setFilters] = useState<Filters>({
     lastName: '',
@@ -70,19 +71,35 @@ const StatePage: React.FC = () => {
     startDate: '',
     endDate: ''
   });
+  const [activeFilters, setActiveFilters] = useState<boolean>(false);
 
   const fetchStateData = useCallback(async (page: number, size: number, currentFilters: Filters) => {
     if (!state || typeof state !== 'string') return;
   
     setIsLoading(true);
     setError(null);
+
+    // Create a clean filter object removing empty values
+    const cleanFilters = Object.fromEntries(
+      Object.entries(currentFilters)
+        .filter(([key, value]) => value !== '' && key !== 'columnFilters')
+    );
+    
+    // Check if we have any active filters
+    const hasActiveFilters = Object.keys(cleanFilters).length > 0;
+    setActiveFilters(hasActiveFilters);
   
     const queryParams = new URLSearchParams({
       state: state,
       page: page.toString(),
       pageSize: size.toString(),
-      ...Object.fromEntries(Object.entries(currentFilters).filter(([_, v]) => v !== ''))
+      ...cleanFilters
     });
+
+    // Add column filters if they exist
+    if (currentFilters.columnFilters) {
+      queryParams.append('columnFilters', JSON.stringify(currentFilters.columnFilters));
+    }
   
     try {
       const response = await fetch(`../api/fetchStateData?${queryParams}`);
@@ -127,12 +144,20 @@ const StatePage: React.FC = () => {
       setIsLoading(false);
     }
   }, [state]);
-  
+
+  // Separate useEffect for initial load and state changes
   useEffect(() => {
-    if (state && typeof state === 'string' && !paginationInfo.isLastPage) {
+    if (state && typeof state === 'string') {
+      fetchStateData(1, paginationInfo.pageSize, filters);
+    }
+  }, [state]);
+
+  // Separate useEffect for filter and pagination changes
+  useEffect(() => {
+    if (state && typeof state === 'string') {
       fetchStateData(paginationInfo.currentPage, paginationInfo.pageSize, filters);
     }
-  }, [state, paginationInfo.currentPage, paginationInfo.pageSize, filters, fetchStateData, paginationInfo.isLastPage]);
+  }, [paginationInfo.currentPage, paginationInfo.pageSize, filters, fetchStateData]);
 
   const handleStateSelection = (newState: string) => {
     router.push(`/state/${encodeURIComponent(newState)}`);
@@ -145,22 +170,18 @@ const StatePage: React.FC = () => {
   };
 
   const handlePageSizeChange = (size: number) => {
-    setPaginationInfo(prev => ({ ...prev, pageSize: size, currentPage: 1, isLastPage: false }));
+    setPaginationInfo(prev => ({ 
+      ...prev, 
+      pageSize: size, 
+      currentPage: 1, 
+      isLastPage: false 
+    }));
   };
 
   const handleFilterChange = (newFilters: Filters) => {
+    // Reset to page 1 when filters change
+    setPaginationInfo(prev => ({ ...prev, currentPage: 1 }));
     setFilters(newFilters);
-    
-    // Check if all filters are empty
-    const areAllFiltersEmpty = Object.values(newFilters).every(value => value === '');
-    
-    setPaginationInfo(prev => ({
-      ...prev,
-      currentPage: 1,
-      isLastPage: false,
-      // Reset pageSize to 100 if all filters are empty, otherwise keep the current pageSize
-      pageSize: areAllFiltersEmpty ? 100 : prev.pageSize
-    }));
   };
 
   if (router.isFallback) {

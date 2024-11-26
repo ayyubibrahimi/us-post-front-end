@@ -59,3 +59,71 @@ While we aim to promote transparency, we also respect privacy concerns. All data
 ## Disclaimer
 
 The National Police Index is an information resource and should not be used as a definitive source for making decisions about individuals. Users are encouraged to verify information through other channels when necessary.
+
+## How to Run
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm (v8 or higher)
+- A Firebase account and project
+
+### Initial Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ayyubibrahimi/us-post-front-end.git
+cd us-post-front-end
+```
+
+2. Navigate to the web directory:
+```bash
+cd web
+```
+
+3. Install dependencies:
+```bash
+npm install
+```
+
+### Firebase Configuration
+
+1. Create a new Firebase project at [Firebase Console](https://console.firebase.google.com/)
+
+2. Generate your Firebase configuration:
+   - Go to Project Settings > General
+   - Scroll down to "Your apps" section
+   - Click on the web icon (</>)
+   - Register your app and copy the configuration object
+
+3. Create a new file `firebase.config.js` in the `utils` directory:
+```javascript
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-auth-domain",
+  projectId: "your-project-id",
+  storageBucket: "your-storage-bucket",
+  messagingSenderId: "your-messenger-id",
+  appId: "your-app-id",
+  measurementId: "your-measurement-id"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export { db };
+```
+
+### Running the Application
+
+1. Start the development server:
+```bash
+npm run dev
+```
+
+2. Open your browser and navigate to:
+```
+http://localhost:3000
+```

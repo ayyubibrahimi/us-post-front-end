@@ -29,7 +29,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "eventsource-parser": "^1.1.2",
-    "firebase": "^10.12.2",
+    "firebase": "^10.14.1",
     "framer-motion": "^11.0.6",
     "fs": "^0.0.1-security",
     "langchain": "^0.1.20",
