@@ -53,7 +53,7 @@ function buildNameQuery(
   const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
 
   let firestoreQuery = baseQuery;
-
+  
   // If both names are present, create a compound query
   if (cleanFirstName && cleanLastName) {
     const firstNameTitle = toTitleCase(cleanFirstName);
@@ -117,18 +117,18 @@ export default async function handler(
 
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
   const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
+  const cleanFirstName = (Array.isArray(firstName) ? firstName[0] : firstName || '').trim();
+  const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
     const uploadsRef = collection(db, 'uploads');
     
-    // Start with base query for state
     let firestoreQuery: Query<DocumentData> = query(uploadsRef, 
       where('__name__', '>=', `${formattedState}-processed.csv_`), 
       where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`)
     );
 
-    // Build the name query with compound filters
     firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName);
 
     // Build remaining filters
@@ -138,116 +138,210 @@ export default async function handler(
     if (startDate) filters.push({ field: 'start_date', value: startDate });
     if (endDate) filters.push({ field: 'end_date', value: endDate });
 
-    // Get total count
-    const countSnapshot = await getCountFromServer(firestoreQuery);
-    const totalItems = countSnapshot.data().count;
-    const totalPages = Math.ceil(totalItems / size);
+    // For name filters, fetch all data to sort properly
+    let allData: AgencyData[] = [];
+    
+    if (cleanFirstName || cleanLastName) {
+      // Fetch all documents in batches when there's a name filter
+      const batchSize = 1000;
+      let lastDoc = null;
+      let hasMore = true;
 
+      while (hasMore) {
+        let batchQuery = firestoreQuery;
+        if (lastDoc) {
+          batchQuery = query(firestoreQuery, startAfter(lastDoc));
+        }
+        const snapshot = await getDocs(batchQuery);
+        
+        if (snapshot.empty) {
+          hasMore = false;
+          break;
+        }
 
-    // Adjust currentPage if it exceeds totalPages
-    const adjustedCurrentPage = Math.min(currentPage, totalPages);
+        const batchData = snapshot.docs.map(doc => {
+          const docData = doc.data();
+          return {
+            case_id: docData.case_id,
+            person_nbr: docData.person_nbr,
+            sanction: docData.sanction,
+            sanction_date: docData.sanction_date,
+            violation: docData.violation,
+            violation_date: docData.violation_date,
+            full_name: docData.full_name,
+            agency_name: docData.agency_name,
+            employment_status: docData.employment_status,
+            employment_change: docData.employment_change,
+            start_date: docData.start_date,
+            end_date: docData.end_date,
+            last_name: docData.last_name,
+            first_name: docData.first_name,
+            middle_name: docData.middle_name,
+            suffix: docData.suffix,
+            year_of_birth: docData.year_of_birth,
+            race: docData.race,
+            sex: docData.sex,
+            separation_reason: docData.separation_reason,
+            case_opened_date: docData.case_opened_date,
+            case_closed_date: docData.case_closed_date,
+            offense: docData.offense,
+            discipline_imposed: docData.discipline_imposed,
+            discipline_comments: docData.discipline_comments
+          } as AgencyData;
+        });
 
-    // Calculate the number of items to skip
-    const itemsToSkip = (adjustedCurrentPage - 1) * size;
+        allData = [...allData, ...batchData];
+        lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        
+        if (snapshot.docs.length < batchSize) {
+          hasMore = false;
+        }
+      }
 
-    // Calculate the number of items to fetch
-    const itemsToFetch = Math.min(size, totalItems - itemsToSkip);
+      // Apply remaining filters
+      filters.forEach(filter => {
+        const value = filter.value as string;
+        allData = allData.filter(d => {
+          const fieldValue = d[filter.field as keyof AgencyData]?.toString();
+          if (!fieldValue) return false;
+          
+          if (filter.isPrefix) {
+            return fieldValue.toLowerCase().startsWith(value.toLowerCase());
+          } else {
+            return fieldValue.toLowerCase().includes(value.toLowerCase());
+          }
+        });
+      });
 
-    // Check if we're trying to fetch more items than available
-    if (itemsToSkip >= totalItems) {
+      // Sort the filtered data
+      allData.sort((a, b) => {
+        const firstNameA = a.first_name || '';
+        const firstNameB = b.first_name || '';
+        const lastNameA = a.last_name || '';
+        const lastNameB = b.last_name || '';
+
+        const lastNameCompare = lastNameA.localeCompare(lastNameB);
+        if (lastNameCompare !== 0) return lastNameCompare;
+        
+        return firstNameA.localeCompare(firstNameB);
+      });
+
+      // Calculate pagination after sorting
+      const totalPages = Math.ceil(allData.length / size);
+      const adjustedCurrentPage = Math.min(currentPage, totalPages);
+      const startIndex = (adjustedCurrentPage - 1) * size;
+      const endIndex = startIndex + size;
+      const paginatedData = allData.slice(startIndex, endIndex);
+
       return res.status(200).json({
-        data: [],
+        data: paginatedData,
+        currentPage: adjustedCurrentPage,
+        pageSize: size,
+        totalItems: allData.length,
+        totalPages: totalPages,
+        isLastPage: adjustedCurrentPage === totalPages
+      });
+    } else {
+      // For non-name queries, use standard pagination
+      const countSnapshot = await getCountFromServer(firestoreQuery);
+      const totalItems = countSnapshot.data().count;
+      const totalPages = Math.ceil(totalItems / size);
+      const adjustedCurrentPage = Math.min(currentPage, totalPages);
+      const itemsToSkip = (adjustedCurrentPage - 1) * size;
+      const itemsToFetch = Math.min(size, totalItems - itemsToSkip);
+
+      if (itemsToSkip >= totalItems) {
+        return res.status(200).json({
+          data: [],
+          currentPage: adjustedCurrentPage,
+          pageSize: itemsToFetch,
+          totalItems: totalItems,
+          totalPages: totalPages,
+          isLastPage: true
+        });
+      }
+
+      // Apply pagination
+      if (adjustedCurrentPage > 1) {
+        const batchSize = 1000; // Firestore limit
+        const batches = Math.floor(itemsToSkip / batchSize);
+        let lastVisible = null;
+
+        for (let i = 0; i < batches; i++) {
+          const batchQuery = query(firestoreQuery, limit(batchSize));
+          const batchSnapshot = await getDocs(batchQuery);
+          lastVisible = batchSnapshot.docs[batchSnapshot.docs.length - 1];
+          firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+        }
+
+        const remainingToSkip = itemsToSkip % batchSize;
+        if (remainingToSkip > 0) {
+          const finalSkipQuery = query(firestoreQuery, limit(remainingToSkip));
+          const finalSkipSnapshot = await getDocs(finalSkipQuery);
+          lastVisible = finalSkipSnapshot.docs[finalSkipSnapshot.docs.length - 1];
+          firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+        }
+      }
+
+      firestoreQuery = query(firestoreQuery, limit(itemsToFetch));
+      const dataSnapshot = await getDocs(firestoreQuery);
+
+      // Map and filter the current page data
+      let filteredData = dataSnapshot.docs.map(doc => {
+        const docData = doc.data();
+        return {
+          case_id: docData.case_id,
+          person_nbr: docData.person_nbr,
+          sanction: docData.sanction,
+          sanction_date: docData.sanction_date,
+          violation: docData.violation,
+          violation_date: docData.violation_date,
+          full_name: docData.full_name,
+          agency_name: docData.agency_name,
+          employment_status: docData.employment_status,
+          employment_change: docData.employment_change,
+          start_date: docData.start_date,
+          end_date: docData.end_date,
+          last_name: docData.last_name,
+          first_name: docData.first_name,
+          middle_name: docData.middle_name,
+          suffix: docData.suffix,
+          year_of_birth: docData.year_of_birth,
+          race: docData.race,
+          sex: docData.sex,
+          separation_reason: docData.separation_reason,
+          case_opened_date: docData.case_opened_date,
+          case_closed_date: docData.case_closed_date,
+          offense: docData.offense,
+          discipline_imposed: docData.discipline_imposed,
+          discipline_comments: docData.discipline_comments
+        } as AgencyData;
+      });
+
+      // Apply remaining filters
+      filters.forEach(filter => {
+        const value = filter.value as string;
+        filteredData = filteredData.filter(d => {
+          const fieldValue = d[filter.field as keyof AgencyData]?.toString();
+          if (!fieldValue) return false;
+          
+          if (filter.isPrefix) {
+            return fieldValue.toLowerCase().startsWith(value.toLowerCase());
+          } else {
+            return fieldValue.toLowerCase().includes(value.toLowerCase());
+          }
+        });
+      });
+
+      return res.status(200).json({
+        data: filteredData,
         currentPage: adjustedCurrentPage,
         pageSize: itemsToFetch,
         totalItems: totalItems,
         totalPages: totalPages,
-        isLastPage: true
+        isLastPage: adjustedCurrentPage === totalPages
       });
     }
-
-    // Apply pagination
-    if (adjustedCurrentPage > 1) {
-      const batchSize = 1000; // Firestore limit
-      const batches = Math.floor(itemsToSkip / batchSize);
-      let lastVisible = null;
-
-      for (let i = 0; i < batches; i++) {
-        const batchQuery = query(firestoreQuery, limit(batchSize));
-        const batchSnapshot = await getDocs(batchQuery);
-        lastVisible = batchSnapshot.docs[batchSnapshot.docs.length - 1];
-        firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
-      }
-
-      const remainingToSkip = itemsToSkip % batchSize;
-      if (remainingToSkip > 0) {
-        const finalSkipQuery = query(firestoreQuery, limit(remainingToSkip));
-        const finalSkipSnapshot = await getDocs(finalSkipQuery);
-        lastVisible = finalSkipSnapshot.docs[finalSkipSnapshot.docs.length - 1];
-        firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
-      }
-    }
-
-    firestoreQuery = query(firestoreQuery, limit(itemsToFetch));
-
-    const dataSnapshot = await getDocs(firestoreQuery);
-
-    // Map the data
-    let filteredData = dataSnapshot.docs.map(doc => {
-      const docData = doc.data();
-      return {
-        case_id: docData.case_id,
-        person_nbr: docData.person_nbr,
-        sanction: docData.sanction,
-        sanction_date: docData.sanction_date,
-        violation: docData.violation,
-        violation_date: docData.violation_date,
-        full_name: docData.full_name,
-        agency_name: docData.agency_name,
-        employment_status: docData.employment_status,
-        employment_change: docData.employment_change,
-        start_date: docData.start_date,
-        end_date: docData.end_date,
-        last_name: docData.last_name,
-        first_name: docData.first_name,
-        middle_name: docData.middle_name,
-        suffix: docData.suffix,
-        year_of_birth: docData.year_of_birth,
-        race: docData.race,
-        sex: docData.sex,
-        separation_reason: docData.separation_reason,
-        case_opened_date: docData.case_opened_date,
-        case_closed_date: docData.case_closed_date,
-        offense: docData.offense,
-        discipline_imposed: docData.discipline_imposed,
-        discipline_comments: docData.discipline_comments
-      } as AgencyData;
-    });
-
-    // Apply filters at application level
-    filters.forEach(filter => {
-      const value = filter.value as string;
-      filteredData = filteredData.filter(d => {
-        const fieldValue = d[filter.field as keyof AgencyData]?.toString();
-        if (!fieldValue) return false;
-        
-        // Handle prefix matching for names
-        if (filter.isPrefix) {
-          return fieldValue.toLowerCase().startsWith(value.toLowerCase());
-        } else {
-          // Regular includes matching for other fields
-          return fieldValue.toLowerCase().includes(value.toLowerCase());
-        }
-      });
-    });
-
-    res.status(200).json({
-      data: filteredData,
-      currentPage: adjustedCurrentPage,
-      pageSize: itemsToFetch,
-      totalItems: totalItems,
-      totalPages: totalPages,
-      isLastPage: adjustedCurrentPage === totalPages
-    });
   } catch (error) {
     console.error('Error in handler:', error);
     res.status(500).json({ error: 'Failed to fetch state data' });
