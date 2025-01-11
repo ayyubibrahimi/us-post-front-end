@@ -20,8 +20,8 @@
   flex-direction: column;
   gap: 10px;
   color: #333;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 500px; /* Changed from 80% to a fixed width */
+  width: 90%; /* Ensures it's responsive but doesn't exceed max-width */
   overflow: auto;
 }
 
