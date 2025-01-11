@@ -212,7 +212,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               'first_name': 'firstName',
               'agency_name': 'agencyName',
               'start_date': 'startDate',
-              'end_date': 'endDate'
+              'end_date': 'endDate',
             };
     
             if (isSynchronizedField) {
@@ -342,6 +342,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       ['Offense', 'offense'],
       ['Discipline', 'discipline_imposed'],
       ['Discipline Comments', 'discipline_comments'],
+      ['Separation Reason', 'separation_reason'],
     ];
 
     conditionalColumns.forEach(([header, field]) => {
