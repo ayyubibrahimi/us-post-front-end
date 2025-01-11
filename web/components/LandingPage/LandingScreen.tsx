@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TypewriterEffectSmooth } from "./TypeWriter";
-import styles from "./LandingScreenLight.module.scss";
-import buttonStyles from "./LandingScreenLight.module.scss";
+import styles from "./LandingScreen.module.scss";
+import buttonStyles from "./LandingScreen.module.scss";
 import LouisianaModal from "./LouisianaModal";
 
 interface LandingScreenProps {
@@ -84,23 +84,19 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-max space-y-4 my-28 xl:my-52 2xl:my-72 ${styles.landingScreenContainer}`}
+      className={`flex flex-col items-center justify-center h-max space-y-2 my-12 xl:my-24 2xl:my-24 ${styles.landingScreenContainer}`}
     >
-      <TypewriterEffectSmooth
-        words={words}
-        className={`text-2xl md:text-4xl lg:text-5xl font-bold text-center ${styles.typewriterBase}`}
-        cursorClassName={`w-2 h-8 md:h-10 lg:h-12 ${styles.black}`}
-      />
-      <div></div>
-      <div></div>
-      <div className="flex flex-col items-center justify-center">
+      <iframe src="https://data-access-map.netlify.app/" width="100%" height="530px"></iframe>
+  
+      {/* Removed empty div elements */}
+      <div className="flex flex-col items-center justify-center -mt-4">
         <p className={`${styles.bottomText}`}>
           The National Police Index is a project and data tool showing police
           employment history data obtained from state police training and
           certification boards across the U.S.
         </p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 mt-2">
         {states.map((state) => (
           <button
             key={state}
@@ -115,8 +111,8 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         isOpen={isLouisianaModalOpen}
         onClose={() => setIsLouisianaModalOpen(false)}
       />
-
-      <div>
+  
+      <div className="-mt-2">
         <button
           className={`items-center ${buttonStyles.stateDataButton}`}
           onClick={() =>
@@ -131,6 +127,6 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
       </div>
     </div>
   );
-};
+}
 
 export default LandingScreen;

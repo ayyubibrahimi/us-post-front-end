@@ -1,0 +1,88 @@
+/* LandingScreen.module.css */
+.landingScreenContainer {
+  background-color: #fff;
+}
+
+.georgiaButton {
+  width: 10rem;
+  height: 2.5rem;
+  border-radius: 0.375rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.georgiaButton:hover {
+  background-color: #fff;
+  border-color: #495057;
+  color: #212529;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.georgiaButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.floridaButton {
+  composes: georgiaButton;
+}
+
+.stateDataButton {
+  width: 14rem;
+  height: 3rem;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  color: #495057;
+  margin-top: 2rem;
+  border: 1px solid #e9ecef;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.stateDataButton:hover {
+  background-color: #f8f9fa;
+  border-color: #495057;
+  color: #212529;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.stateDataButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.peaceOfficerText {
+  color: #000000;
+  font-size: 1.875rem;
+}
+
+.black {
+  color: #ddd;
+}
+
+.typewriterBase {
+  font-family: "SF-Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.bottomText {
+  width: 55%;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #495057;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .bottomText {
+    width: 85%;
+  }
+}

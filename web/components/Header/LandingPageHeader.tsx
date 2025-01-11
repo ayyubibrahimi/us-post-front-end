@@ -23,7 +23,7 @@ const LandingPageHeader: React.FC = () => {
           </h1>
         </Link>
         <button className={styles.aboutButton} onClick={handleAboutClick}>
-          About
+          About the NPI 
         </button>
       </div>
       <LandingPageAboutModal 

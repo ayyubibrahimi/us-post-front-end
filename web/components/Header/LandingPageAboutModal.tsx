@@ -231,25 +231,24 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
           )}
 
           {activeTab === "team" && (
-            <>
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>
-                    <a
-                      href="https://invisible.institute/sam-stecklow"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={linkStyle}
-                    >
-                      Sam Stecklow
-                    </a>
-                  </strong>{" "}
-                  (he/him) is an investigative journalist and FOIA fellow with{" "}
+            <div className={styles.teamContainer}>
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  <a
+                    href="https://invisible.institute/sam-stecklow"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Sam Stecklow
+                  </a>
+                  <span className={styles.pronouns}>(he/him)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  An investigative journalist and FOIA fellow with{" "}
                   <a
                     href="https://invisible.institute/introduction"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={linkStyle}
                   >
                     Invisible Institute
                   </a>
@@ -258,7 +257,6 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                     href="https://invisible.institute/police-data"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={linkStyle}
                   >
                     Civic Police Data Project
                   </a>{" "}
@@ -266,23 +264,27 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 </p>
               </section>
 
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>Ayyub Ibrahim</strong> (he/him) is a programmer at the <a
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  Ayyub Ibrahim
+                  <span className={styles.pronouns}>(he/him)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  A programmer at the{" "}
+                  <a
                     href="https://bids.berkeley.edu/home"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={linkStyle}
                   >
-                  Berkeley Institute for Data Science (BIDS).
-                  </a>{" "} He previously served as the Director of Research for the
+                    Berkeley Institute for Data Science (BIDS)
+                  </a>
+                  . He previously served as the Director of Research for the
                   Innocence Project New Orleans&apos; Louisiana Law Enforcement
                   Accountability Database{" "}
                   <a
                     href="https://llead.co"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={linkStyle}
                   >
                     (LLEAD)
                   </a>{" "}
@@ -291,108 +293,125 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                     href="https://mljusticelab.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={linkStyle}
                   >
-                    Machine Learning Justice Lab.
+                    Machine Learning Justice Lab
+                  </a>.
+                </p>
+              </section>
+
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  Tarak Shah
+                  <span className={styles.pronouns}>(he/they)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  A data scientist at the Human Rights Data Analysis Group. He works with community
+                  organizations, lawyers, journalists, international human rights institutions, 
+                  and transitional justice mechanisms to support campaigns for accountability 
+                  through quantitative analysis. He currently serves as program manager of the
+                  Community Law Enforcement Network, an interdisciplinary effort to collect and 
+                  publish records related to police force and misconduct in California.
+                </p>
+              </section>
+
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  Bailey Passmore
+                  <span className={styles.pronouns}>(they/them)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  Has been working as a Data Scientist at the Human Rights Data Analysis Group since 2022.
+                </p>
+              </section>
+
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  Olive Lavine
+                  <span className={styles.pronouns}>(she/her)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  A volunteer developer on this project. She studied mathematics at Tulane University 
+                  and software engineering at Ada Developers Academy.
+                </p>
+              </section>
+
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  <a
+                    href="https://invisible.institute/maheen-khan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Maheen Khan
                   </a>
-                </p>
-              </section>
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>Tarak Shah</strong> (he/they) is a data scientist at
-                  the Human Rights Data Analysis Group. He works with community
-                  organizations, lawyers, journalists, international human
-                  rights institutions, and transitional justice mechanisms to
-                  support campaigns for accountability through quantitative
-                  analysis. He currently serves as program manager of the
-                  Community Law Enforcement Network, an interdisciplinary effort
-                  to collect and publish records related to police force and
-                  misconduct in California.
+                  <span className={styles.pronouns}>(she/her)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  Invisible Institute&apos;s Director of Technology. She studied Information Analysis 
+                  and Computer Science at the University of Michigan. At Invisible Institute, she 
+                  primarily works to maintain the Civic Police Data Project, and to expand the police 
+                  misconduct tool to other cities.
                 </p>
               </section>
 
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>Bailey Passmore</strong> (they/them) has been working as a Data Scientist at the Human Rights Data Analysis Group since 2022. 
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  <a
+                    href="https://invisible.institute/chaclyn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Chaclyn Hunt
+                  </a>
+                  <span className={styles.pronouns}>(she/her)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  Invisible Institute&apos;s legal director and a civil rights attorney.
                 </p>
               </section>
 
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>Olive Lavine </strong> (she/her) is a volunteer developer on this project. She studied mathematics at Tulane University and software engineering at Ada Developers Academy. 
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  <a
+                    href="https://invisible.institute/maira-khwaja"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Maira Khwaja
+                  </a>
+                  <span className={styles.pronouns}>(she/her)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  Invisible Institute&apos;s director of public strategy.
                 </p>
               </section>
 
-              <section className={styles.modalSection}>
-                  <p>
-                    <strong>
-                      <a
-                        href="https://invisible.institute/maheen-khan"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={linkStyle}
-                      >
-                        Maheen Khan
-                      </a>
-                    </strong>{" "}
-                    (she/her) is Invisible Institute&apos;s Director of Technology. She studied 
-                    Information Analysis and Computer Science at the University of Michigan. At 
-                    Invisible Institute, she primarily works to maintain the Civic Police Data 
-                    Project, and to expand the police misconduct tool to other cities.
-                  </p>
-                </section>
-
-                <section className={styles.modalSection}>
-                    <p>
-                      <strong>
-                        <a
-                          href="https://invisible.institute/chaclyn"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={linkStyle}
-                        >
-                          Chaclyn Hunt
-                        </a>
-                      </strong>{" "}
-                      (she/her) is Invisible Institute&apos;s legal director and a civil rights attorney.
-                    </p>
-                  </section>       
-                  <section className={styles.modalSection}>
-                        <p>
-                          <strong>
-                            <a
-                              href="https://invisible.institute/maira-khwaja"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={linkStyle}
-                            >
-                              Maira Khwaja
-                            </a>
-                          </strong>{" "}
-                          (she/her) is Invisible Institute&apos;s director of public strategy.
-                        </p>
-                      </section>
-                           
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>Kaitlynn Cassady</strong> (she/her) is the communications manager at Invisible Institute.
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  Kaitlynn Cassady
+                  <span className={styles.pronouns}>(she/her)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  The communications manager at Invisible Institute.
                 </p>
               </section>
 
-              <section className={styles.modalSection}>
-                <p>
-                  <strong>Lisa Pickoff-White</strong>, California Reporting Project
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  Lisa Pickoff-White
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  California Reporting Project
                 </p>
               </section>
 
-              <section className={styles.modalSection}>
-                <p>
+              <section className={`${styles.teamMember} ${styles.specialThanks}`}>
+                <h3 className={styles.teamMemberName}>Special Thanks</h3>
+                <p className={styles.teamMemberBio}>
                   A special thanks goes out to Huy Dao and Eliora Henzler.
                 </p>
               </section>
-              
-
-            </>
+            </div>
           )}
         </div>
       </div>
