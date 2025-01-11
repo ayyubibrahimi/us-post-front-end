@@ -122,7 +122,7 @@ export default async function handler(
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
-    const uploadsRef = collection(db, 'uploads');
+    const uploadsRef = collection(db, 'db');
     
     let firestoreQuery: Query<DocumentData> = query(uploadsRef, 
       where('__name__', '>=', `${formattedState}-processed.csv_`), 
