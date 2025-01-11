@@ -3,12 +3,21 @@ import Link from 'next/link';
 import styles from './headerLight.module.scss';
 import AboutModal from './AboutModal';
 
+// Utility functions for state name formatting
+export const formatStateForUrl = (state: string): string => {
+  return state.replace(/\s+/g, '-');
+};
+
+export const formatStateForDisplay = (state: string): string => {
+  return state.replace(/-/g, ' ');
+};
+
 const states = [
   "Arizona", 'California', "Florida", "Florida Discipline",
   "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
-   "Maryland", "Ohio", "Oregon", "South Carolina", "Tennessee", 
-   "Texas", "Utah", "Washington", "Vermont",
-   "West Virginia", "Wyoming"
+  "Maryland", "Ohio", "Oregon", "South Carolina", "Tennessee", 
+  "Texas", "Utah", "Washington", "Vermont",
+  "West Virginia", "Wyoming"
 ];
 
 interface HeaderProps {
@@ -21,12 +30,16 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Convert URL format to display format for the current selected state
+  const displayState = formatStateForDisplay(selectedState);
+
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleStateSelection = (state: string) => {
-    onStateChange(state);
+    // Convert to URL format when passing to parent
+    onStateChange(formatStateForUrl(state));
     setIsDropdownOpen(false);
   };
 
@@ -62,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
           </Link>
           <div className={styles.dropdown} ref={dropdownRef}>
             <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>
-              {selectedState || "Select a State"}
+              {displayState || "Select a State"}
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenuWrapper}>
@@ -70,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
                   {states.map((state) => (
                     <li 
                       key={state} 
-                      className={`${styles.dropdownItem} ${state === selectedState ? styles.active : ''}`} 
+                      className={`${styles.dropdownItem} ${state === displayState ? styles.active : ''}`} 
                       onClick={() => handleStateSelection(state)}
                     >
                       {state}
@@ -81,14 +94,14 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
             )}
           </div>
           <button className={styles.aboutButton} onClick={handleAboutClick}>
-            About
+            About{displayState ? ` ${displayState}` : ''}
           </button>
         </div>
       </div>
       <AboutModal 
         isOpen={isAboutModalOpen} 
         onClose={handleCloseAboutModal} 
-        selectedState={selectedState} 
+        selectedState={displayState} 
       />
     </header>
   );

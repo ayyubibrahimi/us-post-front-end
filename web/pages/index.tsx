@@ -8,6 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleStateSelection = (state: string) => {
+    // The state name is already formatted for URL when it arrives here
     router.push(`/state/${state}`);
   };
 
