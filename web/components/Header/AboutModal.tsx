@@ -323,7 +323,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
           >
             New Mexico Law Enforcement Agency
           </a>
-          {" "}. The data released includes personnel and employment history for all officers certified by NMLEA’s Law Enforcement Certification Board and its predecessor, with data going back to the 1960s. The data were last updated in June 2023, and were processed by [TBD?]. Read more about the data processing{" "}
+          {" "}. The data released includes personnel and employment history for all officers certified by NMLEA’s Law Enforcement Certification Board and its predecessor, with data going back to the 1960s. The data were last updated in June 2023. Read more about the data processing{" "}
           <a 
             href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean" 
             target="_blank" 
