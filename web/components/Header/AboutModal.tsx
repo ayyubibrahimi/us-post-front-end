@@ -311,7 +311,31 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
         </p>
       </>
     ),
-
+    "New Mexico": (
+      <>
+        <p>
+        Data about law enforcement in New Mexico were obtained under the New Mexico Inspection of Public Records Act from the{" "}
+          <a 
+            href="https://www.lea.nm.gov/law-enforcement-certification-board/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            New Mexico Law Enforcement Agency
+          </a>
+          {" "}. The data released includes personnel and employment history for all officers certified by NMLEA’s Law Enforcement Certification Board and its predecessor, with data going back to the 1960s. The data were last updated in June 2023, and were processed by [TBD?]. Read more about the data processing{" "}
+          <a 
+            href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            here
+          </a>
+          .
+        </p>
+      </>
+    ),
     "Ohio": (
       <>
         <p>
@@ -324,7 +348,7 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
           >
             Ohio Peace Officer Training Commission
           </a>
-          . The data released includes personnel and employment history for all officers certified in the state, with data going back to the 1950s. The data were last updated in May 2023, and were processed by John Kelly of CBS News. Read more about the data processing{" "}
+          . The data released includes personnel and employment history for all officers certified in the state, with data going back to the 1950s. The data were last updated in November 2024, and were processed by John Kelly of CBS News. Read more about the data processing{" "}
           <a 
             href="https://github.com/ayyubibrahimi/us-post-data/blob/main/bln/OH/README.md" 
             target="_blank" 
