@@ -14,10 +14,11 @@ export const formatStateForDisplay = (state: string): string => {
 
 const states = [
   "Arizona", 'California', "Florida", "Florida Discipline",
-  "Georgia", "Georgia Discipline", "Illinois", "Kentucky",
-  "Maryland", "Ohio", "Oregon", "South Carolina", "Tennessee", 
-  "Texas", "Utah", "Washington", "Vermont",
-  "West Virginia", "Wyoming"
+  "Georgia", "Georgia Discipline", "Illinois", "Indiana",
+  "Kansas", "Kentucky", "Maryland", "Minnesota", "Mississippi",
+  "New Mexico", "North Carolina", "Ohio", "Oregon", "South Carolina", 
+  "Tennessee", "Texas", "Utah", "Washington", "Vermont",
+   "West Virginia", "Wyoming"
 ];
 
 interface HeaderProps {

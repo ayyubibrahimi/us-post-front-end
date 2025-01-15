@@ -64,8 +64,8 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     "Maryland",
     "Minnesota",
     "Mississippi",
-    "North Carolina",
     "New Mexico",
+    "North Carolina",
     "Ohio",
     "Oregon",
     "South Carolina",
@@ -75,7 +75,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     "Washington",
     "Vermont",
     "West Virginia",
-    "Wyoming",
+    "Wyoming"
   ];
 
   const handleStateClick = (state: string) => {

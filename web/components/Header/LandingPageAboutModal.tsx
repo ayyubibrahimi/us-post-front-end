@@ -85,7 +85,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               <section className={styles.modalSection}>
                 <p>
                   
-                The National Police Index is a public data project led by reporter Sam Stecklow of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Berkeley Institute for Data Science, and Tarak Shah of the Human Rights Data Analysis Group.
+                The National Police Index is a public data project led by reporter Sam Stecklow of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Louisiana Law Enforcement Accountability Database of Innocence Project New Orleans, and Tarak Shah of the Human Rights Data Analysis Group.
 
                 </p>
               </section>
@@ -112,63 +112,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               <section className={styles.modalSection}>
                 <p>
                   In total, 27 states have released centralized employment
-                  history data, 17 of which are currently represented on the
-                  data tool. In addition, several states have released subsets
-                  of this data in their own lookup tools:{" "}
-                  <a
-                    href="https://www.ptb.illinois.gov/resources/officer-lookup/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={linkStyle}
-                  >
-                    Illinois
-                  </a>
-                  ,{" "}
-                  <a
-                    href="https://mapostcommission.gov/discipline-status-records/officer-status-lists/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={linkStyle}
-                  >
-                    Massachusetts
-                  </a>
-                  ,{" "}
-                  <a
-                    href="https://mnitservices.my.site.com/POSTLicenseSearch/s/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={linkStyle}
-                  >
-                    Minnesota
-                  </a>
-                  ,{" "}
-                  <a
-                    href="https://opota.ohioattorneygeneral.gov/PublicRecords"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={linkStyle}
-                  >
-                    Ohio
-                  </a>
-                  ,{" "}
-                  <a
-                    href="https://www.bpl-orsnapshot.net/PublicInquiry_CJ/EmployeeSearch.aspx"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={linkStyle}
-                  >
-                    Oregon
-                  </a>
-                  , and{" "}
-                  <a
-                    href="https://www.tcole.texas.gov/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={linkStyle}
-                  >
-                    Texas
-                  </a>
-                  .
+                  history data, 23 of which are currently represented on the
+                  data tool.
                 </p>
               </section>
 
@@ -192,8 +137,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   Journalism Project/Utah Freedom of Information Hotline,
                   University of North Carolina at Chapel Hill, Oregon Public
                   Broadcasting, Washington City Paper/George Washington
-                  University Public Justice Advocacy Clinic, Tony Webster, and
-                  Mirror Indy.
+                  University Public Justice Advocacy Clinic, Tony Webster,
+                  WyoFile, Dragline/ACLU of West Virginia, and Mirror Indy.
                 </p>
               </section>
 
