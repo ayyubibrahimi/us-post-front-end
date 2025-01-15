@@ -57,9 +57,15 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     "Georgia",
     "Georgia Discipline",
     "Illinois",
+    "Indiana",
+    "Kansas",
     "Kentucky",
     "Louisiana",
     "Maryland",
+    "Minnesota",
+    "Mississippi",
+    "North Carolina",
+    "New Mexico",
     "Ohio",
     "Oregon",
     "South Carolina",
@@ -84,7 +90,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-max space-y-2 my-12 xl:my-24 2xl:my-24 ${styles.landingScreenContainer}`}
+      className={`flex flex-col items-center justify-center h-max space-y-2 my-12 xl:my-20 2xl:my-24 ${styles.landingScreenContainer}`}
     >
       <iframe src="https://data-access-map.netlify.app/" width="100%" height="530px"></iframe>
   
@@ -94,13 +100,14 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
           The National Police Index is a project and data tool showing police
           employment history data obtained from state police training and
           certification boards across the U.S.
+          In total, 27 states have released centralized employment history data, 23 of which are currently represented on the data tool.
         </p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 mt-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-2">
         {states.map((state) => (
           <button
             key={state}
-            className={`${buttonStyles.georgiaButton}`}
+            className={`${buttonStyles.stateButtons}`}
             onClick={() => handleStateClick(state)}
           >
             {state}

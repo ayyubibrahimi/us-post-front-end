@@ -270,6 +270,62 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
         </p>
       </>
     ),
+    "Indiana": (
+  <>
+    <p>
+      Data about law enforcement in Indiana were obtained under the Indiana Access to Public Records Act from the{" "}
+      <a
+        href="https://www.in.gov/ilea/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        Indiana Law Enforcement Academy
+      </a>
+      . The data released includes personnel and employment history for all officers certified by the ILEA, with data going back to the 1970s. The data were last updated in August 2024 by Emily Hopkins of Mirror Indy, and were processed by Emily Hopkins of Mirror Indy and Tarak Shah of Human Rights Data Analysis Group. Read more about the data processing{" "}
+      <a
+        href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        here
+      </a>
+      .
+    </p>
+
+    <br />
+
+    <p>
+      The ILEA requires agencies to report when officers leave agencies, and that data includes whether officers resigned, retired, were terminated for misconduct, or any other type of separation. That data is reflected on the National Police Index in the &ldquo;employment status&rdquo; column. However, the ILEA cautions that the submission of that information by local agencies is not monitored. &ldquo;Discharged&rdquo; generally indicates that the officer was terminated or fired, but could have been used to simply denote that they were separated. Additional information should be sought from the local agency or ILEA about the circumstances of an officer&apos;s separation.
+    </p>
+  </>
+),
+"Kansas": (
+  <>
+    <p>
+      Data about law enforcement in Kansas were obtained under the Kansas Open Records Act from the{" "}
+      <a
+        href="https://www.kscpost.gov/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        Kansas Commission on Peace Officers&apos; Standards and Training
+      </a>
+      . The data released includes personnel and employment history for all officers certified by CPOST. The data were last updated in December 2024, and were processed by Tarak Shah of Human Rights Data Analysis Group and Larry Barrett. Read more about the data processing{" "}
+      <a
+        href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        here
+      </a>
+      .
+    </p>
+  </>
+),
     "Kentucky": (
       <>
         <p>
@@ -311,6 +367,97 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
         </p>
       </>
     ),
+    "Minnesota": (
+  <>
+    <p>
+      Data about law enforcement in Minnesota were obtained under the Minnesota Data Practices Act from the{" "}
+      <a
+        href="https://mn.gov/post/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        Minnesota Board of Peace Officer Standards and Training
+      </a>
+      {" "}by investigative journalist Tony Webster. The data released includes personnel and employment history for all officers certified by POST, with data going back to the 1970s. The data were last updated in August 2024 by Tony Webster, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science. Read more about the data processing{" "}
+      <a
+        href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        here
+      </a>
+      .
+    </p>
+
+    <br />
+
+    <p>
+      POST also publishes a{" "}
+      <a
+        href="https://mnitservices.my.site.com/POSTLicenseSearch/s/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        public lookup tool for police licenses
+      </a>
+      . It is more current than our data, and can be used to ensure that information from our database is accurate, but does not include the employment history for officers — only their current employers. Therefore, it is complementary to the National Police Index.
+    </p>
+  </>
+),
+"Mississippi": (
+  <>
+    <p>
+      Data about law enforcement in Mississippi were obtained under the Mississippi Public Records Act from the{" "}
+      <a
+        href="https://www.dps.ms.gov/public-safety-planning/standards-and-training/BLEOST"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        Mississippi Board on Law Enforcement Officer Standards and Training
+      </a>
+      . The data released includes personnel and employment history for all officers certified by BLEOST. The data were last updated in April 2023, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science. Read more about the data processing{" "}
+      <a
+        href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        here
+      </a>
+      .
+    </p>
+  </>
+),
+
+"North Carolina": (
+  <>
+    <p>
+      Data about law enforcement in North Carolina were obtained under the North Carolina Public Records Act from the{" "}
+      <a
+        href="https://ncdoj.gov/law-enforcement-training/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        North Carolina Department of Justice
+      </a>
+      . The data released includes personnel and employment history for all officers certified by NCDOJ&apos;s Criminal Justice Education & Training Standards Commission and Sheriffs&apos; Education & Training Standards Commission, with data going back to the 1970s. The data were last updated in August 2023, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science. Read more about the data processing{" "}
+      <a
+        href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        here
+      </a>
+      .
+    </p>
+  </>
+),
 
     "Ohio": (
       <>
@@ -624,21 +771,30 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
       </>
     ),
     "West Virginia": (
-      <>
-        <p>
-          Data about law enforcement in West Virginia were obtained under the West Virginia Freedom of Information Act from the{" "}
-          <a 
-            href="https://das.wv.gov/JCS/law-enforcement/Pages/default.aspx" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={linkStyle}
-          >
-            West Virginia Law Enforcement Professional Standards Program
-          </a>
-          . The data were last updated in September 2022.
-        </p>
-      </>
-    ),
+  <>
+    <p>
+      Data about law enforcement in West Virginia were obtained under the West Virginia Freedom of Information Act from the{" "}
+      <a
+        href="https://das.wv.gov/JCS/law-enforcement/Pages/default.aspx"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        West Virginia Law Enforcement Professional Standards Program
+      </a>
+      . The data were last updated in November 2024 by Kyle Vass of Dragline/ACLU of West Virginia. Read more about the processing{" "}
+      <a
+        href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={linkStyle}
+      >
+        here
+      </a>
+      .
+    </p>
+  </>
+),
     "Wyoming": (
       <>
         <p>

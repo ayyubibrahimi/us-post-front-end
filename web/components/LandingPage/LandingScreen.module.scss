@@ -3,9 +3,9 @@
   background-color: #fff;
 }
 
-.georgiaButton {
-  width: 10rem;
-  height: 2.5rem;
+.stateButtons {
+  width: 12rem;  /* Increased from 10rem */
+  height: 3rem;  /* Increased from 2.5rem */
   border-radius: 0.375rem;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
@@ -16,7 +16,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.georgiaButton:hover {
+.stateButtons:hover {
   background-color: #fff;
   border-color: #495057;
   color: #212529;
@@ -24,14 +24,11 @@
   transform: translateY(-1px);
 }
 
-.georgiaButton:active {
+.stateButtonsn:active {
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.floridaButton {
-  composes: georgiaButton;
-}
 
 .stateDataButton {
   width: 14rem;
