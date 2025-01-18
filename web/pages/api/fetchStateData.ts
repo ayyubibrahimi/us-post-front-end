@@ -46,16 +46,37 @@ type Filter = {
 function buildNameQuery(
   baseQuery: Query<DocumentData>,
   firstName: string | string[] | undefined,
-  lastName: string | string[] | undefined
+  lastName: string | string[] | undefined,
+  agencyName: string | string[] | undefined
 ): Query<DocumentData> {
   // Convert potential array values to strings and clean
   const cleanFirstName = (Array.isArray(firstName) ? firstName[0] : firstName || '').trim();
   const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
+  const cleanAgencyName = (Array.isArray(agencyName) ? agencyName[0] : agencyName || '').trim();
 
   let firestoreQuery = baseQuery;
   
-  // If both names are present, create a compound query
-  if (cleanFirstName && cleanLastName) {
+  // Build query based on combinations of filters
+  if (cleanFirstName && cleanLastName && cleanAgencyName) {
+    // All three filters present
+    const firstNameTitle = toTitleCase(cleanFirstName);
+    const lastNameTitle = toTitleCase(cleanLastName);
+    const agencyNameUpper = toTitleCase(cleanAgencyName);
+
+    firestoreQuery = query(
+      firestoreQuery,
+      where('first_name', '>=', firstNameTitle),
+      where('first_name', '<=', firstNameTitle + '\uf8ff'),
+      where('last_name', '>=', lastNameTitle),
+      where('last_name', '<=', lastNameTitle + '\uf8ff'),
+      where('agency_name', '>=', agencyNameUpper),
+      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
+      orderBy('first_name'),
+      orderBy('last_name'),
+      orderBy('agency_name')
+    );
+  } else if (cleanFirstName && cleanLastName) {
+    // Only first and last name
     const firstNameTitle = toTitleCase(cleanFirstName);
     const lastNameTitle = toTitleCase(cleanLastName);
 
@@ -68,8 +89,36 @@ function buildNameQuery(
       orderBy('first_name'),
       orderBy('last_name')
     );
+  } else if (cleanFirstName && cleanAgencyName) {
+    // First name and agency name
+    const firstNameTitle = toTitleCase(cleanFirstName);
+    const agencyNameUpper = toTitleCase(cleanAgencyName);
+
+    firestoreQuery = query(
+      firestoreQuery,
+      where('first_name', '>=', firstNameTitle),
+      where('first_name', '<=', firstNameTitle + '\uf8ff'),
+      where('agency_name', '>=', agencyNameUpper),
+      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
+      orderBy('first_name'),
+      orderBy('agency_name')
+    );
+  } else if (cleanLastName && cleanAgencyName) {
+    // Last name and agency name
+    const lastNameTitle = toTitleCase(cleanLastName);
+    const agencyNameUpper = toTitleCase(cleanAgencyName);
+
+    firestoreQuery = query(
+      firestoreQuery,
+      where('last_name', '>=', lastNameTitle),
+      where('last_name', '<=', lastNameTitle + '\uf8ff'),
+      where('agency_name', '>=', agencyNameUpper),
+      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
+      orderBy('last_name'),
+      orderBy('agency_name')
+    );
   } else if (cleanLastName) {
-    // Only last name present
+    // Only last name
     const lastNameTitle = toTitleCase(cleanLastName);
     firestoreQuery = query(
       firestoreQuery,
@@ -78,7 +127,7 @@ function buildNameQuery(
       orderBy('last_name')
     );
   } else if (cleanFirstName) {
-    // Only first name present
+    // Only first name
     const firstNameTitle = toTitleCase(cleanFirstName);
     firestoreQuery = query(
       firestoreQuery,
@@ -86,9 +135,20 @@ function buildNameQuery(
       where('first_name', '<=', firstNameTitle + '\uf8ff'),
       orderBy('first_name')
     );
+  } else if (cleanAgencyName) {
+    // Only agency name
+    const agencyNameUpper = toTitleCase(cleanAgencyName);
+    firestoreQuery = query(
+      firestoreQuery,
+      where('agency_name', '>=', agencyNameUpper),
+      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
+      orderBy('agency_name')
+    );
   } else {
-    // No names provided
-    firestoreQuery = query(firestoreQuery, orderBy('__name__'));
+    firestoreQuery = query(
+      firestoreQuery,
+      orderBy('person_nbr')
+    );
   }
 
   return firestoreQuery;
@@ -119,29 +179,32 @@ export default async function handler(
   const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
   const cleanFirstName = (Array.isArray(firstName) ? firstName[0] : firstName || '').trim();
   const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
+  const cleanAgencyName = (Array.isArray(agencyName) ? agencyName[0] : agencyName || '').trim();
+
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
-    const uploadsRef = collection(db, 'db');
+    const uploadsRef = collection(db, 'db_tmp');
     
-    let firestoreQuery: Query<DocumentData> = query(uploadsRef, 
-      where('__name__', '>=', `${formattedState}-processed.csv_`), 
-      where('__name__', '<', `${formattedState}-processed.csv_\uf8ff`)
+    // Change the base query to use state field instead of document ID
+    let firestoreQuery: Query<DocumentData> = query(
+      uploadsRef,
+      where('state', '==', formattedState)
     );
 
-    firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName);
+    firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName, agencyName);
 
     // Build remaining filters
     const filters: Filter[] = [];
     if (uid) filters.push({ field: 'person_nbr', value: uid });
-    if (agencyName) filters.push({ field: 'agency_name', value: agencyName });
+    // if (agencyName) filters.push({ field: 'agency_name', value: agencyName });
     if (startDate) filters.push({ field: 'start_date', value: startDate });
     if (endDate) filters.push({ field: 'end_date', value: endDate });
 
     // For name filters, fetch all data to sort properly
     let allData: AgencyData[] = [];
     
-    if (cleanFirstName || cleanLastName) {
+    if (cleanFirstName || cleanLastName || cleanAgencyName) {
       // Fetch all documents in batches when there's a name filter
       const batchSize = 1000;
       let lastDoc = null;

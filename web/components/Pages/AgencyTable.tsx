@@ -153,8 +153,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {
         headerName: 'UID',
         field: 'person_nbr',
-        // sortable: true,
-        filter: false,
+        sortable: true,
+        filter: true,
         // filterParams: getFilterParams('person_nbr'),
         tooltipValueGetter: params => params.value,
         flex: 1,
@@ -163,7 +163,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {
         headerName: 'First Name',
         field: 'first_name',
-        // sortable: true,
+        sortable: true,
         filter: 'agTextColumnFilter',
         // filterParams: getFilterParams('first_name'),
         tooltipValueGetter: params => params.value,
@@ -176,7 +176,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       baseColumns.push({
         headerName: 'Middle Name',
         field: 'middle_name',
-        // sortable: true,
+        sortable: true,
         filter: false,
         // filterParams: getFilterParams('middle_name'),
         tooltipValueGetter: params => params.value,
@@ -189,7 +189,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {
         headerName: 'Last Name',
         field: 'last_name',
-        // sortable: true,
+        sortable: true,
         filter: 'agTextColumnFilter',
         // filterParams: getFilterParams('last_name'),
         tooltipValueGetter: params => params.value,
@@ -199,8 +199,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {
         headerName: 'Agency Name',
         field: 'agency_name',
-        // sortable: true,
-        filter: false,
+        sortable: true,
+        filter: true,
         // filterParams: getFilterParams('agency_name'),
         tooltipValueGetter: params => params.value,
         flex: 1.5,
@@ -209,7 +209,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {
         headerName: 'Start Date',
         field: 'start_date',
-        // sortable: true,
+        sortable: true,
         filter: false,
         // filterParams: getFilterParams('start_date'),
         tooltipValueGetter: params => params.value,
@@ -219,7 +219,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       {
         headerName: 'End Date',
         field: 'end_date',
-        // sortable: true,
+        sortable: true,
         filter: false,
         // filterParams: getFilterParams('end_date'),
         tooltipValueGetter: params => params.value,
@@ -271,9 +271,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     tooltipShowDelay: 0,
     tooltipHideDelay: 2000,
     floatingFilter: true,  // Remove the default filter property
-    suppressMenu: true,
-    unSortIcon: false,
-    suppressSortIcons: true,
+    suppressMenu: false,
+    unSortIcon: true,
+    suppressSortIcons: false,
   }), []);
 
   const onGridReady = (params: GridReadyEvent) => {

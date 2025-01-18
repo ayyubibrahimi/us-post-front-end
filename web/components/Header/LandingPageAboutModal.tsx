@@ -85,7 +85,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               <section className={styles.modalSection}>
                 <p>
                   
-                The National Police Index is a public data project led by reporter Sam Stecklow of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Louisiana Law Enforcement Accountability Database of Innocence Project New Orleans, and Tarak Shah of the Human Rights Data Analysis Group.
+                The National Police Index is a public data project led by reporter Sam Stecklow of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Berkeley Institute for Data Science, and Tarak Shah of the Human Rights Data Analysis Group.
 
                 </p>
               </section>
