@@ -15,7 +15,7 @@ export const formatStateForDisplay = (state: string): string => {
 const states = [
   "Arizona", 'California', "Florida", "Florida Discipline",
   "Georgia", "Georgia Discipline", "Illinois", "Indiana",
-  "Kansas", "Kentucky", "Maryland", "Minnesota", "Mississippi",
+  "Kansas", "Kentucky", "Maryland",  "Mississippi",
   "New Mexico", "North Carolina", "Ohio", "Oregon", "South Carolina", 
   "Tennessee", "Texas", "Utah", "Washington", "Vermont",
    "West Virginia", "Wyoming"
