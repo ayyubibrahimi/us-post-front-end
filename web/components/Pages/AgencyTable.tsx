@@ -36,6 +36,7 @@ interface AgencyData {
 
 interface Filters {
   lastName: string;
+  middleName: string;
   firstName: string;
   agencyName: string;
   uid: string;
@@ -79,6 +80,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   // Map grid fields to filter fields
   const fieldMapping = {
     'person_nbr': 'uid',
+    'middle_name': 'middleName',
     'last_name': 'lastName',
     'first_name': 'firstName',
     'agency_name': 'agencyName',
@@ -100,6 +102,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       const filterModel = gridApi.getFilterModel();
       const updatedFilters: Filters = {
         lastName: '',
+        middleName: '',
         firstName: '',
         agencyName: '',
         uid: '',
@@ -177,7 +180,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         headerName: 'Middle Name',
         field: 'middle_name',
         sortable: true,
-        filter: false,
+        filter: true,
         // filterParams: getFilterParams('middle_name'),
         tooltipValueGetter: params => params.value,
         flex: 1,

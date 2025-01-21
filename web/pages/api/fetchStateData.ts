@@ -164,6 +164,7 @@ export default async function handler(
     page = '1', 
     pageSize = '10',
     lastName = '',
+    middleName = '',
     firstName = '',
     startDate = '',
     endDate = '',
@@ -184,7 +185,7 @@ export default async function handler(
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
-    const uploadsRef = collection(db, 'db_tmp');
+    const uploadsRef = collection(db, 'db_launch');
     
     // Change the base query to use state field instead of document ID
     let firestoreQuery: Query<DocumentData> = query(
@@ -197,6 +198,7 @@ export default async function handler(
     // Build remaining filters
     const filters: Filter[] = [];
     if (uid) filters.push({ field: 'person_nbr', value: uid });
+    if (middleName) filters.push({ field: 'middle_name', value: middleName});
     // if (agencyName) filters.push({ field: 'agency_name', value: agencyName });
     if (startDate) filters.push({ field: 'start_date', value: startDate });
     if (endDate) filters.push({ field: 'end_date', value: endDate });

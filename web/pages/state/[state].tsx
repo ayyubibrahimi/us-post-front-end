@@ -35,6 +35,7 @@ interface Filters {
   lastName: string;
   firstName: string;
   agencyName: string;
+  middleName: string;
   uid: string;
   startDate: string;
   endDate: string;
@@ -65,6 +66,7 @@ const StatePage: React.FC = () => {
   });
   const [filters, setFilters] = useState<Filters>({
     lastName: '',
+    middleName: '',
     firstName: '',
     agencyName: '',
     uid: '',
