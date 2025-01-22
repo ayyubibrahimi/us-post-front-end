@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../utils/firebaseConfig';
+import { db } from '../../utils/FirebaseConfig';
 import { collection, query, where, orderBy, limit, startAfter, getDocs, Query, DocumentData, getCountFromServer } from 'firebase/firestore';
 
 type AgencyData = {
