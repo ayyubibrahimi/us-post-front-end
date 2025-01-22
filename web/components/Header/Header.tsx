@@ -15,7 +15,7 @@ export const formatStateForDisplay = (state: string): string => {
 const states = [
   "Arizona", 'California', "Florida", "Florida Discipline",
   "Georgia", "Georgia Discipline", "Illinois", "Indiana",
-  "Kansas", "Kentucky", "Maryland",  "Mississippi",
+  "Kansas", "Kentucky", "Maryland", "Minnesota",  "Mississippi",
   "New Mexico", "North Carolina", "Ohio", "Oregon", "South Carolina", 
   "Tennessee", "Texas", "Utah", "Washington", "Vermont",
    "West Virginia", "Wyoming"
@@ -42,6 +42,9 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
     // Convert to URL format when passing to parent
     onStateChange(formatStateForUrl(state));
     setIsDropdownOpen(false);
+    if (state == "Minnesota") {
+      window.open('https://invisible.institute/mnpost', '_blank')
+    }
   };
 
   const handleAboutClick = () => {
