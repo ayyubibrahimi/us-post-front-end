@@ -1,9 +1,0 @@
-{
-    "rootDirectory": "web",
-    "builds": [
-      {
-        "src": "web/package.json",
-        "use": "@vercel/next"
-      }
-    ]
-  }
