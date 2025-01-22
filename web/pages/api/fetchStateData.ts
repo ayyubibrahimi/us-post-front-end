@@ -185,6 +185,16 @@ export default async function handler(
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
+    if (formattedState === 'minnesota') {
+      return res.status(200).json({
+        data: [],
+        currentPage: 1,
+        pageSize: parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10),
+        totalItems: 0,
+        totalPages: 0,
+        isLastPage: true
+      });
+    }
     const uploadsRef = collection(db, 'db_launch');
     
     // Change the base query to use state field instead of document ID
@@ -192,6 +202,8 @@ export default async function handler(
       uploadsRef,
       where('state', '==', formattedState)
     );
+
+
 
     firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName, agencyName);
 
