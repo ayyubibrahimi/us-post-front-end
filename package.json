@@ -6,6 +6,7 @@
     "ag-grid-react": "^32.3.1",
     "firebase-admin": "^12.4.0",
     "leaflet": "^1.9.4",
+    "next": "^15.1.5",
     "papaparse": "^5.4.1",
     "react-leaflet": "^4.2.1"
   },
