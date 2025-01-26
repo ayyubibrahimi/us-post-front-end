@@ -1,3 +1,0 @@
-[2024-06-23T20:54:54.824Z] Fetching data for state: California
-[2024-06-23T20:54:56.255Z] File URL: https://firebasestorage.googleapis.com/v0/b/us-post-data.appspot.com/o/california-processed.csv?alt=media&token=5fe20e1b-286a-452c-88d7-cbad4a658180
-[2024-06-23T20:54:56.602Z] Error fetching data for California: Failed to fetch
