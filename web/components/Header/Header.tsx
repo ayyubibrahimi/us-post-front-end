@@ -42,9 +42,6 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
     // Convert to URL format when passing to parent
     onStateChange(formatStateForUrl(state));
     setIsDropdownOpen(false);
-    if (state == "Minnesota") {
-      window.open('https://invisible.institute/mnpost', '_blank')
-    }
   };
 
   const handleAboutClick = () => {

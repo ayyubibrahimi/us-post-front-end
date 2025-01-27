@@ -8,13 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleStateSelection = (state: string) => {
-    // The state name is already formatted for URL when it arrives here
-    if (state == 'Minnesota') {
-      window.open('https://invisible.institute/mnpost', '_blank')
-    }
-    else {
       router.push(`/state/${state}`);
-    }
   };
 
   return (
