@@ -3,6 +3,9 @@
 .vscode
 **/.DS_Store
 
+web/.next
+web/node_modules
+
 # dependencies
 /node_modules
 /.pnp
