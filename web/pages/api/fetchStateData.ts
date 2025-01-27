@@ -185,7 +185,7 @@ export default async function handler(
 
   try {
     const formattedState = state.toLowerCase().replace(/\s+/g, '-');
-    if (formattedState === 'minnesota') {
+    if (formattedState === 'minneapolis') {
       return res.status(200).json({
         data: [],
         currentPage: 1,
