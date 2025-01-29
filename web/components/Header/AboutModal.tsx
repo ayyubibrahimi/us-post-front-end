@@ -392,6 +392,31 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
         </p>
       </>
     ),
+    "North Carolina": (
+      <>
+        <p>
+        Data about law enforcement in North Carolina were obtained under the North Carolina Public Records Act from the{" "}
+          <a 
+            href="https://ncdoj.gov/law-enforcement-training/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            North Carolina Department of Justice
+          </a>
+          . The data released includes personnel and employment history for all officers certified by NCDOJ’s Criminal Justice Education & Training Standards Commission and Sheriffs’ Education & Training Standards Commission, with data going back to the 1970s. The data were last updated in August 2023, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science. Read more about the data processing{" "}
+          <a 
+            href="https://github.com/ayyubibrahimi/us-post-data/tree/main/preprocess/clean" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            here
+          </a>
+          .
+        </p>
+      </>
+    ),
     "Ohio": (
       <>
         <p>
