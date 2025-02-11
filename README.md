@@ -2,7 +2,8 @@
 
 ## Introduction
 
-Welcome to the National Police Index, a comprehensive database providing employment history data for law enforcement officers across multiple states in the United States. 
+Welcome to the National Police Index, a comprehensive database providing employment history data for law enforcement officers across multiple states in the United States.
+
 ## States Included
 
 As of our latest update, the National Police Index includes data from the following states:
@@ -50,7 +51,7 @@ Please note that the availability of specific data points may vary by state and 
 
 ## Data Sources and Updates
 
-The data in the National Police Index is sourced from the from Peace Officer Standards and Training (POST) agency, which is responsible for certifiying police officers in each given state. 
+The data in the National Police Index is sourced from the from Peace Officer Standards and Training (POST) agency, which is responsible for certifiying police officers in each given state.
 
 ## Privacy and Ethical Considerations
 
@@ -63,6 +64,7 @@ The National Police Index is an information resource and should not be used as a
 ## How to Run
 
 ### Prerequisites
+
 - Node.js (v16 or higher)
 - npm (v8 or higher)
 - A Firebase account and project
@@ -70,17 +72,20 @@ The National Police Index is an information resource and should not be used as a
 ### Initial Setup
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/ayyubibrahimi/us-post-front-end.git
 cd us-post-front-end
 ```
 
 2. Navigate to the web directory:
+
 ```bash
 cd web
 ```
 
 3. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -90,12 +95,14 @@ npm install
 1. Create a new Firebase project at [Firebase Console](https://console.firebase.google.com/)
 
 2. Generate your Firebase configuration:
+
    - Go to Project Settings > General
    - Scroll down to "Your apps" section
    - Click on the web icon (</>)
    - Register your app and copy the configuration object
 
 3. Create a new file `firebase.config.js` in the `utils` directory:
+
 ```javascript
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -107,7 +114,7 @@ const firebaseConfig = {
   storageBucket: "your-storage-bucket",
   messagingSenderId: "your-messenger-id",
   appId: "your-app-id",
-  measurementId: "your-measurement-id"
+  measurementId: "your-measurement-id",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -119,11 +126,13 @@ export { db };
 ### Running the Application
 
 1. Start the development server:
+
 ```bash
 npm run dev
 ```
 
 2. Open your browser and navigate to:
+
 ```
 http://localhost:3000
 ```
