@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write !.github ."
   },
   "dependencies": {
     "@google-cloud/datastore": "^9.1.0",
