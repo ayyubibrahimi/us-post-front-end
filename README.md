@@ -104,17 +104,17 @@ npm install
 3. Create a new file `firebase.config.js` in the `utils` directory:
 
 ```javascript
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-auth-domain",
-  projectId: "your-project-id",
-  storageBucket: "your-storage-bucket",
-  messagingSenderId: "your-messenger-id",
-  appId: "your-app-id",
-  measurementId: "your-measurement-id",
+  apiKey: 'your-api-key',
+  authDomain: 'your-auth-domain',
+  projectId: 'your-project-id',
+  storageBucket: 'your-storage-bucket',
+  messagingSenderId: 'your-messenger-id',
+  appId: 'your-app-id',
+  measurementId: 'your-measurement-id',
 };
 
 const app = initializeApp(firebaseConfig);

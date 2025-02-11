@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useRouter } from "next/router";
-import AgencyTable from "../../components/Pages/AgencyTable";
-import Header from "../../components/Header/Header";
-import styles from "../index.module.scss";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import AgencyTable from '../../components/Pages/AgencyTable';
+import Header from '../../components/Header/Header';
+import styles from '../index.module.scss';
 
 interface AgencyData {
   case_id?: string;
@@ -65,28 +65,26 @@ const StatePage: React.FC = () => {
     isLastPage: false,
   });
   const [filters, setFilters] = useState<Filters>({
-    lastName: "",
-    middleName: "",
-    firstName: "",
-    agencyName: "",
-    uid: "",
-    startDate: "",
-    endDate: "",
+    lastName: '',
+    middleName: '',
+    firstName: '',
+    agencyName: '',
+    uid: '',
+    startDate: '',
+    endDate: '',
   });
   const [activeFilters, setActiveFilters] = useState<boolean>(false);
 
   const fetchStateData = useCallback(
     async (page: number, size: number, currentFilters: Filters) => {
-      if (!state || typeof state !== "string") return;
+      if (!state || typeof state !== 'string') return;
 
       setIsLoading(true);
       setError(null);
 
       // Create a clean filter object removing empty values
       const cleanFilters = Object.fromEntries(
-        Object.entries(currentFilters).filter(
-          ([key, value]) => value !== "" && key !== "columnFilters",
-        ),
+        Object.entries(currentFilters).filter(([key, value]) => value !== '' && key !== 'columnFilters'),
       );
 
       // Check if we have any active filters
@@ -102,26 +100,16 @@ const StatePage: React.FC = () => {
 
       // Add column filters if they exist
       if (currentFilters.columnFilters) {
-        queryParams.append(
-          "columnFilters",
-          JSON.stringify(currentFilters.columnFilters),
-        );
+        queryParams.append('columnFilters', JSON.stringify(currentFilters.columnFilters));
       }
 
       try {
         const response = await fetch(`../api/fetchStateData?${queryParams}`);
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to fetch state data");
+          throw new Error(errorData.error || 'Failed to fetch state data');
         }
-        const {
-          data,
-          currentPage,
-          pageSize,
-          totalItems,
-          totalPages,
-          isLastPage,
-        } = await response.json();
+        const { data, currentPage, pageSize, totalItems, totalPages, isLastPage } = await response.json();
 
         setAgencyData(data);
         setPaginationInfo({
@@ -132,9 +120,7 @@ const StatePage: React.FC = () => {
           isLastPage,
         });
       } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "An unknown error occurred",
-        );
+        setError(error instanceof Error ? error.message : 'An unknown error occurred');
       } finally {
         setIsLoading(false);
       }
@@ -143,24 +129,20 @@ const StatePage: React.FC = () => {
   );
 
   const fetchEntireCSV = useCallback(async () => {
-    if (!state || typeof state !== "string") return null;
+    if (!state || typeof state !== 'string') return null;
 
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(
-        `../api/downloadStateCSV?state=${encodeURIComponent(state)}`,
-      );
+      const response = await fetch(`../api/downloadStateCSV?state=${encodeURIComponent(state)}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch CSV download URL");
+        throw new Error('Failed to fetch CSV download URL');
       }
       const { downloadUrl } = await response.json();
       return downloadUrl;
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "An unknown error occurred",
-      );
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
       return null;
     } finally {
       setIsLoading(false);
@@ -169,26 +151,17 @@ const StatePage: React.FC = () => {
 
   // Separate useEffect for initial load and state changes
   useEffect(() => {
-    if (state && typeof state === "string") {
+    if (state && typeof state === 'string') {
       fetchStateData(1, paginationInfo.pageSize, filters);
     }
   }, [state]);
 
   // Separate useEffect for filter and pagination changes
   useEffect(() => {
-    if (state && typeof state === "string") {
-      fetchStateData(
-        paginationInfo.currentPage,
-        paginationInfo.pageSize,
-        filters,
-      );
+    if (state && typeof state === 'string') {
+      fetchStateData(paginationInfo.currentPage, paginationInfo.pageSize, filters);
     }
-  }, [
-    paginationInfo.currentPage,
-    paginationInfo.pageSize,
-    filters,
-    fetchStateData,
-  ]);
+  }, [paginationInfo.currentPage, paginationInfo.pageSize, filters, fetchStateData]);
 
   const handleStateSelection = (newState: string) => {
     router.push(`/state/${encodeURIComponent(newState)}`);
@@ -219,7 +192,7 @@ const StatePage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  if (!state || typeof state !== "string") {
+  if (!state || typeof state !== 'string') {
     return <div>Invalid state</div>;
   }
 
@@ -227,9 +200,7 @@ const StatePage: React.FC = () => {
     <div className={`${styles.pageContainer} flex flex-col h-screen`}>
       <Header selectedState={state} onStateChange={handleStateSelection} />
       <main className="flex-grow p-4">
-        <h1 className="text-2xl font-bold mb-4">
-          {state} Peace Officer Employment History
-        </h1>
+        <h1 className="text-2xl font-bold mb-4">{state} Peace Officer Employment History</h1>
         <AgencyTable
           agencyData={agencyData}
           isLoading={isLoading}
