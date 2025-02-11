@@ -15,7 +15,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
         onClose();
       }
     },
-    [onClose]
+    [onClose],
   );
 
   useEffect(() => {
@@ -78,15 +78,21 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
             <>
               <section className={styles.modalSection}>
                 <p>
-                The National Police Index is a project and data tool showing police employment history data obtained from state police training and certification boards across the U.S. All but one state has such a system. 
+                  The National Police Index is a project and data tool showing
+                  police employment history data obtained from state police
+                  training and certification boards across the U.S. All but one
+                  state has such a system.
                 </p>
               </section>
 
               <section className={styles.modalSection}>
                 <p>
-                  
-                The National Police Index is a public data project led by reporter Sam Stecklow of Invisible Institute, a nonprofit public accountability journalism organization based in Chicago, created in partnership with Ayyub Ibrahim of the Berkeley Institute for Data Science, and Tarak Shah of the Human Rights Data Analysis Group.
-
+                  The National Police Index is a public data project led by
+                  reporter Sam Stecklow of Invisible Institute, a nonprofit
+                  public accountability journalism organization based in
+                  Chicago, created in partnership with Ayyub Ibrahim of the
+                  Berkeley Institute for Data Science, and Tarak Shah of the
+                  Human Rights Data Analysis Group.
                 </p>
               </section>
 
@@ -100,12 +106,14 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 </p>
               </section>
 
-
               <section className={styles.modalSection}>
                 <p>
-                  
-                Each state&apos;s database is closed to the others; names are common, and an officer&apos;s name appearing in two states does not necessarily mean they are the same person. Specific records should be sought from state training boards and individual police departments to confirm the identity of an individual whose name appears in multiple states.
-
+                  Each state&apos;s database is closed to the others; names are
+                  common, and an officer&apos;s name appearing in two states
+                  does not necessarily mean they are the same person. Specific
+                  records should be sought from state training boards and
+                  individual police departments to confirm the identity of an
+                  individual whose name appears in multiple states.
                 </p>
               </section>
 
@@ -161,7 +169,9 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
               <section className={styles.modalSection}>
                 <p>
-                Access the underlying data files for the National Police Index at this  <a
+                  Access the underlying data files for the National Police Index
+                  at this{" "}
+                  <a
                     href="https://www.dropbox.com/scl/fo/qfzs3pias4v65fp34cdal/AE_taG3_K2QxaGOG1CGsrzU?rlkey=6n2he8t6i95cde1n51kn1l1v5&st=r7cct5rp&dl=0"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -169,7 +179,6 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   >
                     link.
                   </a>
-              
                 </p>
               </section>
             </>
@@ -240,7 +249,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                     rel="noopener noreferrer"
                   >
                     Machine Learning Justice Lab
-                  </a>.
+                  </a>
+                  .
                 </p>
               </section>
 
@@ -250,12 +260,14 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <span className={styles.pronouns}>(he/they)</span>
                 </h3>
                 <p className={styles.teamMemberBio}>
-                  A data scientist at the Human Rights Data Analysis Group. He works with community
-                  organizations, lawyers, journalists, international human rights institutions, 
-                  and transitional justice mechanisms to support campaigns for accountability 
-                  through quantitative analysis. He currently serves as program manager of the
-                  Community Law Enforcement Network, an interdisciplinary effort to collect and 
-                  publish records related to police force and misconduct in California.
+                  A data scientist at the Human Rights Data Analysis Group. He
+                  works with community organizations, lawyers, journalists,
+                  international human rights institutions, and transitional
+                  justice mechanisms to support campaigns for accountability
+                  through quantitative analysis. He currently serves as program
+                  manager of the Community Law Enforcement Network, an
+                  interdisciplinary effort to collect and publish records
+                  related to police force and misconduct in California.
                 </p>
               </section>
 
@@ -265,7 +277,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <span className={styles.pronouns}>(they/them)</span>
                 </h3>
                 <p className={styles.teamMemberBio}>
-                  Has been working as a Data Scientist at the Human Rights Data Analysis Group since 2022.
+                  Has been working as a Data Scientist at the Human Rights Data
+                  Analysis Group since 2022.
                 </p>
               </section>
 
@@ -275,8 +288,9 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <span className={styles.pronouns}>(she/her)</span>
                 </h3>
                 <p className={styles.teamMemberBio}>
-                  A volunteer developer on this project. She studied mathematics at Tulane University 
-                  and software engineering at Ada Developers Academy.
+                  A volunteer developer on this project. She studied mathematics
+                  at Tulane University and software engineering at Ada
+                  Developers Academy.
                 </p>
               </section>
 
@@ -292,10 +306,11 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <span className={styles.pronouns}>(she/her)</span>
                 </h3>
                 <p className={styles.teamMemberBio}>
-                  Invisible Institute&apos;s Director of Technology. She studied Information Analysis 
-                  and Computer Science at the University of Michigan. At Invisible Institute, she 
-                  primarily works to maintain the Civic Police Data Project, and to expand the police 
-                  misconduct tool to other cities.
+                  Invisible Institute&apos;s Director of Technology. She studied
+                  Information Analysis and Computer Science at the University of
+                  Michigan. At Invisible Institute, she primarily works to
+                  maintain the Civic Police Data Project, and to expand the
+                  police misconduct tool to other cities.
                 </p>
               </section>
 
@@ -311,7 +326,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <span className={styles.pronouns}>(she/her)</span>
                 </h3>
                 <p className={styles.teamMemberBio}>
-                  Invisible Institute&apos;s legal director and a civil rights attorney.
+                  Invisible Institute&apos;s legal director and a civil rights
+                  attorney.
                 </p>
               </section>
 
@@ -342,15 +358,15 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               </section>
 
               <section className={styles.teamMember}>
-                <h3 className={styles.teamMemberName}>
-                  Lisa Pickoff-White
-                </h3>
+                <h3 className={styles.teamMemberName}>Lisa Pickoff-White</h3>
                 <p className={styles.teamMemberBio}>
                   California Reporting Project
                 </p>
               </section>
 
-              <section className={`${styles.teamMember} ${styles.specialThanks}`}>
+              <section
+                className={`${styles.teamMember} ${styles.specialThanks}`}
+              >
                 <h3 className={styles.teamMemberName}>Special Thanks</h3>
                 <p className={styles.teamMemberBio}>
                   A special thanks goes out to Huy Dao and Eliora Henzler.

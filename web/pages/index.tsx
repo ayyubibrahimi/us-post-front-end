@@ -8,7 +8,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleStateSelection = (state: string) => {
-      router.push(`/state/${state}`);
+    router.push(`/state/${state}`);
   };
 
   return (

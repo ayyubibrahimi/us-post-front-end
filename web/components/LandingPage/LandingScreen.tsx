@@ -10,7 +10,7 @@ interface LandingScreenProps {
 
 // Function to format state names for URLs
 const formatStateForUrl = (state: string) => {
-  return state.replace(/\s+/g, '-');
+  return state.replace(/\s+/g, "-");
 };
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
@@ -75,7 +75,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     "Washington",
     "Vermont",
     "West Virginia",
-    "Wyoming"
+    "Wyoming",
   ];
 
   const handleStateClick = (state: string) => {
@@ -92,15 +92,20 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     <div
       className={`flex flex-col items-center justify-center h-max space-y-2 my-12 xl:my-20 2xl:my-24 ${styles.landingScreenContainer}`}
     >
-      <iframe src="https://data-access-map.netlify.app/" width="100%" height="530px"></iframe>
-  
+      <iframe
+        src="https://data-access-map.netlify.app/"
+        width="100%"
+        height="530px"
+      ></iframe>
+
       {/* Removed empty div elements */}
       <div className="flex flex-col items-center justify-center -mt-4">
         <p className={`${styles.bottomText}`}>
           The National Police Index is a project and data tool showing police
           employment history data obtained from state police training and
-          certification boards across the U.S.
-          In total, 27 states have released centralized employment history data, 23 of which are currently represented on the data tool.
+          certification boards across the U.S. In total, 27 states have released
+          centralized employment history data, 23 of which are currently
+          represented on the data tool.
         </p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-2">
@@ -118,14 +123,14 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         isOpen={isLouisianaModalOpen}
         onClose={() => setIsLouisianaModalOpen(false)}
       />
-  
+
       <div className="-mt-2">
         <button
           className={`items-center ${buttonStyles.stateDataButton}`}
           onClick={() =>
             window.open(
               "https://invisible.institute/national-police-index#block-yui_3_17_2_1_1726594221053_11311",
-              "_blank"
+              "_blank",
             )
           }
         >
@@ -134,6 +139,6 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
       </div>
     </div>
   );
-}
+};
 
 export default LandingScreen;

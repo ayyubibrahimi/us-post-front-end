@@ -4,8 +4,8 @@
 }
 
 .stateButtons {
-  width: 12rem;  /* Increased from 10rem */
-  height: 3rem;  /* Increased from 2.5rem */
+  width: 12rem; /* Increased from 10rem */
+  height: 3rem; /* Increased from 2.5rem */
   border-radius: 0.375rem;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
@@ -28,7 +28,6 @@
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-
 
 .stateDataButton {
   width: 14rem;
@@ -67,7 +66,13 @@
 }
 
 .typewriterBase {
-  font-family: "SF-Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "SF-Pro Text",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 .bottomText {

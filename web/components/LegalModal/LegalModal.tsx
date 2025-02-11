@@ -13,7 +13,7 @@ const LegalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         onClose();
       }
     },
-    [onClose]
+    [onClose],
   );
 
   useEffect(() => {
