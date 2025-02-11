@@ -1,12 +1,12 @@
 {
-    "indexes": [
-      {
-        "collectionGroup": "db",
-        "queryScope": "COLLECTION",
-        "fields": [
-          { "fieldPath": "__name__", "order": "ASCENDING" },
-          { "fieldPath": "person_nbr", "order": "ASCENDING" }
-        ]
-      }
-    ]
-  }
+  "indexes": [
+    {
+      "collectionGroup": "db",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "__name__", "order": "ASCENDING" },
+        { "fieldPath": "person_nbr", "order": "ASCENDING" }
+      ]
+    }
+  ]
+}
