@@ -82,7 +82,7 @@ cd web
 
 3. Install dependencies:
 ```bash
-npm install
+npm ci
 ```
 
 ### Firebase Configuration
