@@ -62,7 +62,7 @@ const StatePage: React.FC = () => {
     pageSize: 100,
     totalItems: 0,
     totalPages: 1,
-    isLastPage: false
+    isLastPage: false,
   });
   const [filters, setFilters] = useState<Filters>({
     lastName: '',
@@ -71,60 +71,62 @@ const StatePage: React.FC = () => {
     agencyName: '',
     uid: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
   });
   const [activeFilters, setActiveFilters] = useState<boolean>(false);
 
-  const fetchStateData = useCallback(async (page: number, size: number, currentFilters: Filters) => {
-    if (!state || typeof state !== 'string') return;
-  
-    setIsLoading(true);
-    setError(null);
+  const fetchStateData = useCallback(
+    async (page: number, size: number, currentFilters: Filters) => {
+      if (!state || typeof state !== 'string') return;
 
-    // Create a clean filter object removing empty values
-    const cleanFilters = Object.fromEntries(
-      Object.entries(currentFilters)
-        .filter(([key, value]) => value !== '' && key !== 'columnFilters')
-    );
-    
-    // Check if we have any active filters
-    const hasActiveFilters = Object.keys(cleanFilters).length > 0;
-    setActiveFilters(hasActiveFilters);
-  
-    const queryParams = new URLSearchParams({
-      state: state,
-      page: page.toString(),
-      pageSize: size.toString(),
-      ...cleanFilters
-    });
+      setIsLoading(true);
+      setError(null);
 
-    // Add column filters if they exist
-    if (currentFilters.columnFilters) {
-      queryParams.append('columnFilters', JSON.stringify(currentFilters.columnFilters));
-    }
-  
-    try {
-      const response = await fetch(`../api/fetchStateData?${queryParams}`);
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch state data');
-      }
-      const { data, currentPage, pageSize, totalItems, totalPages, isLastPage } = await response.json();
-      
-      setAgencyData(data);
-      setPaginationInfo({
-        currentPage,
-        pageSize,
-        totalItems,
-        totalPages,
-        isLastPage
+      // Create a clean filter object removing empty values
+      const cleanFilters = Object.fromEntries(
+        Object.entries(currentFilters).filter(([key, value]) => value !== '' && key !== 'columnFilters'),
+      );
+
+      // Check if we have any active filters
+      const hasActiveFilters = Object.keys(cleanFilters).length > 0;
+      setActiveFilters(hasActiveFilters);
+
+      const queryParams = new URLSearchParams({
+        state: state,
+        page: page.toString(),
+        pageSize: size.toString(),
+        ...cleanFilters,
       });
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An unknown error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [state]);
+
+      // Add column filters if they exist
+      if (currentFilters.columnFilters) {
+        queryParams.append('columnFilters', JSON.stringify(currentFilters.columnFilters));
+      }
+
+      try {
+        const response = await fetch(`../api/fetchStateData?${queryParams}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to fetch state data');
+        }
+        const { data, currentPage, pageSize, totalItems, totalPages, isLastPage } = await response.json();
+
+        setAgencyData(data);
+        setPaginationInfo({
+          currentPage,
+          pageSize,
+          totalItems,
+          totalPages,
+          isLastPage,
+        });
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'An unknown error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [state],
+  );
 
   const fetchEntireCSV = useCallback(async () => {
     if (!state || typeof state !== 'string') return null;
@@ -140,7 +142,7 @@ const StatePage: React.FC = () => {
       const { downloadUrl } = await response.json();
       return downloadUrl;
     } catch (error) {
-      setError(error instanceof Error ? error.message : "An unknown error occurred");
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
       return null;
     } finally {
       setIsLoading(false);
@@ -167,22 +169,22 @@ const StatePage: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     if (page <= paginationInfo.totalPages) {
-      setPaginationInfo(prev => ({ ...prev, currentPage: page }));
+      setPaginationInfo((prev) => ({ ...prev, currentPage: page }));
     }
   };
 
   const handlePageSizeChange = (size: number) => {
-    setPaginationInfo(prev => ({ 
-      ...prev, 
-      pageSize: size, 
-      currentPage: 1, 
-      isLastPage: false 
+    setPaginationInfo((prev) => ({
+      ...prev,
+      pageSize: size,
+      currentPage: 1,
+      isLastPage: false,
     }));
   };
 
   const handleFilterChange = (newFilters: Filters) => {
     // Reset to page 1 when filters change
-    setPaginationInfo(prev => ({ ...prev, currentPage: 1 }));
+    setPaginationInfo((prev) => ({ ...prev, currentPage: 1 }));
     setFilters(newFilters);
   };
 

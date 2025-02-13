@@ -18,18 +18,13 @@ const LandingPageHeader: React.FC = () => {
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         <Link href="/" className={styles.headerTitleLink}>
-          <h1 className={styles.headerTitle}>
-            National Police Index
-          </h1>
+          <h1 className={styles.headerTitle}>National Police Index</h1>
         </Link>
         <button className={styles.aboutButton} onClick={handleAboutClick}>
-          About the NPI 
+          About the NPI
         </button>
       </div>
-      <LandingPageAboutModal 
-        isOpen={isAboutModalOpen} 
-        onClose={handleCloseAboutModal} 
-      />
+      <LandingPageAboutModal isOpen={isAboutModalOpen} onClose={handleCloseAboutModal} />
     </header>
   );
 };

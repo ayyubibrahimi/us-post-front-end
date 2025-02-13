@@ -79,22 +79,23 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
 
   // Map grid fields to filter fields
   const fieldMapping = {
-    'person_nbr': 'uid',
-    'middle_name': 'middleName',
-    'last_name': 'lastName',
-    'first_name': 'firstName',
-    'agency_name': 'agencyName',
-    'start_date': 'startDate',
-    'end_date': 'endDate'
+    person_nbr: 'uid',
+    middle_name: 'middleName',
+    last_name: 'lastName',
+    first_name: 'firstName',
+    agency_name: 'agencyName',
+    start_date: 'startDate',
+    end_date: 'endDate',
   };
 
   // Debounced filter change to prevent too many backend calls
   const debouncedFilterChange = useMemo(
-    () => debounce((filters: Filters) => {
-      onFilterChange(filters);
-      onPageChange(1); // Reset to first page when filters change
-    }, 300),
-    [onFilterChange, onPageChange]
+    () =>
+      debounce((filters: Filters) => {
+        onFilterChange(filters);
+        onPageChange(1); // Reset to first page when filters change
+      }, 300),
+    [onFilterChange, onPageChange],
   );
 
   const onFilterChanged = useCallback(() => {
@@ -109,7 +110,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         startDate: '',
         endDate: '',
       };
-      
+
       // Convert grid filter model to our filter format
       Object.entries(filterModel).forEach(([field, filterValue]) => {
         const mappedField = fieldMapping[field as keyof typeof fieldMapping];
@@ -131,7 +132,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         if (filterValue) {
           filterModel[gridField] = {
             type: 'contains',
-            filter: filterValue
+            filter: filterValue,
           };
         }
       });
@@ -139,9 +140,12 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     }
   }, [gridApi, filters]);
 
-  const hasNonEmptyColumn = useCallback((columnName: keyof AgencyData) => {
-    return agencyData.some(row => row[columnName] && row[columnName]!.trim() !== '');
-  }, [agencyData]);
+  const hasNonEmptyColumn = useCallback(
+    (columnName: keyof AgencyData) => {
+      return agencyData.some((row) => row[columnName] && row[columnName]!.trim() !== '');
+    },
+    [agencyData],
+  );
 
   // const getFilterParams = (field: string): IFilterParams => {
   //   return {
@@ -159,9 +163,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: true,
         // filterParams: getFilterParams('person_nbr'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1,
-        minWidth: 100
+        minWidth: 100,
       },
       {
         headerName: 'First Name',
@@ -169,10 +173,10 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: 'agTextColumnFilter',
         // filterParams: getFilterParams('first_name'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1,
-        minWidth: 120
-      }
+        minWidth: 120,
+      },
     ];
 
     if (hasNonEmptyColumn('middle_name')) {
@@ -182,9 +186,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: true,
         // filterParams: getFilterParams('middle_name'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1,
-        minWidth: 120
+        minWidth: 120,
       });
     }
 
@@ -195,9 +199,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: 'agTextColumnFilter',
         // filterParams: getFilterParams('last_name'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1,
-        minWidth: 120
+        minWidth: 120,
       },
       {
         headerName: 'Agency Name',
@@ -205,9 +209,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: true,
         // filterParams: getFilterParams('agency_name'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1.5,
-        minWidth: 150
+        minWidth: 150,
       },
       {
         headerName: 'Start Date',
@@ -215,9 +219,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: false,
         // filterParams: getFilterParams('start_date'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1,
-        minWidth: 110
+        minWidth: 110,
       },
       {
         headerName: 'End Date',
@@ -225,10 +229,10 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         sortable: true,
         filter: false,
         // filterParams: getFilterParams('end_date'),
-        tooltipValueGetter: params => params.value,
+        tooltipValueGetter: (params) => params.value,
         flex: 1,
-        minWidth: 110
-      }
+        minWidth: 110,
+      },
     );
 
     const conditionalColumns: [string, keyof AgencyData][] = [
@@ -258,9 +262,9 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           sortable: true,
           filter: false,
           // filterParams: getFilterParams(field),
-          tooltipValueGetter: params => params.value,
+          tooltipValueGetter: (params) => params.value,
           flex: 1,
-          minWidth: 120
+          minWidth: 120,
         });
       }
     });
@@ -268,16 +272,19 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     return baseColumns;
   }, [hasNonEmptyColumn]);
 
-  const defaultColDef = useMemo(() => ({
-    resizable: true,
-    sortable: false,
-    tooltipShowDelay: 0,
-    tooltipHideDelay: 2000,
-    floatingFilter: true,  // Remove the default filter property
-    suppressMenu: false,
-    unSortIcon: true,
-    suppressSortIcons: false,
-  }), []);
+  const defaultColDef = useMemo(
+    () => ({
+      resizable: true,
+      sortable: false,
+      tooltipShowDelay: 0,
+      tooltipHideDelay: 2000,
+      floatingFilter: true, // Remove the default filter property
+      suppressMenu: false,
+      unSortIcon: true,
+      suppressSortIcons: false,
+    }),
+    [],
+  );
 
   const onGridReady = (params: GridReadyEvent) => {
     setGridApi(params.api);
@@ -320,7 +327,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               onPageChange(1);
             }}
           >
-            {[100, 200, 500, 10000].map(size => (
+            {[100, 200, 500, 10000].map((size) => (
               <option key={size} value={size}>
                 Show {size}
               </option>
@@ -374,29 +381,17 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
         <div className={tableStyles.footerContent}>
           {renderPagination()}
           <div className={tableStyles.csvButtons}>
-            <CSVLink 
-              data={agencyData} 
-              filename="filtered_agency_data.csv"
-              className={tableStyles.filteredcsvLink}
-            >
+            <CSVLink data={agencyData} filename="filtered_agency_data.csv" className={tableStyles.filteredcsvLink}>
               Download Filtered CSV
             </CSVLink>
-            <button 
-              onClick={handleDownloadEntireCSV} 
-              className={tableStyles.fullcsvLink}
-              disabled={isDownloadingCSV}
-            >
+            <button onClick={handleDownloadEntireCSV} className={tableStyles.fullcsvLink} disabled={isDownloadingCSV}>
               {isDownloadingCSV ? 'Preparing Download...' : 'Download Entire CSV'}
             </button>
           </div>
         </div>
       </div>
 
-      {isLoading && (
-        <div className={tableStyles.loadingOverlay}>
-          Loading data...
-        </div>
-      )}
+      {isLoading && <div className={tableStyles.loadingOverlay}>Loading data...</div>}
     </div>
   );
 };

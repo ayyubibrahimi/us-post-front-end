@@ -13,12 +13,31 @@ export const formatStateForDisplay = (state: string): string => {
 };
 
 const states = [
-  "Arizona", 'California', "Florida", "Florida Discipline",
-  "Georgia", "Georgia Discipline", "Illinois", "Indiana",
-  "Kansas", "Kentucky", "Maryland", "Minnesota",  "Mississippi",
-  "New Mexico", "North Carolina", "Ohio", "Oregon", "South Carolina", 
-  "Tennessee", "Texas", "Utah", "Washington", "Vermont",
-   "West Virginia", "Wyoming"
+  'Arizona',
+  'California',
+  'Florida',
+  'Florida Discipline',
+  'Georgia',
+  'Georgia Discipline',
+  'Illinois',
+  'Indiana',
+  'Kansas',
+  'Kentucky',
+  'Maryland',
+  'Minnesota',
+  'Mississippi',
+  'New Mexico',
+  'North Carolina',
+  'Ohio',
+  'Oregon',
+  'South Carolina',
+  'Tennessee',
+  'Texas',
+  'Utah',
+  'Washington',
+  'Vermont',
+  'West Virginia',
+  'Wyoming',
 ];
 
 interface HeaderProps {
@@ -70,21 +89,19 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
       <div className={styles.headerContainer}>
         <div className={styles.navItems}>
           <Link href="/" className={styles.headerTitleLink}>
-            <h1 className={styles.headerTitle}>
-              National Police Index
-            </h1>
+            <h1 className={styles.headerTitle}>National Police Index</h1>
           </Link>
           <div className={styles.dropdown} ref={dropdownRef}>
             <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>
-              {displayState || "Select a State"}
+              {displayState || 'Select a State'}
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenuWrapper}>
                 <ul className={styles.dropdownMenu}>
                   {states.map((state) => (
-                    <li 
-                      key={state} 
-                      className={`${styles.dropdownItem} ${state === displayState ? styles.active : ''}`} 
+                    <li
+                      key={state}
+                      className={`${styles.dropdownItem} ${state === displayState ? styles.active : ''}`}
                       onClick={() => handleStateSelection(state)}
                     >
                       {state}
@@ -99,11 +116,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
           </button>
         </div>
       </div>
-      <AboutModal 
-        isOpen={isAboutModalOpen} 
-        onClose={handleCloseAboutModal} 
-        selectedState={displayState} 
-      />
+      <AboutModal isOpen={isAboutModalOpen} onClose={handleCloseAboutModal} selectedState={displayState} />
     </header>
   );
 };

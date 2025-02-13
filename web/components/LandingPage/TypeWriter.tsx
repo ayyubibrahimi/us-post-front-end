@@ -13,7 +13,11 @@ interface TypewriterEffectSmoothProps {
   cursorClassName?: string;
 }
 
-export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ words, className, cursorClassName }) => {
+export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({
+  words,
+  className,
+  cursorClassName,
+}) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isComponentVisible, setIsComponentVisible] = useState(false);
 
@@ -23,9 +27,9 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ 
     }
   }, []);
 
-  const wordsArray = words.map(word => ({
+  const wordsArray = words.map((word) => ({
     ...word,
-    text: word.text.split(""),
+    text: word.text.split(''),
   }));
 
   const baseStyle = {
@@ -78,19 +82,17 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({ 
       {isComponentVisible && (
         <motion.div
           style={{ overflow: 'hidden', paddingBottom: '0.5rem' }}
-          initial={{ width: "0%" }}
-          animate={{ width: "fit-content" }}
-          transition={{ duration: 2, ease: "linear", delay: 0.5 }}
+          initial={{ width: '0%' }}
+          animate={{ width: 'fit-content' }}
+          transition={{ duration: 2, ease: 'linear', delay: 0.5 }}
         >
-          <div style={textContainerStyle}>
-            {renderWords()}{" "}
-          </div>
+          <div style={textContainerStyle}>{renderWords()} </div>
         </motion.div>
       )}
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+        transition={{ duration: 0.8, repeat: Infinity, repeatType: 'reverse' }}
         style={cursorStyle}
       ></motion.span>
     </div>

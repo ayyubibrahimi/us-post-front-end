@@ -2,10 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { storage } from '../../utils/FirebaseConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { state } = req.query;
 
   if (!state || Array.isArray(state)) {
