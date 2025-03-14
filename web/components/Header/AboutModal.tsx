@@ -256,6 +256,28 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
         </p>
       </>
     ),
+    Idaho: (
+      <>
+        <p>
+          Data about law enforcement officers in Idaho were obtained under the Idaho Public Records Law from the{' '}
+          <a href="https://post.idaho.gov/" target="_blank" rel="noopener noreferrer" style={linkStyle}>
+            Idaho Peace Officer Standards and Training
+          </a>
+          . The data released includes personnel and employment history for officers certified by the POST. The
+          data were last updated in May 2025, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science. 
+          Read more about the data processing{' '}
+          <a
+            href="https://github.com/ayyubibrahimi/us-post-data/blob/main/preprocess/clean/ID/src/src.ipynb"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            here
+          </a>
+          .
+        </p>
+      </>
+    ),
     Indiana: (
       <>
         <p>

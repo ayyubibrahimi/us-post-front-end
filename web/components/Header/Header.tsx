@@ -20,6 +20,7 @@ const states = [
   'Georgia',
   'Georgia Discipline',
   'Illinois',
+  'Idaho',
   'Indiana',
   'Kansas',
   'Kentucky',

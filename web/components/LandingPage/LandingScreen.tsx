@@ -57,6 +57,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     'Georgia',
     'Georgia Discipline',
     'Illinois',
+    'Idaho',
     'Indiana',
     'Kansas',
     'Kentucky',
