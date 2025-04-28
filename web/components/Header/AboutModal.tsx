@@ -53,13 +53,21 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
           .
         </p>
         <p>
-        The two databases come from separate data systems, and do not share a unique identifier. No matching has been
-        done between the two. If an individual worked in both law enforcement and corrections, they would appear in
-        this data twice. However, the fact of a name appearing in both datasets does not necessarily mean that it is
-        the same person. POST and CDCR data were last updated in 2023, and obtained by <a href="https://bsky.app/profile/whosthatcop.bsky.social" target="_blank" rel="noopener noreferrer" style={linkStyle}>@WhosThatCop</a> and the California
-        Reporting Project respectively. Both datasets were processed by Tarak Shah of the Human Rights Data Analysis Group. Read more about the
-        data processing{' '}
-        <a
+          The two databases come from separate data systems, and do not share a unique identifier. No matching has been
+          done between the two. If an individual worked in both law enforcement and corrections, they would appear in
+          this data twice. However, the fact of a name appearing in both datasets does not necessarily mean that it is
+          the same person. POST and CDCR data were last updated in 2023, and obtained by{' '}
+          <a
+            href="https://bsky.app/profile/whosthatcop.bsky.social"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={linkStyle}
+          >
+            @WhosThatCop
+          </a>{' '}
+          and the California Reporting Project respectively. Both datasets were processed by Tarak Shah of the Human
+          Rights Data Analysis Group. Read more about the data processing{' '}
+          <a
             href="https://github.com/ayyubibrahimi/us-post-data/blob/main/bln/CA/README.md"
             target="_blank"
             rel="noopener noreferrer"
@@ -257,8 +265,8 @@ const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, selectedState 
           <a href="https://post.idaho.gov/" target="_blank" rel="noopener noreferrer" style={linkStyle}>
             Idaho Peace Officer Standards and Training
           </a>
-          . The data released includes personnel and employment history for officers certified by the POST. The
-          data were last updated in May 2025, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science. 
+          . The data released includes personnel and employment history for officers certified by the POST. The data
+          were last updated in May 2025, and were processed by Ayyub Ibrahim of the Berkeley Institute for Data Science.
           Read more about the data processing{' '}
           <a
             href="https://github.com/ayyubibrahimi/us-post-data/blob/main/preprocess/clean/ID/src/src.ipynb"

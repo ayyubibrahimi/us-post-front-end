@@ -38,7 +38,7 @@
   margin: 0;
   padding: 24px 32px 16px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -58,26 +58,26 @@
   flex: 1;
   line-height: 1.6;
   font-size: 1rem;
-  
+
   // Custom scrollbar
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.03);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.25);
     }
   }
-  
+
   // Styling links
   a {
     color: #2563eb !important;
@@ -85,22 +85,22 @@
     font-weight: 500;
     position: relative;
     transition: all 0.2s ease;
-    
+
     &:hover {
       color: #1d4ed8 !important;
       text-decoration: underline !important;
     }
   }
-  
+
   // Paragraph spacing
   p {
     margin: 0 0 16px;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
   }
-  
+
   // Space between paragraphs when using <br /> tags
   br + p {
     margin-top: 16px;
@@ -124,14 +124,14 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  
+
   &:hover {
     background-color: #fff;
     border-color: #2563eb;
     color: #2563eb;
     box-shadow: 0 3px 6px rgba(37, 99, 235, 0.15);
   }
-  
+
   &:active {
     transform: translateY(1px);
   }
@@ -143,22 +143,22 @@
     width: 100%;
     max-height: 80vh;
   }
-  
+
   .modalTitle {
     padding: 20px 24px 16px;
     font-size: 1.25rem;
-    
+
     &::after {
       left: 24px;
       width: 50px;
     }
   }
-  
+
   .modalText {
     padding: 20px 24px;
     font-size: 0.95rem;
   }
-  
+
   .closeButton {
     width: calc(100% - 48px);
     margin: 8px 24px 20px;
@@ -167,17 +167,21 @@
 
 // Animations
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
-    transform: translateY(20px); 
+    transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
-    transform: translateY(0); 
+    transform: translateY(0);
   }
 }
