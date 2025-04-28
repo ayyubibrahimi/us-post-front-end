@@ -290,8 +290,8 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 <h3 className={styles.teamMemberName}>
                   <a href="https://github.com/michplunkett" target="_blank" rel="noopener noreferrer">
                     Michael Plunkett
-                    <span className={styles.pronouns}>(he/him)</span>
                   </a>
+                  <span className={styles.pronouns}>(he/him)</span>
                 </h3>
                 <p className={styles.teamMemberBio}>
                   A volunteer software developer who appreciates open data, quality journalism, and creating software
