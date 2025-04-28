@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "build": "next build",
     "format": "prettier --config .prettierrc.json --write !.github ."
   },
   "dependencies": {
