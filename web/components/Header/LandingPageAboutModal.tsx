@@ -286,6 +286,27 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 <p className={styles.teamMemberBio}>California Reporting Project</p>
               </section>
 
+              <section className={styles.teamMember}>
+                <h3 className={styles.teamMemberName}>
+                  <a href="https://github.com/michplunkett" target="_blank" rel="noopener noreferrer">
+                    Michael Plunkett
+                  </a>
+                  <span className={styles.pronouns}>(he/him)</span>
+                </h3>
+                <p className={styles.teamMemberBio}>
+                  A volunteer software developer who appreciates open data, quality journalism, and creating software
+                  tools for journalists. He holds degrees in microbiology, computational biology, and computational
+                  analysis and public policy. He also actively contributes to Lucy Parsons Labs'{' '}
+                  <a href="https://openoversight.com/" target="_blank" rel="noopener noreferrer">
+                    OpenOversight platform
+                  </a>{' '}
+                  and Bellingcat's{' '}
+                  <a href="https://github.com/bellingcat/auto-archiver-api" target="_blank" rel="noopener noreferrer">
+                    Auto Archiver API.
+                  </a>
+                </p>
+              </section>
+
               <section className={`${styles.teamMember} ${styles.specialThanks}`}>
                 <h3 className={styles.teamMemberName}>Special Thanks</h3>
                 <p className={styles.teamMemberBio}>A special thanks goes out to Huy Dao and Eliora Henzler.</p>
