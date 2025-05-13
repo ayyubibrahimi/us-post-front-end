@@ -177,7 +177,7 @@ To deploy changes to the live site, use the Vercel CLI with the production flag:
 vercel --prod
 ```
 
-This command will build and deploy your application to the production environment. 
+This command will build and deploy your application to the production environment.
 
 If you encounter any errors during deployment, they will be returned by the `vercel --prod` command. For each error:
 
