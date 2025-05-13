@@ -150,7 +150,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   const hasNonEmptyColumn = useCallback(
     (columnName: keyof AgencyData) => {
       return agencyData.some(
-        (row) => row[columnName] && row[columnName]!.trim() !== "",
+        (row) => row[columnName] && row[columnName]?.trim() !== "",
       );
     },
     [agencyData],

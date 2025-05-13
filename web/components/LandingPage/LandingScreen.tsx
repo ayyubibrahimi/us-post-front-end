@@ -98,7 +98,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         src="https://data-access-map.netlify.app/"
         width="100%"
         height="530px"
-      ></iframe>
+      />
 
       {/* Removed empty div elements */}
       <div className="flex flex-col items-center justify-center -mt-4">

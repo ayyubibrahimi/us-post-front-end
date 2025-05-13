@@ -17,7 +17,7 @@ export default function Footer() {
     <div className={styles.footer}>
       <div className={styles["nav-links-wrapper"]}>
         <button
-          className={styles["links"]}
+          className={styles.links}
           onClick={handleAboutClick}
           aria-label="Open About Modal"
         >
@@ -28,14 +28,14 @@ export default function Footer() {
           onClose={handleCloseAboutModal}
         />
         <a
-          className={styles["links"]}
+          className={styles.links}
           href="https://invisible.institute/contact"
           aria-label="Contact us"
         >
           Contact
         </a>
         <a
-          className={styles["links"]}
+          className={styles.links}
           href="https://github.com/ayyubibrahimi/us-post-data"
           aria-label="View our GitHub repository"
         >
@@ -54,7 +54,7 @@ export default function Footer() {
             alt="Invist Logo"
             width={110}
             height={20}
-            className={styles["logo"]}
+            className={styles.logo}
           />
         </a>
         <a
@@ -68,7 +68,7 @@ export default function Footer() {
             alt="IPNO Logo"
             width={155}
             height={20}
-            className={styles["logo"]}
+            className={styles.logo}
           />
         </a>
         <a
@@ -82,7 +82,7 @@ export default function Footer() {
             alt="HRDAG Logo"
             width={80}
             height={20}
-            className={styles["logo"]}
+            className={styles.logo}
           />
         </a>
       </div>

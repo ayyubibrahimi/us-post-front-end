@@ -98,7 +98,7 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({
           repeatType: "reverse",
         }}
         style={cursorStyle}
-      ></motion.span>
+      />
     </div>
   );
 };
