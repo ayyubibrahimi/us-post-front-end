@@ -1,8 +1,8 @@
-import type React from "react";
-import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
-import AgencyTable from "../../components/Pages/AgencyTable";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
+import AgencyTable from "../../components/Pages/AgencyTable";
 import styles from "../index.module.scss";
 
 interface AgencyData {

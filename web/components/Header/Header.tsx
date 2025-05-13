@@ -1,8 +1,8 @@
-import type React from "react";
-import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import styles from "./headerLight.module.scss";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import AboutModal from "./AboutModal";
+import styles from "./headerLight.module.scss";
 
 // Utility functions for state name formatting
 export const formatStateForUrl = (state: string): string => {

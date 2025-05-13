@@ -1,8 +1,8 @@
+import Link from "next/link";
 import type React from "react";
 import { useState } from "react";
-import Link from "next/link";
-import styles from "./LandingPageHeader.module.scss";
 import LandingPageAboutModal from "./LandingPageAboutModal";
+import styles from "./LandingPageHeader.module.scss";
 
 const LandingPageHeader: React.FC = () => {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);

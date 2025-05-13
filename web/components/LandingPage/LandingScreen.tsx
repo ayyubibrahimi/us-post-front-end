@@ -1,9 +1,9 @@
 import type React from "react";
 import { useState } from "react";
-import { TypewriterEffectSmooth } from "./TypeWriter";
 import styles from "./LandingScreen.module.scss";
 import buttonStyles from "./LandingScreen.module.scss";
 import LouisianaModal from "./LouisianaModal";
+import { TypewriterEffectSmooth } from "./TypeWriter";
 
 interface LandingScreenProps {
   onButtonClick: (state: string) => void;

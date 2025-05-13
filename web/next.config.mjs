@@ -1,5 +1,5 @@
-import { promisify } from "util";
 import { readFile } from "fs";
+import { promisify } from "util";
 import webpack from "webpack";
 
 const readFileAsync = promisify(readFile);

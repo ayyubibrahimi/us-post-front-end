@@ -1,17 +1,17 @@
+import {
+  type DocumentData,
+  type Query,
+  collection,
+  getCountFromServer,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+} from "firebase/firestore";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../utils/FirebaseConfig";
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  startAfter,
-  getDocs,
-  type Query,
-  type DocumentData,
-  getCountFromServer,
-} from "firebase/firestore";
 
 type AgencyData = {
   case_id?: string;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "./Footer.module.scss";
 import LandingPageAboutModal from "../Header/LandingPageAboutModal";
+import styles from "./Footer.module.scss";
 
 export default function Footer() {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);

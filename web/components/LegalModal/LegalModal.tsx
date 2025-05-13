@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import styles from "../Header/LandingPageModal.module.scss";
 
 interface ModalProps {
