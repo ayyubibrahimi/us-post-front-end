@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "format": "npx @biomejs/biome format --write !.github ."
+    "format": "npx @biomejs/biome format --write ./web biome.json package.json"
   },
   "dependencies": {
     "@google-cloud/datastore": "^9.1.0",
