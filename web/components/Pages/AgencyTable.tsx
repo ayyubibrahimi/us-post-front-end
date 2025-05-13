@@ -373,6 +373,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             animateRows
             pagination={false}
             suppressPaginationPanel={true}
+            enableCellTextSelection
           />
         </div>
       </div>

@@ -228,17 +228,6 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
               <section className={styles.teamMember}>
                 <h3 className={styles.teamMemberName}>
-                  Olive Lavine
-                  <span className={styles.pronouns}>(she/her)</span>
-                </h3>
-                <p className={styles.teamMemberBio}>
-                  A volunteer developer on this project. She studied mathematics at Tulane University and software
-                  engineering at Ada Developers Academy.
-                </p>
-              </section>
-
-              <section className={styles.teamMember}>
-                <h3 className={styles.teamMemberName}>
                   <a href="https://invisible.institute/maheen-khan" target="_blank" rel="noopener noreferrer">
                     Maheen Khan
                   </a>
