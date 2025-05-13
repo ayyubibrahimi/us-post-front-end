@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "format": "npx biome check --write ./web biome.json package.json"
+    "format": "npx biome check --write ./web biome.json package.json README.md"
   },
   "dependencies": {
     "@google-cloud/datastore": "^9.1.0",
