@@ -11,7 +11,15 @@
   "formatter": { "enabled": true, "indentStyle": "space" },
   "linter": {
     "enabled": true,
-    "rules": { "recommended": true }
+    "rules": {
+      "style": {
+        "useExportType": {
+          "level": "info",
+          "fix": "none"
+        }
+      },
+      "recommended": true
+    }
   },
   "organizeImports": { "enabled": true }
 }
