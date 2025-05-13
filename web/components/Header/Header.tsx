@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import type React from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import styles from "./headerLight.module.scss";
 import AboutModal from "./AboutModal";

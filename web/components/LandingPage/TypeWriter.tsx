@@ -92,7 +92,11 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+        transition={{
+          duration: 0.8,
+          repeat: Number.POSITIVE_INFINITY,
+          repeatType: "reverse",
+        }}
         style={cursorStyle}
       ></motion.span>
     </div>

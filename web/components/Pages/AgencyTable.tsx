@@ -1,11 +1,12 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import type React from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import tableStyles from "./table.module.scss";
 import { CSVLink } from "react-csv";
 import { AgGridReact } from "ag-grid-react";
 import {
-  ColDef,
-  GridReadyEvent,
-  GridApi,
+  type ColDef,
+  type GridReadyEvent,
+  type GridApi,
   IFilterParams,
 } from "ag-grid-community";
 import { debounce } from "lodash";

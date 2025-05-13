@@ -8,8 +8,8 @@ import {
   limit,
   startAfter,
   getDocs,
-  Query,
-  DocumentData,
+  type Query,
+  type DocumentData,
   getCountFromServer,
 } from "firebase/firestore";
 
@@ -192,8 +192,11 @@ export default async function handler(
       .json({ error: "State parameter is required and must be a string" });
   }
 
-  const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
-  const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
+  const currentPage = Number.parseInt(Array.isArray(page) ? page[0] : page, 10);
+  const size = Number.parseInt(
+    Array.isArray(pageSize) ? pageSize[0] : pageSize,
+    10,
+  );
   const cleanFirstName = (
     Array.isArray(firstName) ? firstName[0] : firstName || ""
   ).trim();
@@ -210,7 +213,7 @@ export default async function handler(
       return res.status(200).json({
         data: [],
         currentPage: 1,
-        pageSize: parseInt(
+        pageSize: Number.parseInt(
           Array.isArray(pageSize) ? pageSize[0] : pageSize,
           10,
         ),

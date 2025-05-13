@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { TypewriterEffectSmooth } from "./TypeWriter";
 import styles from "./LandingScreen.module.scss";
 import buttonStyles from "./LandingScreen.module.scss";

@@ -1,3 +1,1 @@
-module.exports = function (source) {
-  return `export default ${JSON.stringify(source)};`;
-};
+module.exports = (source) => `export default ${JSON.stringify(source)};`;
