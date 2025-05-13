@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
-import styles from '../Header/LandingPageModal.module.scss';
+import React, { useEffect, useCallback } from "react";
+import styles from "../Header/LandingPageModal.module.scss";
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface ModalProps {
 const LegalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const handleEscapeKey = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     },
@@ -18,10 +18,10 @@ const LegalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener('keydown', handleEscapeKey);
+      document.addEventListener("keydown", handleEscapeKey);
     }
     return () => {
-      document.removeEventListener('keydown', handleEscapeKey);
+      document.removeEventListener("keydown", handleEscapeKey);
     };
   }, [isOpen, handleEscapeKey]);
 
@@ -38,7 +38,11 @@ const LegalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>Legal Disclaimer</h2>
-          <button className={styles.modalCloseButton} onClick={onClose} aria-label="Close Legal Modal">
+          <button
+            className={styles.modalCloseButton}
+            onClick={onClose}
+            aria-label="Close Legal Modal"
+          >
             &times;
           </button>
         </div>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import styles from './LandingPageHeader.module.scss';
-import LandingPageAboutModal from './LandingPageAboutModal';
+import React, { useState } from "react";
+import Link from "next/link";
+import styles from "./LandingPageHeader.module.scss";
+import LandingPageAboutModal from "./LandingPageAboutModal";
 
 const LandingPageHeader: React.FC = () => {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
@@ -24,7 +24,10 @@ const LandingPageHeader: React.FC = () => {
           About the NPI
         </button>
       </div>
-      <LandingPageAboutModal isOpen={isAboutModalOpen} onClose={handleCloseAboutModal} />
+      <LandingPageAboutModal
+        isOpen={isAboutModalOpen}
+        onClose={handleCloseAboutModal}
+      />
     </header>
   );
 };

@@ -1,44 +1,44 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
-import styles from './headerLight.module.scss';
-import AboutModal from './AboutModal';
+import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import styles from "./headerLight.module.scss";
+import AboutModal from "./AboutModal";
 
 // Utility functions for state name formatting
 export const formatStateForUrl = (state: string): string => {
-  return state.replace(/\s+/g, '-');
+  return state.replace(/\s+/g, "-");
 };
 
 export const formatStateForDisplay = (state: string): string => {
-  return state.replace(/-/g, ' ');
+  return state.replace(/-/g, " ");
 };
 
 const states = [
-  'Arizona',
-  'California',
-  'Florida',
-  'Florida Discipline',
-  'Georgia',
-  'Georgia Discipline',
-  'Illinois',
-  'Idaho',
-  'Indiana',
-  'Kansas',
-  'Kentucky',
-  'Maryland',
-  'Minnesota',
-  'Mississippi',
-  'New Mexico',
-  'North Carolina',
-  'Ohio',
-  'Oregon',
-  'South Carolina',
-  'Tennessee',
-  'Texas',
-  'Utah',
-  'Washington',
-  'Vermont',
-  'West Virginia',
-  'Wyoming',
+  "Arizona",
+  "California",
+  "Florida",
+  "Florida Discipline",
+  "Georgia",
+  "Georgia Discipline",
+  "Illinois",
+  "Idaho",
+  "Indiana",
+  "Kansas",
+  "Kentucky",
+  "Maryland",
+  "Minnesota",
+  "Mississippi",
+  "New Mexico",
+  "North Carolina",
+  "Ohio",
+  "Oregon",
+  "South Carolina",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Washington",
+  "Vermont",
+  "West Virginia",
+  "Wyoming",
 ];
 
 interface HeaderProps {
@@ -74,14 +74,17 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -93,8 +96,11 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
             <h1 className={styles.headerTitle}>National Police Index</h1>
           </Link>
           <div className={styles.dropdown} ref={dropdownRef}>
-            <button className={styles.dropdownToggle} onClick={handleDropdownToggle}>
-              {displayState || 'Select a State'}
+            <button
+              className={styles.dropdownToggle}
+              onClick={handleDropdownToggle}
+            >
+              {displayState || "Select a State"}
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenuWrapper}>
@@ -102,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
                   {states.map((state) => (
                     <li
                       key={state}
-                      className={`${styles.dropdownItem} ${state === displayState ? styles.active : ''}`}
+                      className={`${styles.dropdownItem} ${state === displayState ? styles.active : ""}`}
                       onClick={() => handleStateSelection(state)}
                     >
                       {state}
@@ -113,11 +119,15 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
             )}
           </div>
           <button className={styles.aboutButton} onClick={handleAboutClick}>
-            About{displayState ? ` ${displayState}` : ''}
+            About{displayState ? ` ${displayState}` : ""}
           </button>
         </div>
       </div>
-      <AboutModal isOpen={isAboutModalOpen} onClose={handleCloseAboutModal} selectedState={displayState} />
+      <AboutModal
+        isOpen={isAboutModalOpen}
+        onClose={handleCloseAboutModal}
+        selectedState={displayState}
+      />
     </header>
   );
 };
