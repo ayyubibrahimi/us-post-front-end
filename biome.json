@@ -8,18 +8,17 @@
   "files": {
     "ignore": [".github/*", "web/.next/*", "web/node_modules/*"]
   },
-  "formatter": { "enabled": true, "indentStyle": "space" },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
+  },
   "linter": {
     "enabled": true,
     "rules": {
-      "style": {
-        "useExportType": {
-          "level": "info",
-          "fix": "none"
-        }
-      },
       "recommended": true
     }
   },
-  "organizeImports": { "enabled": true }
+  "organizeImports": {
+    "enabled": true
+  }
 }
