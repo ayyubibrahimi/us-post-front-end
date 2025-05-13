@@ -14,4 +14,4 @@ jobs:
       - uses: biomejs/setup-biome@v2
         with:
           version: '1.9.4'
-      - run: biome ci ./web biome.json package.json
+      - run: biome ci ./web biome.json package.json README.md
