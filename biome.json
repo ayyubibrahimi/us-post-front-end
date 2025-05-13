@@ -6,9 +6,9 @@
     "useIgnoreFile": false
   },
   "files": {
-    "ignore": [".github/*"]
+    "ignore": [".github/*", "web/.next/*", "web/node_modules/*"]
   },
-  "formatter": { "enabled": true, "indentStyle": "tab" },
+  "formatter": { "enabled": true, "indentStyle": "space" },
   "linter": {
     "enabled": true,
     "rules": { "recommended": true }
