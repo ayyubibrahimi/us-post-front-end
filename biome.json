@@ -8,6 +8,11 @@
   "files": {
     "ignore": [".github/*", "web/.next/*", "web/node_modules/*"]
   },
+  "css": {
+    "formatter": {
+      "enabled": true
+    }
+  },
   "formatter": {
     "enabled": true,
     "indentStyle": "space"
