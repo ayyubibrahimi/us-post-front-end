@@ -14,4 +14,4 @@ jobs:
       - uses: biomejs/setup-biome@v2
         with:
           version: '1.9.4'
-      - run: biome ci --formatter-enabled=true --organize-imports-enabled=true --linter-enabled=false ./web biome.json package.json README.md
+      - run: biome ci ./web biome.json package.json README.md
