@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { useCallback, useEffect } from "react";
 import styles from "../Header/LandingPageModal.module.scss";
 

@@ -1,4 +1,4 @@
-import type React from "react";
+import React from "react";
 import { useState } from "react";
 import styles from "./LandingScreen.module.scss";
 import buttonStyles from "./LandingScreen.module.scss";

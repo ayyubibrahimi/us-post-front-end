@@ -6,7 +6,7 @@ import {
 } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { debounce } from "lodash";
-import type React from "react";
+import React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
 import tableStyles from "./table.module.scss";

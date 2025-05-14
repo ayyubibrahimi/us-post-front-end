@@ -1,5 +1,5 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
-import type { AppProps } from "next/app";
+import { AppProps } from "next/app";
 import "../styles/global.css";
 import Layout from "@/components/Layout";
 import localFont from "next/font/local";

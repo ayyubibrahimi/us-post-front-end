@@ -10,7 +10,7 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../utils/FirebaseConfig";
 
 type AgencyData = {
