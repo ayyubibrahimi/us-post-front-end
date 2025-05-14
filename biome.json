@@ -3,7 +3,7 @@
   "vcs": {
     "enabled": false,
     "clientKind": "git",
-    "useIgnoreFile": false
+    "useIgnoreFile": true
   },
   "files": {
     "ignore": [".github/*", "web/.next/*", "web/node_modules/*"]
@@ -13,10 +13,7 @@
     "indentStyle": "space"
   },
   "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true
-    }
+    "enabled": false
   },
   "organizeImports": {
     "enabled": true
