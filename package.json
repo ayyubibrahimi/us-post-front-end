@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "format": "prettier --config .prettierrc.json --write !.github ."
+    "format": "npx biome check --write ./web biome.json package.json README.md"
   },
   "dependencies": {
     "@google-cloud/datastore": "^9.1.0",
@@ -14,9 +14,9 @@
     "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/leaflet": "^1.9.8",
     "@types/lodash": "^4.17.7",
-    "@types/papaparse": "^5.3.14",
-    "prettier": "^3.5.0"
+    "@types/papaparse": "^5.3.14"
   }
 }
