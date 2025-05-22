@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import AgencyTable from "../../components/Pages/AgencyTable";
