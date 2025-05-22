@@ -18,7 +18,7 @@
     "indentStyle": "space"
   },
   "linter": {
-    "enabled": false
+    "enabled": true
   },
   "organizeImports": {
     "enabled": true

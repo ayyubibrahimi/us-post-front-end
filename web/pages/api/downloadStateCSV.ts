@@ -1,5 +1,5 @@
 import { getDownloadURL, ref } from "firebase/storage";
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { storage } from "../../utils/FirebaseConfig";
 
 export default async function handler(
