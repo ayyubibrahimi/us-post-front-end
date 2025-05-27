@@ -136,3 +136,53 @@ npm run dev
 ```
 http://localhost:3000
 ```
+
+### Running the Application
+
+1. Start the development server:
+
+```bash
+npm run dev
+```
+
+2. Open your browser and navigate to:
+
+```
+http://localhost:3000
+```
+
+### Deploying the Application
+
+#### Installing Vercel CLI
+
+Before deploying, you need to install the Vercel CLI:
+
+```bash
+npm install -g vercel
+```
+
+After installation, log in to your Vercel account:
+
+```bash
+vercel login
+```
+
+Follow the prompts to complete the authentication process. Ensure that your account is linked to this project.
+
+#### Deploying to Production
+
+To deploy changes to the live site, use the Vercel CLI with the production flag:
+
+```bash
+vercel --prod
+```
+
+This command will build and deploy your application to the production environment.
+
+If you encounter any errors during deployment, they will be returned by the `vercel --prod` command. For each error:
+
+1. Create a new Pull Request (PR) addressing the specific issue
+2. Push your changes to the repository
+3. Run the deployment command again
+
+Continue this process until the deployment succeeds without errors. Thanks.

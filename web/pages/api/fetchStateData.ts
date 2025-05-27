@@ -1,17 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../utils/FirebaseConfig';
 import {
+  type DocumentData,
+  type Query,
   collection,
-  query,
-  where,
-  orderBy,
-  limit,
-  startAfter,
-  getDocs,
-  Query,
-  DocumentData,
   getCountFromServer,
-} from 'firebase/firestore';
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+} from "firebase/firestore";
+import { NextApiRequest, NextApiResponse } from "next";
+import { db } from "../../utils/FirebaseConfig";
 
 type AgencyData = {
   case_id?: string;
@@ -43,9 +43,9 @@ type AgencyData = {
 function toTitleCase(str: string): string {
   return str
     .toLowerCase()
-    .split(' ')
+    .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .join(" ");
 }
 
 type Filter = {
@@ -62,9 +62,15 @@ function buildNameQuery(
   person_nbr: string | string[] | undefined, 
 ): Query<DocumentData> {
   // Convert potential array values to strings and clean
-  const cleanFirstName = (Array.isArray(firstName) ? firstName[0] : firstName || '').trim();
-  const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
-  const cleanAgencyName = (Array.isArray(agencyName) ? agencyName[0] : agencyName || '').trim();
+  const cleanFirstName = (
+    Array.isArray(firstName) ? firstName[0] : firstName || ""
+  ).trim();
+  const cleanLastName = (
+    Array.isArray(lastName) ? lastName[0] : lastName || ""
+  ).trim();
+  const cleanAgencyName = (
+    Array.isArray(agencyName) ? agencyName[0] : agencyName || ""
+  ).trim();
 
   const uid = (Array.isArray(person_nbr) ? person_nbr[0] : person_nbr || '').trim();
 
@@ -79,15 +85,15 @@ function buildNameQuery(
 
     firestoreQuery = query(
       firestoreQuery,
-      where('first_name', '>=', firstNameTitle),
-      where('first_name', '<=', firstNameTitle + '\uf8ff'),
-      where('last_name', '>=', lastNameTitle),
-      where('last_name', '<=', lastNameTitle + '\uf8ff'),
-      where('agency_name', '>=', agencyNameUpper),
-      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
-      orderBy('first_name'),
-      orderBy('last_name'),
-      orderBy('agency_name'),
+      where("first_name", ">=", firstNameTitle),
+      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("last_name", ">=", lastNameTitle),
+      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      where("agency_name", ">=", agencyNameUpper),
+      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      orderBy("first_name"),
+      orderBy("last_name"),
+      orderBy("agency_name"),
     );
   } else if (cleanFirstName && cleanLastName) {
     // Only first and last name
@@ -96,12 +102,12 @@ function buildNameQuery(
 
     firestoreQuery = query(
       firestoreQuery,
-      where('first_name', '>=', firstNameTitle),
-      where('first_name', '<=', firstNameTitle + '\uf8ff'),
-      where('last_name', '>=', lastNameTitle),
-      where('last_name', '<=', lastNameTitle + '\uf8ff'),
-      orderBy('first_name'),
-      orderBy('last_name'),
+      where("first_name", ">=", firstNameTitle),
+      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("last_name", ">=", lastNameTitle),
+      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      orderBy("first_name"),
+      orderBy("last_name"),
     );
   } else if (cleanFirstName && cleanAgencyName) {
     // First name and agency name
@@ -110,12 +116,12 @@ function buildNameQuery(
 
     firestoreQuery = query(
       firestoreQuery,
-      where('first_name', '>=', firstNameTitle),
-      where('first_name', '<=', firstNameTitle + '\uf8ff'),
-      where('agency_name', '>=', agencyNameUpper),
-      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
-      orderBy('first_name'),
-      orderBy('agency_name'),
+      where("first_name", ">=", firstNameTitle),
+      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("agency_name", ">=", agencyNameUpper),
+      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      orderBy("first_name"),
+      orderBy("agency_name"),
     );
   } else if (cleanLastName && cleanAgencyName) {
     // Last name and agency name
@@ -124,103 +130,123 @@ function buildNameQuery(
 
     firestoreQuery = query(
       firestoreQuery,
-      where('last_name', '>=', lastNameTitle),
-      where('last_name', '<=', lastNameTitle + '\uf8ff'),
-      where('agency_name', '>=', agencyNameUpper),
-      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
-      orderBy('last_name'),
-      orderBy('agency_name'),
+      where("last_name", ">=", lastNameTitle),
+      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      where("agency_name", ">=", agencyNameUpper),
+      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      orderBy("last_name"),
+      orderBy("agency_name"),
     );
   } else if (cleanLastName) {
     // Only last name
     const lastNameTitle = toTitleCase(cleanLastName);
     firestoreQuery = query(
       firestoreQuery,
-      where('last_name', '>=', lastNameTitle),
-      where('last_name', '<=', lastNameTitle + '\uf8ff'),
-      orderBy('last_name'),
+      where("last_name", ">=", lastNameTitle),
+      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      orderBy("last_name"),
     );
   } else if (cleanFirstName) {
     // Only first name
     const firstNameTitle = toTitleCase(cleanFirstName);
     firestoreQuery = query(
       firestoreQuery,
-      where('first_name', '>=', firstNameTitle),
-      where('first_name', '<=', firstNameTitle + '\uf8ff'),
-      orderBy('first_name'),
+      where("first_name", ">=", firstNameTitle),
+      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      orderBy("first_name"),
     );
   } else if (cleanAgencyName) {
     // Only agency name
     const agencyNameUpper = toTitleCase(cleanAgencyName);
     firestoreQuery = query(
       firestoreQuery,
-      where('agency_name', '>=', agencyNameUpper),
-      where('agency_name', '<=', agencyNameUpper + '\uf8ff'),
-      orderBy('agency_name'),
+      where("agency_name", ">=", agencyNameUpper),
+      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      orderBy("agency_name"),
     );
-  } 
-  else if (uid) {
-    firestoreQuery = query(firestoreQuery, where('person_nbr', '>=', uid));
-  }
-  
-  else {
-    firestoreQuery = query(firestoreQuery, orderBy('person_nbr'));
+  } else {
+    firestoreQuery = query(firestoreQuery, orderBy("person_nbr"));
   }
 
   return firestoreQuery;
 }
 
 // Update the handler function to use the new query builder
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const {
     state,
-    page = '1',
-    pageSize = '10',
-    lastName = '',
-    middleName = '',
-    firstName = '',
-    startDate = '',
-    endDate = '',
-    agencyName = '',
-    uid = '',
+    page = "1",
+    pageSize = "10",
+    lastName = "",
+    middleName = "",
+    firstName = "",
+    startDate = "",
+    endDate = "",
+    agencyName = "",
+    uid = "",
   } = req.query;
 
   if (!state || Array.isArray(state)) {
-    return res.status(400).json({ error: 'State parameter is required and must be a string' });
+    return res
+      .status(400)
+      .json({ error: "State parameter is required and must be a string" });
   }
 
-  const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10);
-  const size = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10);
-  const cleanFirstName = (Array.isArray(firstName) ? firstName[0] : firstName || '').trim();
-  const cleanLastName = (Array.isArray(lastName) ? lastName[0] : lastName || '').trim();
-  const cleanAgencyName = (Array.isArray(agencyName) ? agencyName[0] : agencyName || '').trim();
+  const currentPage = Number.parseInt(Array.isArray(page) ? page[0] : page, 10);
+  const size = Number.parseInt(
+    Array.isArray(pageSize) ? pageSize[0] : pageSize,
+    10,
+  );
+  const cleanFirstName = (
+    Array.isArray(firstName) ? firstName[0] : firstName || ""
+  ).trim();
+  const cleanLastName = (
+    Array.isArray(lastName) ? lastName[0] : lastName || ""
+  ).trim();
+  const cleanAgencyName = (
+    Array.isArray(agencyName) ? agencyName[0] : agencyName || ""
+  ).trim();
 
   try {
-    const formattedState = state.toLowerCase().replace(/\s+/g, '-');
-    if (formattedState === 'minneapolis') {
+    const formattedState = state.toLowerCase().replace(/\s+/g, "-");
+    if (formattedState === "minneapolis") {
       return res.status(200).json({
         data: [],
         currentPage: 1,
-        pageSize: parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10),
+        pageSize: Number.parseInt(
+          Array.isArray(pageSize) ? pageSize[0] : pageSize,
+          10,
+        ),
         totalItems: 0,
         totalPages: 0,
         isLastPage: true,
       });
     }
-    const uploadsRef = collection(db, 'db_launch');
+    const uploadsRef = collection(db, "db_launch");
 
     // Change the base query to use state field instead of document ID
-    let firestoreQuery: Query<DocumentData> = query(uploadsRef, where('state', '==', formattedState));
+    let firestoreQuery: Query<DocumentData> = query(
+      uploadsRef,
+      where("state", "==", formattedState),
+    );
 
-    firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName, agencyName, uid);
+    firestoreQuery = buildNameQuery(
+      firestoreQuery,
+      firstName,
+      lastName,
+      agencyName,
+    );
 
     // Build remaining filters
     const filters: Filter[] = [];
-    if (uid) filters.push({ field: 'person_nbr', value: uid });
-    if (middleName) filters.push({ field: 'middle_name', value: middleName });
+    if (uid) filters.push({ field: "person_nbr", value: uid });
+    if (middleName) filters.push({ field: "middle_name", value: middleName });
     // if (agencyName) filters.push({ field: 'agency_name', value: agencyName });
-    if (startDate) filters.push({ field: 'start_date', value: startDate });
-    if (endDate) filters.push({ field: 'end_date', value: endDate });
+    if (startDate) filters.push({ field: "start_date", value: startDate });
+    if (endDate) filters.push({ field: "end_date", value: endDate });
 
     // For name filters, fetch all data to sort properly
     let allData: AgencyData[] = [];
@@ -291,18 +317,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
           if (filter.isPrefix) {
             return fieldValue.toLowerCase().startsWith(value.toLowerCase());
-          } else {
-            return fieldValue.toLowerCase().includes(value.toLowerCase());
           }
+          return fieldValue.toLowerCase().includes(value.toLowerCase());
         });
       });
 
       // Sort the filtered data
       allData.sort((a, b) => {
-        const firstNameA = a.first_name || '';
-        const firstNameB = b.first_name || '';
-        const lastNameA = a.last_name || '';
-        const lastNameB = b.last_name || '';
+        const firstNameA = a.first_name || "";
+        const firstNameB = b.first_name || "";
+        const lastNameA = a.last_name || "";
+        const lastNameB = b.last_name || "";
 
         const lastNameCompare = lastNameA.localeCompare(lastNameB);
         if (lastNameCompare !== 0) return lastNameCompare;
@@ -325,109 +350,107 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         totalPages: totalPages,
         isLastPage: adjustedCurrentPage === totalPages,
       });
-    } else {
-      // For non-name queries, use standard pagination
-      const countSnapshot = await getCountFromServer(firestoreQuery);
-      const totalItems = countSnapshot.data().count;
-      const totalPages = Math.ceil(totalItems / size);
-      const adjustedCurrentPage = Math.min(currentPage, totalPages);
-      const itemsToSkip = (adjustedCurrentPage - 1) * size;
-      const itemsToFetch = Math.min(size, totalItems - itemsToSkip);
+    }
+    // For non-name queries, use standard pagination
+    const countSnapshot = await getCountFromServer(firestoreQuery);
+    const totalItems = countSnapshot.data().count;
+    const totalPages = Math.ceil(totalItems / size);
+    const adjustedCurrentPage = Math.min(currentPage, totalPages);
+    const itemsToSkip = (adjustedCurrentPage - 1) * size;
+    const itemsToFetch = Math.min(size, totalItems - itemsToSkip);
 
-      if (itemsToSkip >= totalItems) {
-        return res.status(200).json({
-          data: [],
-          currentPage: adjustedCurrentPage,
-          pageSize: itemsToFetch,
-          totalItems: totalItems,
-          totalPages: totalPages,
-          isLastPage: true,
-        });
-      }
-
-      // Apply pagination
-      if (adjustedCurrentPage > 1) {
-        const batchSize = 1000; // Firestore limit
-        const batches = Math.floor(itemsToSkip / batchSize);
-        let lastVisible = null;
-
-        for (let i = 0; i < batches; i++) {
-          const batchQuery = query(firestoreQuery, limit(batchSize));
-          const batchSnapshot = await getDocs(batchQuery);
-          lastVisible = batchSnapshot.docs[batchSnapshot.docs.length - 1];
-          firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
-        }
-
-        const remainingToSkip = itemsToSkip % batchSize;
-        if (remainingToSkip > 0) {
-          const finalSkipQuery = query(firestoreQuery, limit(remainingToSkip));
-          const finalSkipSnapshot = await getDocs(finalSkipQuery);
-          lastVisible = finalSkipSnapshot.docs[finalSkipSnapshot.docs.length - 1];
-          firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
-        }
-      }
-
-      firestoreQuery = query(firestoreQuery, limit(itemsToFetch));
-      const dataSnapshot = await getDocs(firestoreQuery);
-
-      // Map and filter the current page data
-      let filteredData = dataSnapshot.docs.map((doc) => {
-        const docData = doc.data();
-        return {
-          case_id: docData.case_id,
-          person_nbr: docData.person_nbr,
-          sanction: docData.sanction,
-          sanction_date: docData.sanction_date,
-          violation: docData.violation,
-          violation_date: docData.violation_date,
-          full_name: docData.full_name,
-          agency_name: docData.agency_name,
-          employment_status: docData.employment_status,
-          employment_change: docData.employment_change,
-          start_date: docData.start_date,
-          end_date: docData.end_date,
-          last_name: docData.last_name,
-          first_name: docData.first_name,
-          middle_name: docData.middle_name,
-          suffix: docData.suffix,
-          year_of_birth: docData.year_of_birth,
-          race: docData.race,
-          sex: docData.sex,
-          separation_reason: docData.separation_reason,
-          case_opened_date: docData.case_opened_date,
-          case_closed_date: docData.case_closed_date,
-          offense: docData.offense,
-          discipline_imposed: docData.discipline_imposed,
-          discipline_comments: docData.discipline_comments,
-        } as AgencyData;
-      });
-
-      // Apply remaining filters
-      filters.forEach((filter) => {
-        const value = filter.value as string;
-        filteredData = filteredData.filter((d) => {
-          const fieldValue = d[filter.field as keyof AgencyData]?.toString();
-          if (!fieldValue) return false;
-
-          if (filter.isPrefix) {
-            return fieldValue.toLowerCase().startsWith(value.toLowerCase());
-          } else {
-            return fieldValue.toLowerCase().includes(value.toLowerCase());
-          }
-        });
-      });
-
+    if (itemsToSkip >= totalItems) {
       return res.status(200).json({
-        data: filteredData,
+        data: [],
         currentPage: adjustedCurrentPage,
         pageSize: itemsToFetch,
         totalItems: totalItems,
         totalPages: totalPages,
-        isLastPage: adjustedCurrentPage === totalPages,
+        isLastPage: true,
       });
     }
+
+    // Apply pagination
+    if (adjustedCurrentPage > 1) {
+      const batchSize = 1000; // Firestore limit
+      const batches = Math.floor(itemsToSkip / batchSize);
+      let lastVisible = null;
+
+      for (let i = 0; i < batches; i++) {
+        const batchQuery = query(firestoreQuery, limit(batchSize));
+        const batchSnapshot = await getDocs(batchQuery);
+        lastVisible = batchSnapshot.docs[batchSnapshot.docs.length - 1];
+        firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+      }
+
+      const remainingToSkip = itemsToSkip % batchSize;
+      if (remainingToSkip > 0) {
+        const finalSkipQuery = query(firestoreQuery, limit(remainingToSkip));
+        const finalSkipSnapshot = await getDocs(finalSkipQuery);
+        lastVisible = finalSkipSnapshot.docs[finalSkipSnapshot.docs.length - 1];
+        firestoreQuery = query(firestoreQuery, startAfter(lastVisible));
+      }
+    }
+
+    firestoreQuery = query(firestoreQuery, limit(itemsToFetch));
+    const dataSnapshot = await getDocs(firestoreQuery);
+
+    // Map and filter the current page data
+    let filteredData = dataSnapshot.docs.map((doc) => {
+      const docData = doc.data();
+      return {
+        case_id: docData.case_id,
+        person_nbr: docData.person_nbr,
+        sanction: docData.sanction,
+        sanction_date: docData.sanction_date,
+        violation: docData.violation,
+        violation_date: docData.violation_date,
+        full_name: docData.full_name,
+        agency_name: docData.agency_name,
+        employment_status: docData.employment_status,
+        employment_change: docData.employment_change,
+        start_date: docData.start_date,
+        end_date: docData.end_date,
+        last_name: docData.last_name,
+        first_name: docData.first_name,
+        middle_name: docData.middle_name,
+        suffix: docData.suffix,
+        year_of_birth: docData.year_of_birth,
+        race: docData.race,
+        sex: docData.sex,
+        separation_reason: docData.separation_reason,
+        case_opened_date: docData.case_opened_date,
+        case_closed_date: docData.case_closed_date,
+        offense: docData.offense,
+        discipline_imposed: docData.discipline_imposed,
+        discipline_comments: docData.discipline_comments,
+      } as AgencyData;
+    });
+
+    // Apply remaining filters
+    filters.forEach((filter) => {
+      const value = filter.value as string;
+      filteredData = filteredData.filter((d) => {
+        const fieldValue = d[filter.field as keyof AgencyData]?.toString();
+        if (!fieldValue) return false;
+
+        if (filter.isPrefix) {
+          return fieldValue.toLowerCase().startsWith(value.toLowerCase());
+        }
+        return fieldValue.toLowerCase().includes(value.toLowerCase());
+      });
+    });
+
+    return res.status(200).json({
+      data: filteredData,
+      currentPage: adjustedCurrentPage,
+      pageSize: itemsToFetch,
+      totalItems: totalItems,
+      totalPages: totalPages,
+      isLastPage: adjustedCurrentPage === totalPages,
+    });
   } catch (error) {
-    console.error('Error in handler:', error);
-    res.status(500).json({ error: 'Failed to fetch state data' });
+    console.error("Error in handler:", error);
+    res.status(500).json({ error: "Failed to fetch state data" });
   }
 }

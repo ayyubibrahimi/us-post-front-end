@@ -1,6 +1,6 @@
-import { promisify } from 'util';
-import { readFile } from 'fs';
-import webpack from 'webpack';
+import { readFile } from "node:fs";
+import { promisify } from "node:util";
+import webpack from "webpack";
 
 const readFileAsync = promisify(readFile);
 
