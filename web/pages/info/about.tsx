@@ -240,7 +240,7 @@ const AboutPage: React.FC = () => (
           <span className={styles.pronouns}>(she/her)</span>
         </h3>
         <p className={styles.teamMemberBio}>
-          Invisible Institute&pos;s director of public strategy.
+          Invisible Institute&apos;s director of public strategy.
         </p>
       </section>
 
