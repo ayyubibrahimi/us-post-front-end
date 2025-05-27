@@ -87,7 +87,7 @@ const AboutPage: React.FC = () => (
 
     <hr className={styles.divider} />
 
-    <h2 className={styles.heading}>Team</h2>
+    <h2 className={styles.heading}>Team and Contributors</h2>
     <div className={styles.teamContainer}>
       <section className={styles.teamMember}>
         <h3 className={styles.teamMemberName}>
