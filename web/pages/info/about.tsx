@@ -74,7 +74,7 @@ const AboutPage: React.FC = () => (
       <p>
         Access the underlying data files for the National Police Index at this{" "}
         <a
-          href="https://www.dropbox.com/scl/fo/qfzs3pias4v65fp34cdal/AE_taG3_K2QxaGOG1CGsrzU?rlkey=6n2he8t6i95cde1n51kn1l1v5&st=r7cct5rp&dl=0"
+          href="https://github.com/National-Police-Index/us-post-data"
           target="_blank"
           rel="noopener noreferrer"
           className={styles.link}
