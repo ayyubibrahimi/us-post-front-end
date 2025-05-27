@@ -164,7 +164,11 @@ function buildNameQuery(
       where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
       orderBy("agency_name"),
     );
-  } else {
+  } 
+  else if (uid) {
+    firestoreQuery = query(firestoreQuery, where('person_nbr', '>=', uid));
+  }  
+  else {
     firestoreQuery = query(firestoreQuery, orderBy("person_nbr"));
   }
 
@@ -233,12 +237,7 @@ export default async function handler(
       where("state", "==", formattedState),
     );
 
-    firestoreQuery = buildNameQuery(
-      firestoreQuery,
-      firstName,
-      lastName,
-      agencyName,
-    );
+    firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName, agencyName, uid);
 
     // Build remaining filters
     const filters: Filter[] = [];
