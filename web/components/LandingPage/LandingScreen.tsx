@@ -3,7 +3,6 @@ import { useState } from "react";
 import styles from "./LandingScreen.module.scss";
 import buttonStyles from "./LandingScreen.module.scss";
 import LouisianaModal from "./LouisianaModal";
-import { TypewriterEffectSmooth } from "./TypeWriter";
 
 interface LandingScreenProps {
   onButtonClick: (state: string) => void;
@@ -16,39 +15,6 @@ const formatStateForUrl = (state: string) => {
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
   const [isLouisianaModalOpen, setIsLouisianaModalOpen] = useState(false);
-
-  const words = [
-    {
-      text: "Explore",
-      textColor: "#000000",
-      className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Rounded', 'Arial']",
-    },
-    {
-      text: "police",
-      textColor: "#000000",
-      className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Rounded']",
-    },
-    {
-      text: "officer",
-      textColor: "#000000",
-      className: "font-['SF_Pro', 'SF_Pro_Display', 'SF_Pro_Text']",
-    },
-    {
-      text: "employment",
-      textColor: "#000000",
-      className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Display']",
-    },
-    {
-      text: "history",
-      textColor: "#000000",
-      className: "font-['SF_Pro', 'SF_Pro_Text', 'SF_Pro_Display']",
-    },
-    {
-      text: "data",
-      textColor: "#000000",
-      className: "font-['SF_Pro', 'SF_Pro_Rounded', 'SF_Pro_Text']",
-    },
-  ];
 
   const states = [
     "Arizona",
