@@ -2,12 +2,10 @@ import {
   type ColDef,
   type GridApi,
   type GridReadyEvent,
-  IFilterParams,
 } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { debounce } from "lodash";
 import React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
 import tableStyles from "./table.module.scss";
 import "ag-grid-community/styles/ag-grid.css";
@@ -40,16 +38,6 @@ interface AgencyData {
   discipline_comments?: string;
 }
 
-interface Filters {
-  lastName: string;
-  middleName: string;
-  firstName: string;
-  agencyName: string;
-  uid: string;
-  startDate: string;
-  endDate: string;
-  columnFilters?: any;
-}
 
 interface PaginationInfo {
   currentPage: number;
@@ -64,8 +52,6 @@ interface AgencyTableProps {
   paginationInfo: PaginationInfo;
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
-  onFilterChange: (filters: Filters) => void;
-  filters: Filters;
   fetchEntireCSV: () => Promise<string | null>;
 }
 
@@ -75,77 +61,11 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   paginationInfo,
   onPageChange,
   onPageSizeChange,
-  onFilterChange,
-  filters,
   fetchEntireCSV,
 }) => {
   const [isDownloadingCSV, setIsDownloadingCSV] = useState(false);
   const [csvDownloadUrl, setCSVDownloadUrl] = useState<string | null>(null);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-
-  // Map grid fields to filter fields
-  const fieldMapping = {
-    person_nbr: "uid",
-    middle_name: "middleName",
-    last_name: "lastName",
-    first_name: "firstName",
-    agency_name: "agencyName",
-    start_date: "startDate",
-    end_date: "endDate",
-  };
-
-  // Debounced filter change to prevent too many backend calls
-  const debouncedFilterChange = useMemo(
-    () =>
-      debounce((filters: Filters) => {
-        onFilterChange(filters);
-        onPageChange(1); // Reset to first page when filters change
-      }, 300),
-    [onFilterChange, onPageChange],
-  );
-
-  const onFilterChanged = useCallback(() => {
-    if (gridApi) {
-      const filterModel = gridApi.getFilterModel();
-      const updatedFilters: Filters = {
-        lastName: "",
-        middleName: "",
-        firstName: "",
-        agencyName: "",
-        uid: "",
-        startDate: "",
-        endDate: "",
-      };
-
-      // Convert grid filter model to our filter format
-      Object.entries(filterModel).forEach(([field, filterValue]) => {
-        const mappedField = fieldMapping[field as keyof typeof fieldMapping];
-        if (mappedField && filterValue) {
-          updatedFilters[mappedField as keyof Filters] =
-            (filterValue as any).filter || "";
-        }
-      });
-
-      debouncedFilterChange(updatedFilters);
-    }
-  }, [gridApi, debouncedFilterChange]);
-
-  // Set initial filters when component mounts or filters prop changes
-  useEffect(() => {
-    if (gridApi && filters) {
-      const filterModel: any = {};
-      Object.entries(fieldMapping).forEach(([gridField, filterKey]) => {
-        const filterValue = filters[filterKey as keyof Filters];
-        if (filterValue) {
-          filterModel[gridField] = {
-            type: "contains",
-            filter: filterValue,
-          };
-        }
-      });
-      gridApi.setFilterModel(filterModel);
-    }
-  }, [gridApi, filters]);
 
   const hasNonEmptyColumn = useCallback(
     (columnName: keyof AgencyData) => {
@@ -155,14 +75,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     },
     [agencyData],
   );
-
-  // const getFilterParams = (field: string): IFilterParams => {
-  //   return {
-  //     buttons: ['apply', 'reset'],
-  //     closeOnApply: true,
-  //     filterOptions: ['contains', 'equals', 'startsWith', 'endsWith'],
-  //   };
-  // };
 
   const columnDefs = useMemo<ColDef[]>(() => {
     const baseColumns: ColDef[] = [
@@ -287,7 +199,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       sortable: false,
       tooltipShowDelay: 0,
       tooltipHideDelay: 2000,
-      floatingFilter: true, // Remove the default filter property
+      floatingFilter: false, // Remove the default filter property
       suppressMenu: false,
       unSortIcon: true,
       suppressSortIcons: false,
@@ -374,7 +286,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
             onGridReady={onGridReady}
-            onFilterChanged={onFilterChanged}
             tooltipShowDelay={0}
             enableBrowserTooltips
             suppressCellFocus

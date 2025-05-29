@@ -85,6 +85,20 @@ export default function Footer() {
             className={styles.logo}
           />
         </a>
+        <a
+          href="https://mljusticelab.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit ML Justivce Lab"
+        >
+          <img
+            src="/img/ml-jlab.png"
+            alt="ML Justice Lab Logo"
+            width={80}
+            height={20}
+            className={styles.logo}
+          />
+        </a>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import React from "react";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-import AgencyTable from "../../components/Pages/AgencyTable";
+import SearchModal from "../../components/Table/SearchModal";
+import AgencyTable from "../../components/Table/AgencyTable";
 import styles from "../index.module.scss";
 
 interface AgencyData {
@@ -51,6 +51,16 @@ interface PaginationInfo {
   isLastPage: boolean;
 }
 
+const initialFilters: Filters = {
+  lastName: "",
+  middleName: "",
+  firstName: "",
+  agencyName: "",
+  uid: "",
+  startDate: "",
+  endDate: "",
+};
+
 const StatePage: React.FC = () => {
   const router = useRouter();
   const { state } = router.query;
@@ -65,16 +75,8 @@ const StatePage: React.FC = () => {
     totalPages: 1,
     isLastPage: false,
   });
-  const [filters, setFilters] = useState<Filters>({
-    lastName: "",
-    middleName: "",
-    firstName: "",
-    agencyName: "",
-    uid: "",
-    startDate: "",
-    endDate: "",
-  });
-  const [activeFilters, setActiveFilters] = useState<boolean>(false);
+  const [filters, setFilters] = useState<Filters>(initialFilters);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const fetchStateData = useCallback(
     async (page: number, size: number, currentFilters: Filters) => {
@@ -83,37 +85,31 @@ const StatePage: React.FC = () => {
       setIsLoading(true);
       setError(null);
 
-      // Create a clean filter object removing empty values
       const cleanFilters = Object.fromEntries(
         Object.entries(currentFilters).filter(
-          ([key, value]) => value !== "" && key !== "columnFilters",
-        ),
+          ([key, value]) => value !== "" && key !== "columnFilters"
+        )
       );
 
-      // Check if we have any active filters
-      const hasActiveFilters = Object.keys(cleanFilters).length > 0;
-      setActiveFilters(hasActiveFilters);
-
       const queryParams = new URLSearchParams({
-        state: state,
+        state,
         page: page.toString(),
         pageSize: size.toString(),
         ...cleanFilters,
       });
 
-      // Add column filters if they exist
       if (currentFilters.columnFilters) {
         queryParams.append(
           "columnFilters",
-          JSON.stringify(currentFilters.columnFilters),
+          JSON.stringify(currentFilters.columnFilters)
         );
       }
 
       try {
         const response = await fetch(`../api/fetchStateData?${queryParams}`);
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to fetch state data");
+          const err = await response.json();
+          throw new Error(err.error || "Failed to fetch state data");
         }
         const {
           data,
@@ -132,35 +128,34 @@ const StatePage: React.FC = () => {
           totalPages,
           isLastPage,
         });
-      } catch (error) {
+      } catch (err) {
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred",
+          err instanceof Error ? err.message : "An unknown error occurred"
         );
       } finally {
         setIsLoading(false);
       }
     },
-    [state],
+    [state]
   );
 
   const fetchEntireCSV = useCallback(async () => {
     if (!state || typeof state !== "string") return null;
-
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await fetch(
-        `../api/downloadStateCSV?state=${encodeURIComponent(state)}`,
+        `../api/downloadStateCSV?state=${encodeURIComponent(state)}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch CSV download URL");
       }
       const { downloadUrl } = await response.json();
       return downloadUrl;
-    } catch (error) {
+    } catch (err) {
       setError(
-        error instanceof Error ? error.message : "An unknown error occurred",
+        err instanceof Error ? err.message : "An unknown error occurred"
       );
       return null;
     } finally {
@@ -168,79 +163,95 @@ const StatePage: React.FC = () => {
     }
   }, [state]);
 
-  // Separate useEffect for initial load and state changes
+  // Initial fetch on mount / when `state` changes
   useEffect(() => {
     if (state && typeof state === "string") {
       fetchStateData(1, paginationInfo.pageSize, filters);
     }
   }, [state]);
 
-  // Separate useEffect for filter and pagination changes
-  useEffect(() => {
+  // Explicit search handler (invoked by modal)
+  const handleSearch = (newFilters: Filters) => {
+    setFilters(newFilters);
+    setPaginationInfo((p) => ({ ...p, currentPage: 1 }));
     if (state && typeof state === "string") {
-      fetchStateData(
-        paginationInfo.currentPage,
-        paginationInfo.pageSize,
-        filters,
-      );
+      fetchStateData(1, paginationInfo.pageSize, newFilters);
     }
-  }, [
-    paginationInfo.currentPage,
-    paginationInfo.pageSize,
-    filters,
-    fetchStateData,
-  ]);
-
-  const handleStateSelection = (newState: string) => {
-    router.push(`/state/${encodeURIComponent(newState)}`);
+    setIsSearchOpen(false);
   };
 
+  // Reset handler: clear all filters, reset pagination, reload original data
+  const handleReset = () => {
+    setFilters(initialFilters);
+    setPaginationInfo((p) => ({ ...p, currentPage: 1 }));
+    if (state && typeof state === "string") {
+      fetchStateData(1, paginationInfo.pageSize, initialFilters);
+    }
+    setIsSearchOpen(false);
+  };
+
+  // Pagination callbacks
   const handlePageChange = (page: number) => {
     if (page <= paginationInfo.totalPages) {
-      setPaginationInfo((prev) => ({ ...prev, currentPage: page }));
+      setPaginationInfo((p) => ({ ...p, currentPage: page }));
+      if (state && typeof state === "string") {
+        fetchStateData(page, paginationInfo.pageSize, filters);
+      }
     }
   };
 
   const handlePageSizeChange = (size: number) => {
-    setPaginationInfo((prev) => ({
-      ...prev,
-      pageSize: size,
-      currentPage: 1,
-      isLastPage: false,
-    }));
+    setPaginationInfo((p) => ({ ...p, pageSize: size, currentPage: 1 }));
+    if (state && typeof state === "string") {
+      fetchStateData(1, size, filters);
+    }
   };
 
-  const handleFilterChange = (newFilters: Filters) => {
-    // Reset to page 1 when filters change
-    setPaginationInfo((prev) => ({ ...prev, currentPage: 1 }));
-    setFilters(newFilters);
-  };
-
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
-
-  if (!state || typeof state !== "string") {
-    return <div>Invalid state</div>;
-  }
+  if (router.isFallback) return <div>Loading...</div>;
+  if (!state || typeof state !== "string") return <div>Invalid state</div>;
 
   return (
     <div className={`${styles.pageContainer} flex flex-col h-screen`}>
-      <Header selectedState={state} onStateChange={handleStateSelection} />
+      <Header
+        selectedState={state}
+        onStateChange={(s) =>
+          router.push(`/state/${encodeURIComponent(s)}`)
+        }
+      />
+
       <main className="flex-grow p-4">
-        <h1 className="text-2xl font-bold mb-4">
-          {state} Peace Officer Employment History
-        </h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className={styles.pageTitle}>
+            {state} Officer Employment History Data
+          </h1>
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+          >
+            Search
+          </button>
+        </div>
+
+        <SearchModal
+          open={isSearchOpen}
+          initialFilters={filters}
+          onClose={() => setIsSearchOpen(false)}
+          onSearch={handleSearch}
+          onReset={handleReset}
+        />
+
         <AgencyTable
           agencyData={agencyData}
           isLoading={isLoading}
           paginationInfo={paginationInfo}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
-          onFilterChange={handleFilterChange}
-          filters={filters}
           fetchEntireCSV={fetchEntireCSV}
         />
+
+        {error && (
+          <div className="mt-4 text-red-600">Error: {error}</div>
+        )}
       </main>
     </div>
   );
