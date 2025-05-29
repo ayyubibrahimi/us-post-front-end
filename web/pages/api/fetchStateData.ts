@@ -86,11 +86,11 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("first_name", ">=", firstNameTitle),
-      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("first_name", "<=", `${firstNameTitle}~`),
       where("last_name", ">=", lastNameTitle),
-      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      where("last_name", "<=", `${lastNameTitle}~`),
       where("agency_name", ">=", agencyNameUpper),
-      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      where("agency_name", "<=", `${agencyNameUpper}~`),
       orderBy("first_name"),
       orderBy("last_name"),
       orderBy("agency_name"),
@@ -103,9 +103,9 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("first_name", ">=", firstNameTitle),
-      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("first_name", "<=", `${firstNameTitle}~`),
       where("last_name", ">=", lastNameTitle),
-      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      where("last_name", "<=", `${lastNameTitle}~`),
       orderBy("first_name"),
       orderBy("last_name"),
     );
@@ -117,9 +117,9 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("first_name", ">=", firstNameTitle),
-      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("first_name", "<=", `${firstNameTitle}~`),
       where("agency_name", ">=", agencyNameUpper),
-      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      where("agency_name", "<=", `${agencyNameUpper}~`),
       orderBy("first_name"),
       orderBy("agency_name"),
     );
@@ -131,9 +131,9 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("last_name", ">=", lastNameTitle),
-      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      where("last_name", "<=", `${lastNameTitle}~`),
       where("agency_name", ">=", agencyNameUpper),
-      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      where("agency_name", "<=", `${agencyNameUpper}~`),
       orderBy("last_name"),
       orderBy("agency_name"),
     );
@@ -143,7 +143,7 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("last_name", ">=", lastNameTitle),
-      where("last_name", "<=", `${lastNameTitle}\uf8ff`),
+      where("last_name", "<=", `${lastNameTitle}~`),
       orderBy("last_name"),
     );
   } else if (cleanFirstName) {
@@ -152,7 +152,7 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("first_name", ">=", firstNameTitle),
-      where("first_name", "<=", `${firstNameTitle}\uf8ff`),
+      where("first_name", "<=", `${firstNameTitle}~`),
       orderBy("first_name"),
     );
   } else if (cleanAgencyName) {
@@ -161,7 +161,7 @@ function buildNameQuery(
     firestoreQuery = query(
       firestoreQuery,
       where("agency_name", ">=", agencyNameUpper),
-      where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
+      where("agency_name", "<=", `${agencyNameUpper}~`),
       orderBy("agency_name"),
     );
   } 
