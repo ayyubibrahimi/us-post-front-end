@@ -247,12 +247,104 @@ export default async function handler(
     if (startDate) filters.push({ field: "start_date", value: startDate });
     if (endDate) filters.push({ field: "end_date", value: endDate });
 
-    // For name filters, fetch all data to sort properly
-    let allData: AgencyData[] = [];
-
+    // For name filters, return first batch immediately to avoid timeout
     if (cleanFirstName || cleanLastName || cleanAgencyName) {
-      // Fetch all documents in batches when there's a name filter
-      const batchSize = 1000;
+      const batchSize = 500;
+      
+      // For first page, get first batch immediately
+      if (currentPage === 1) {
+        const snapshot = await getDocs(query(firestoreQuery, limit(batchSize)));
+
+        if (snapshot.empty) {
+          return res.status(200).json({
+            data: [],
+            currentPage: 1,
+            pageSize: size,
+            totalItems: 0,
+            totalPages: 0,
+            isLastPage: true,
+          });
+        }
+
+        const batchData = snapshot.docs.map((doc) => {
+          const docData = doc.data();
+          return {
+            case_id: docData.case_id,
+            person_nbr: docData.person_nbr,
+            sanction: docData.sanction,
+            sanction_date: docData.sanction_date,
+            violation: docData.violation,
+            violation_date: docData.violation_date,
+            full_name: docData.full_name,
+            agency_name: docData.agency_name,
+            employment_status: docData.employment_status,
+            employment_change: docData.employment_change,
+            start_date: docData.start_date,
+            end_date: docData.end_date,
+            last_name: docData.last_name,
+            first_name: docData.first_name,
+            middle_name: docData.middle_name,
+            suffix: docData.suffix,
+            year_of_birth: docData.year_of_birth,
+            race: docData.race,
+            sex: docData.sex,
+            separation_reason: docData.separation_reason,
+            case_opened_date: docData.case_opened_date,
+            case_closed_date: docData.case_closed_date,
+            offense: docData.offense,
+            discipline_imposed: docData.discipline_imposed,
+            discipline_comments: docData.discipline_comments,
+          } as AgencyData;
+        });
+
+        // Apply remaining filters
+        let filteredData = batchData;
+        filters.forEach((filter) => {
+          const value = filter.value as string;
+          filteredData = filteredData.filter((d) => {
+            const fieldValue = d[filter.field as keyof AgencyData]?.toString();
+            if (!fieldValue) return false;
+
+            if (filter.isPrefix) {
+              return fieldValue.toLowerCase().startsWith(value.toLowerCase());
+            }
+            return fieldValue.toLowerCase().includes(value.toLowerCase());
+          });
+        });
+
+        // Sort the filtered data
+        filteredData.sort((a, b) => {
+          const firstNameA = a.first_name || "";
+          const firstNameB = b.first_name || "";
+          const lastNameA = a.last_name || "";
+          const lastNameB = b.last_name || "";
+
+          const lastNameCompare = lastNameA.localeCompare(lastNameB);
+          if (lastNameCompare !== 0) return lastNameCompare;
+
+          return firstNameA.localeCompare(firstNameB);
+        });
+
+        // Get rough estimate of total results for pagination
+        const countSnapshot = await getCountFromServer(firestoreQuery);
+        const estimatedTotal = countSnapshot.data().count;
+
+        // Return first page immediately with estimated total
+        const paginatedData = filteredData.slice(0, size);
+        
+        return res.status(200).json({
+          data: paginatedData,
+          currentPage: 1,
+          pageSize: size,
+          totalItems: Math.max(filteredData.length, estimatedTotal),
+          totalPages: Math.ceil(Math.max(filteredData.length, estimatedTotal) / size),
+          isLastPage: false, // Always false for first page to allow pagination
+          isPartialResults: true, // Flag indicating there may be more results
+        });
+      }
+      
+      // For subsequent pages, fall back to full fetch
+      let allData: AgencyData[] = [];
       let lastDoc = null;
       let hasMore = true;
 
@@ -350,6 +442,7 @@ export default async function handler(
         isLastPage: adjustedCurrentPage === totalPages,
       });
     }
+
     // For non-name queries, use standard pagination
     const countSnapshot = await getCountFromServer(firestoreQuery);
     const totalItems = countSnapshot.data().count;
