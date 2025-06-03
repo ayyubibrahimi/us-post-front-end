@@ -40,7 +40,6 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
-  columnFilters?: Array<{ id: string; value: unknown }>;
 }
 
 interface PaginationInfo {
@@ -100,14 +99,6 @@ const StatePage: React.FC = () => {
         pageSize: size.toString(),
         ...cleanFilters,
       });
-
-      // Add column filters if they exist
-      if (currentFilters.columnFilters) {
-        queryParams.append(
-          "columnFilters",
-          JSON.stringify(currentFilters.columnFilters),
-        );
-      }
 
       try {
         const response = await fetch(`../api/fetchStateData?${queryParams}`);
@@ -173,7 +164,7 @@ const StatePage: React.FC = () => {
     if (state && typeof state === "string") {
       fetchStateData(1, paginationInfo.pageSize, filters);
     }
-  }, [state]);
+  }, [state, fetchStateData, paginationInfo.pageSize, filters]);
 
   // Separate useEffect for filter and pagination changes
   useEffect(() => {
@@ -185,6 +176,7 @@ const StatePage: React.FC = () => {
       );
     }
   }, [
+    state,
     paginationInfo.currentPage,
     paginationInfo.pageSize,
     filters,
