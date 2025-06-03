@@ -48,7 +48,7 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
-  columnFilters?: any;
+  columnFilters?: Array<{ id: string; value: unknown }>;
 }
 
 interface PaginationInfo {
