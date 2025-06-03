@@ -98,6 +98,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         src="https://data-access-map.netlify.app/"
         width="100%"
         height="530px"
+        title="Interactive Data Access Map"
       />
 
       {/* Removed empty div elements */}
