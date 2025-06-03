@@ -385,7 +385,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   quality journalism, and creating software tools for
                   journalists. He holds degrees in microbiology, computational
                   biology, and computational analysis and public policy. He also
-                  actively contributes to Lucy Parsons Labs'{" "}
+                  actively contributes to Lucy Parsons Labs&apos;{" "}
                   <a
                     href="https://openoversight.com/"
                     target="_blank"
@@ -393,7 +393,7 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   >
                     OpenOversight platform
                   </a>{" "}
-                  and Bellingcat's{" "}
+                  and Bellingcat&apos;s{" "}
                   <a
                     href="https://github.com/bellingcat/auto-archiver-api"
                     target="_blank"
