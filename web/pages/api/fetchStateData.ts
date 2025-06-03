@@ -306,7 +306,7 @@ export default async function handler(
       }
 
       // Apply remaining filters
-      filters.forEach((filter) => {
+      for (const filter of filters) {
         const value = filter.value as string;
         allData = allData.filter((d) => {
           const fieldValue = d[filter.field as keyof AgencyData]?.toString();
@@ -317,7 +317,7 @@ export default async function handler(
           }
           return fieldValue.toLowerCase().includes(value.toLowerCase());
         });
-      });
+      }
 
       // Sort the filtered data
       allData.sort((a, b) => {
@@ -425,7 +425,7 @@ export default async function handler(
     });
 
     // Apply remaining filters
-    filters.forEach((filter) => {
+    for (const filter of filters) {
       const value = filter.value as string;
       filteredData = filteredData.filter((d) => {
         const fieldValue = d[filter.field as keyof AgencyData]?.toString();
@@ -436,7 +436,7 @@ export default async function handler(
         }
         return fieldValue.toLowerCase().includes(value.toLowerCase());
       });
-    });
+    }
 
     return res.status(200).json({
       data: filteredData,
