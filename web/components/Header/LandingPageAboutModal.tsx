@@ -42,7 +42,12 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+    <div
+      className={styles.modalOverlay}
+      onClick={handleOverlayClick}
+      onKeyDown={(e) => e.key === "Escape" && onClose()}
+      tabIndex={-1}
+    >
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>National Police Index</h2>
