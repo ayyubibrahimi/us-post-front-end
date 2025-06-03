@@ -40,10 +40,13 @@ export const TypewriterEffectSmooth: React.FC<TypewriterEffectSmoothProps> = ({
 
   const renderWords = () => {
     return wordsArray.map((word, idx) => (
-      <div key={`word-${idx}`} style={{ display: "inline-block" }}>
+      <div
+        key={`word-${idx}-${word.text.slice(0, 3)}`}
+        style={{ display: "inline-block" }}
+      >
         {word.text.map((char, index) => (
           <span
-            key={`char-${index}`}
+            key={`word-${idx}-char-${index}`}
             style={{
               ...baseStyle,
               color: word.textColor || baseStyle.color,
