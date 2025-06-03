@@ -961,7 +961,7 @@ const AboutModal: React.FC<AboutModalProps> = ({
           {stateInfo[selectedState] ||
             "Information about this state's peace officer employment history database is currently unavailable."}
         </div>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button type="button" className={styles.closeButton} onClick={onClose}>
           Close
         </button>
       </div>

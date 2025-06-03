@@ -310,6 +310,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     return (
       <div className={tableStyles.pagination}>
         <button
+          type="button"
           className={tableStyles.arrowButton}
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
@@ -317,6 +318,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           Previous
         </button>
         <button
+          type="button"
           className={tableStyles.arrowButton}
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
@@ -401,6 +403,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
               Download Filtered CSV
             </CSVLink>
             <button
+              type="button"
               onClick={handleDownloadEntireCSV}
               className={tableStyles.fullcsvLink}
               disabled={isDownloadingCSV}
