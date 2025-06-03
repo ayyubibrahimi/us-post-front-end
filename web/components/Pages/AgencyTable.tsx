@@ -48,7 +48,6 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
-  columnFilters?: Array<{ id: string; value: unknown }>;
 }
 
 interface PaginationInfo {
@@ -118,13 +117,15 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       };
 
       // Convert grid filter model to our filter format
-      Object.entries(filterModel).forEach(([field, filterValue]) => {
+      for (const [field, filterValue] of Object.entries(filterModel)) {
         const mappedField = fieldMapping[field as keyof typeof fieldMapping];
         if (mappedField && filterValue) {
           updatedFilters[mappedField as keyof Filters] =
-            (filterValue as any).filter || "";
+            typeof filterValue === "string"
+              ? filterValue
+              : (filterValue as { filter?: string }).filter || "";
         }
-      });
+      }
 
       debouncedFilterChange(updatedFilters);
     }
@@ -133,8 +134,8 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
   // Set initial filters when component mounts or filters prop changes
   useEffect(() => {
     if (gridApi && filters) {
-      const filterModel: any = {};
-      Object.entries(fieldMapping).forEach(([gridField, filterKey]) => {
+      const filterModel: Record<string, { filter: string; type: string }> = {};
+      for (const [gridField, filterKey] of Object.entries(fieldMapping)) {
         const filterValue = filters[filterKey as keyof Filters];
         if (filterValue) {
           filterModel[gridField] = {
@@ -142,7 +143,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
             filter: filterValue,
           };
         }
-      });
+      }
       gridApi.setFilterModel(filterModel);
     }
   }, [gridApi, filters]);
@@ -263,7 +264,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
       ["Separation Reason", "separation_reason"],
     ];
 
-    conditionalColumns.forEach(([header, field]) => {
+    for (const [header, field] of conditionalColumns) {
       if (hasNonEmptyColumn(field)) {
         baseColumns.push({
           headerName: header,
@@ -276,7 +277,7 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
           minWidth: 120,
         });
       }
-    });
+    }
 
     return baseColumns;
   }, [hasNonEmptyColumn]);
