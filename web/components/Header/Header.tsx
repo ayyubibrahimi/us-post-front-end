@@ -106,17 +106,18 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenuWrapper}>
-                <ul className={styles.dropdownMenu}>
+                <div className={styles.dropdownMenu}>
                   {states.map((state) => (
-                    <li
+                    <button
                       key={state}
+                      type="button"
                       className={`${styles.dropdownItem} ${state === displayState ? styles.active : ""}`}
                       onClick={() => handleStateSelection(state)}
                     >
                       {state}
-                    </li>
+                    </button>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
