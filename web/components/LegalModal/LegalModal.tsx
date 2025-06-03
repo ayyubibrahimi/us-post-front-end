@@ -40,6 +40,7 @@ const LegalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>Legal Disclaimer</h2>
           <button
+            type="button"
             className={styles.modalCloseButton}
             onClick={onClose}
             aria-label="Close Legal Modal"

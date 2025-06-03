@@ -113,6 +113,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-2">
         {states.map((state) => (
           <button
+            type="button"
             key={state}
             className={`${buttonStyles.stateButtons}`}
             onClick={() => handleStateClick(state)}
@@ -128,6 +129,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
 
       <div className="-mt-2">
         <button
+          type="button"
           className={`items-center ${buttonStyles.stateDataButton}`}
           onClick={() =>
             window.open(

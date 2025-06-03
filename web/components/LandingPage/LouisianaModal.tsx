@@ -51,7 +51,7 @@ const LouisianaModal: React.FC<LouisianaModalProps> = ({ isOpen, onClose }) => {
             </a>
           </p>
         </div>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button type="button" className={styles.closeButton} onClick={onClose}>
           Close
         </button>
       </div>

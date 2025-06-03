@@ -21,7 +21,11 @@ const LandingPageHeader: React.FC = () => {
         <Link href="/" className={styles.headerTitleLink}>
           <h1 className={styles.headerTitle}>National Police Index</h1>
         </Link>
-        <button className={styles.aboutButton} onClick={handleAboutClick}>
+        <button
+          type="button"
+          className={styles.aboutButton}
+          onClick={handleAboutClick}
+        >
           About the NPI
         </button>
       </div>

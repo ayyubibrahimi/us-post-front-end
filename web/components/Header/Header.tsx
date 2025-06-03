@@ -98,6 +98,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
           </Link>
           <div className={styles.dropdown} ref={dropdownRef}>
             <button
+              type="button"
               className={styles.dropdownToggle}
               onClick={handleDropdownToggle}
             >
@@ -119,7 +120,11 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
               </div>
             )}
           </div>
-          <button className={styles.aboutButton} onClick={handleAboutClick}>
+          <button
+            type="button"
+            className={styles.aboutButton}
+            onClick={handleAboutClick}
+          >
             About{displayState ? ` ${displayState}` : ""}
           </button>
         </div>
