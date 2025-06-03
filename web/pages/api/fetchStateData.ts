@@ -59,7 +59,7 @@ function buildNameQuery(
   firstName: string | string[] | undefined,
   lastName: string | string[] | undefined,
   agencyName: string | string[] | undefined,
-  person_nbr: string | string[] | undefined, 
+  person_nbr: string | string[] | undefined,
 ): Query<DocumentData> {
   // Convert potential array values to strings and clean
   const cleanFirstName = (
@@ -72,7 +72,9 @@ function buildNameQuery(
     Array.isArray(agencyName) ? agencyName[0] : agencyName || ""
   ).trim();
 
-  const uid = (Array.isArray(person_nbr) ? person_nbr[0] : person_nbr || '').trim();
+  const uid = (
+    Array.isArray(person_nbr) ? person_nbr[0] : person_nbr || ""
+  ).trim();
 
   let firestoreQuery = baseQuery;
 
@@ -164,11 +166,9 @@ function buildNameQuery(
       where("agency_name", "<=", `${agencyNameUpper}\uf8ff`),
       orderBy("agency_name"),
     );
-  } 
-  else if (uid) {
-    firestoreQuery = query(firestoreQuery, where('person_nbr', '>=', uid));
-  }  
-  else {
+  } else if (uid) {
+    firestoreQuery = query(firestoreQuery, where("person_nbr", ">=", uid));
+  } else {
     firestoreQuery = query(firestoreQuery, orderBy("person_nbr"));
   }
 
@@ -237,7 +237,13 @@ export default async function handler(
       where("state", "==", formattedState),
     );
 
-    firestoreQuery = buildNameQuery(firestoreQuery, firstName, lastName, agencyName, uid);
+    firestoreQuery = buildNameQuery(
+      firestoreQuery,
+      firstName,
+      lastName,
+      agencyName,
+      uid,
+    );
 
     // Build remaining filters
     const filters: Filter[] = [];
