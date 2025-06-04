@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { useState } from "react";
 import styles from "./LandingScreen.module.scss";
 import buttonStyles from "./LandingScreen.module.scss";
@@ -98,6 +98,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
         src="https://data-access-map.netlify.app/"
         width="100%"
         height="530px"
+        title="Interactive Data Access Map"
       />
 
       {/* Removed empty div elements */}
@@ -113,6 +114,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-2">
         {states.map((state) => (
           <button
+            type="button"
             key={state}
             className={`${buttonStyles.stateButtons}`}
             onClick={() => handleStateClick(state)}
@@ -128,6 +130,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
 
       <div className="-mt-2">
         <button
+          type="button"
           className={`items-center ${buttonStyles.stateDataButton}`}
           onClick={() =>
             window.open(

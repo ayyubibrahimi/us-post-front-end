@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import AboutModal from "./AboutModal";
 import styles from "./headerLight.module.scss";
@@ -98,6 +98,7 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
           </Link>
           <div className={styles.dropdown} ref={dropdownRef}>
             <button
+              type="button"
               className={styles.dropdownToggle}
               onClick={handleDropdownToggle}
             >
@@ -105,21 +106,26 @@ const Header: React.FC<HeaderProps> = ({ selectedState, onStateChange }) => {
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenuWrapper}>
-                <ul className={styles.dropdownMenu}>
+                <div className={styles.dropdownMenu}>
                   {states.map((state) => (
-                    <li
+                    <button
                       key={state}
+                      type="button"
                       className={`${styles.dropdownItem} ${state === displayState ? styles.active : ""}`}
                       onClick={() => handleStateSelection(state)}
                     >
                       {state}
-                    </li>
+                    </button>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
-          <button className={styles.aboutButton} onClick={handleAboutClick}>
+          <button
+            type="button"
+            className={styles.aboutButton}
+            onClick={handleAboutClick}
+          >
             About{displayState ? ` ${displayState}` : ""}
           </button>
         </div>
