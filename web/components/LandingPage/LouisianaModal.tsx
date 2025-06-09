@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import styles from "./LouisianaModal.module.scss";
 
 interface LouisianaModalProps {
@@ -51,7 +51,7 @@ const LouisianaModal: React.FC<LouisianaModalProps> = ({ isOpen, onClose }) => {
             </a>
           </p>
         </div>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button type="button" className={styles.closeButton} onClick={onClose}>
           Close
         </button>
       </div>

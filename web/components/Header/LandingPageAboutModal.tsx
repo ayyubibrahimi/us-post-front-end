@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import styles from "./LandingPageModal.module.scss";
 
@@ -42,11 +42,17 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+    <div
+      className={styles.modalOverlay}
+      onClick={handleOverlayClick}
+      onKeyDown={(e) => e.key === "Escape" && onClose()}
+      tabIndex={-1}
+    >
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>National Police Index</h2>
           <button
+            type="button"
             className={styles.modalCloseButton}
             onClick={onClose}
             aria-label="Close"
@@ -57,12 +63,14 @@ const LandingPageModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
 
         <div className={styles.tabContainer}>
           <button
+            type="button"
             className={`${styles.tab} ${activeTab === "about" ? styles.active : ""}`}
             onClick={() => setActiveTab("about")}
           >
             About
           </button>
           <button
+            type="button"
             className={`${styles.tab} ${activeTab === "team" ? styles.active : ""}`}
             onClick={() => setActiveTab("team")}
           >

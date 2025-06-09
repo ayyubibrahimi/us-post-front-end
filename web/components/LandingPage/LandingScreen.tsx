@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { useState } from "react";
 import styles from "./LandingScreen.module.scss";
 import buttonStyles from "./LandingScreen.module.scss";
@@ -61,10 +61,12 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
     <div
       className={`flex flex-col items-center justify-center h-max space-y-2 my-12 xl:my-20 2xl:my-24 ${styles.landingScreenContainer}`}
     >
-      <GridMap 
-      onStateClick={onButtonClick}
-      onLouisianaClick={() => setIsLouisianaModalOpen(true)}
-    />
+      <iframe
+        src="https://data-access-map.netlify.app/"
+        width="100%"
+        height="530px"
+        title="Interactive Data Access Map"
+      />
 
     {isLouisianaModalOpen && (
       <LouisianaModal
@@ -81,9 +83,26 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ onButtonClick }) => {
           represented on the data tool.
         </p>
       </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-2">
+        {states.map((state) => (
+          <button
+            type="button"
+            key={state}
+            className={`${buttonStyles.stateButtons}`}
+            onClick={() => handleStateClick(state)}
+          >
+            {state}
+          </button>
+        ))}
+      </div>
+      <LouisianaModal
+        isOpen={isLouisianaModalOpen}
+        onClose={() => setIsLouisianaModalOpen(false)}
+      />
 
       <div className="-mt-2">
         <button
+          type="button"
           className={`items-center ${buttonStyles.stateDataButton}`}
           onClick={() =>
             window.open(

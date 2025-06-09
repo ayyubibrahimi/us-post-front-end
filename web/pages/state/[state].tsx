@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import SearchModal from "../../components/Table/SearchModal";
 import AgencyTable from "../../components/Table/AgencyTable";
@@ -40,7 +41,6 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
-  columnFilters?: any;
 }
 
 interface PaginationInfo {
@@ -97,13 +97,6 @@ const StatePage: React.FC = () => {
         pageSize: size.toString(),
         ...cleanFilters,
       });
-
-      if (currentFilters.columnFilters) {
-        queryParams.append(
-          "columnFilters",
-          JSON.stringify(currentFilters.columnFilters)
-        );
-      }
 
       try {
         const response = await fetch(`../api/fetchStateData?${queryParams}`);
@@ -168,7 +161,7 @@ const StatePage: React.FC = () => {
     if (state && typeof state === "string") {
       fetchStateData(1, paginationInfo.pageSize, filters);
     }
-  }, [state]);
+  }, [state, fetchStateData, paginationInfo.pageSize, filters]);
 
   // Explicit search handler (invoked by modal)
   const handleSearch = (newFilters: Filters) => {
@@ -177,7 +170,16 @@ const StatePage: React.FC = () => {
     if (state && typeof state === "string") {
       fetchStateData(1, paginationInfo.pageSize, newFilters);
     }
-    setIsSearchOpen(false);
+  }, [
+    state,
+    paginationInfo.currentPage,
+    paginationInfo.pageSize,
+    filters,
+    fetchStateData,
+  ]);
+
+  const handleStateSelection = (newState: string) => {
+    router.push(`/state/${encodeURIComponent(newState)}`);
   };
 
   // Reset handler: clear all filters, reset pagination, reload original data

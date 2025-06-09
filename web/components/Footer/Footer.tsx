@@ -17,6 +17,7 @@ export default function Footer() {
     <div className={styles.footer}>
       <div className={styles["nav-links-wrapper"]}>
         <button
+          type="button"
           className={styles.links}
           onClick={handleAboutClick}
           aria-label="Open About Modal"
