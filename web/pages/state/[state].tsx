@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
-import SearchModal from "../../components/Table/SearchModal";
 import AgencyTable from "../../components/Table/AgencyTable";
+import SearchModal from "../../components/Table/SearchModal";
 import styles from "../index.module.scss";
 
 interface AgencyData {
@@ -87,8 +87,8 @@ const StatePage: React.FC = () => {
 
       const cleanFilters = Object.fromEntries(
         Object.entries(currentFilters).filter(
-          ([key, value]) => value !== "" && key !== "columnFilters"
-        )
+          ([key, value]) => value !== "" && key !== "columnFilters",
+        ),
       );
 
       const queryParams = new URLSearchParams({
@@ -123,13 +123,13 @@ const StatePage: React.FC = () => {
         });
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
+          err instanceof Error ? err.message : "An unknown error occurred",
         );
       } finally {
         setIsLoading(false);
       }
     },
-    [state]
+    [state],
   );
 
   const fetchEntireCSV = useCallback(async () => {
@@ -139,7 +139,7 @@ const StatePage: React.FC = () => {
 
     try {
       const response = await fetch(
-        `../api/downloadStateCSV?state=${encodeURIComponent(state)}`
+        `../api/downloadStateCSV?state=${encodeURIComponent(state)}`,
       );
       if (!response.ok) {
         throw new Error("Failed to fetch CSV download URL");
@@ -148,7 +148,7 @@ const StatePage: React.FC = () => {
       return downloadUrl;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
+        err instanceof Error ? err.message : "An unknown error occurred",
       );
       return null;
     } finally {
@@ -164,19 +164,16 @@ const StatePage: React.FC = () => {
   }, [state, fetchStateData, paginationInfo.pageSize, filters]);
 
   // Explicit search handler (invoked by modal)
-  const handleSearch = (newFilters: Filters) => {
-    setFilters(newFilters);
-    setPaginationInfo((p) => ({ ...p, currentPage: 1 }));
-    if (state && typeof state === "string") {
-      fetchStateData(1, paginationInfo.pageSize, newFilters);
-    }
-  }, [
-    state,
-    paginationInfo.currentPage,
-    paginationInfo.pageSize,
-    filters,
-    fetchStateData,
-  ]);
+  const handleSearch = useCallback(
+    (newFilters: Filters) => {
+      setFilters(newFilters);
+      setPaginationInfo((p) => ({ ...p, currentPage: 1 }));
+      if (state && typeof state === "string") {
+        fetchStateData(1, paginationInfo.pageSize, newFilters);
+      }
+    },
+    [state, paginationInfo.pageSize, fetchStateData],
+  );
 
   const handleStateSelection = (newState: string) => {
     router.push(`/state/${encodeURIComponent(newState)}`);
@@ -216,9 +213,7 @@ const StatePage: React.FC = () => {
     <div className={`${styles.pageContainer} flex flex-col h-screen`}>
       <Header
         selectedState={state}
-        onStateChange={(s) =>
-          router.push(`/state/${encodeURIComponent(s)}`)
-        }
+        onStateChange={(s) => router.push(`/state/${encodeURIComponent(s)}`)}
       />
 
       <main className="flex-grow p-4">
@@ -227,6 +222,7 @@ const StatePage: React.FC = () => {
             {state} Officer Employment History Data
           </h1>
           <button
+            type="button"
             onClick={() => setIsSearchOpen(true)}
             className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
           >
@@ -251,9 +247,7 @@ const StatePage: React.FC = () => {
           fetchEntireCSV={fetchEntireCSV}
         />
 
-        {error && (
-          <div className="mt-4 text-red-600">Error: {error}</div>
-        )}
+        {error && <div className="mt-4 text-red-600">Error: {error}</div>}
       </main>
     </div>
   );

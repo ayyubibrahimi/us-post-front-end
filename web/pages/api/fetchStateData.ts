@@ -256,7 +256,7 @@ export default async function handler(
     // For name filters, return first batch immediately to avoid timeout
     if (cleanFirstName || cleanLastName || cleanAgencyName) {
       const batchSize = 500;
-      
+
       // For first page, get first batch immediately
       if (currentPage === 1) {
         const snapshot = await getDocs(query(firestoreQuery, limit(batchSize)));
@@ -305,7 +305,7 @@ export default async function handler(
 
         // Apply remaining filters
         let filteredData = batchData;
-        filters.forEach((filter) => {
+        for (const filter of filters) {
           const value = filter.value as string;
           filteredData = filteredData.filter((d) => {
             const fieldValue = d[filter.field as keyof AgencyData]?.toString();
@@ -316,7 +316,7 @@ export default async function handler(
             }
             return fieldValue.toLowerCase().includes(value.toLowerCase());
           });
-        });
+        }
 
         // Sort the filtered data
         filteredData.sort((a, b) => {
@@ -337,18 +337,20 @@ export default async function handler(
 
         // Return first page immediately with estimated total
         const paginatedData = filteredData.slice(0, size);
-        
+
         return res.status(200).json({
           data: paginatedData,
           currentPage: 1,
           pageSize: size,
           totalItems: Math.max(filteredData.length, estimatedTotal),
-          totalPages: Math.ceil(Math.max(filteredData.length, estimatedTotal) / size),
+          totalPages: Math.ceil(
+            Math.max(filteredData.length, estimatedTotal) / size,
+          ),
           isLastPage: false, // Always false for first page to allow pagination
           isPartialResults: true, // Flag indicating there may be more results
         });
       }
-      
+
       // For subsequent pages, fall back to full fetch
       let allData: AgencyData[] = [];
       let lastDoc = null;

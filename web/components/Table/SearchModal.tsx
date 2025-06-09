@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import styles from "./SearchModal.module.scss";
 
 interface Filters {
@@ -9,7 +10,7 @@ interface Filters {
   uid: string;
   startDate: string;
   endDate: string;
-  columnFilters?: any;
+  columnFilters?: Record<string, unknown>;
 }
 
 interface SearchModalProps {
@@ -36,7 +37,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
   }, [open, initialFilters]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setLocalFilters((prev) => ({ ...prev, [name]: value }));
@@ -53,19 +54,35 @@ const SearchModal: React.FC<SearchModalProps> = ({
     onClose();
   };
 
+  const handleBackdropKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  };
+
   if (!open) return null;
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.backdrop} onClick={onClose} />
+      <div
+        className={styles.backdrop}
+        onClick={onClose}
+        onKeyDown={handleBackdropKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-label="Close modal"
+      />
 
       <div className={styles.modal}>
         <h2 className={styles.title}>Search</h2>
 
         <div className={styles.form}>
           <div className={styles.field}>
-            <label className={styles.label}>First Name</label>
+            <label htmlFor="firstName" className={styles.label}>
+              First Name
+            </label>
             <input
+              id="firstName"
               name="firstName"
               type="text"
               value={localFilters.firstName}
@@ -75,8 +92,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label}>Last Name</label>
+            <label htmlFor="lastName" className={styles.label}>
+              Last Name
+            </label>
             <input
+              id="lastName"
               name="lastName"
               type="text"
               value={localFilters.lastName}
@@ -86,8 +106,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label}>Agency</label>
+            <label htmlFor="agencyName" className={styles.label}>
+              Agency
+            </label>
             <input
+              id="agencyName"
               name="agencyName"
               type="text"
               value={localFilters.agencyName}
@@ -97,8 +120,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label}>UID</label>
+            <label htmlFor="uid" className={styles.label}>
+              UID
+            </label>
             <input
+              id="uid"
               name="uid"
               type="text"
               value={localFilters.uid}
@@ -109,8 +135,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
 
           <div className={styles.dateGroup}>
             <div className={styles.field}>
-              <label className={styles.label}>Start Date</label>
+              <label htmlFor="startDate" className={styles.label}>
+                Start Date
+              </label>
               <input
+                id="startDate"
                 name="startDate"
                 type="date"
                 value={localFilters.startDate}
@@ -119,8 +148,11 @@ const SearchModal: React.FC<SearchModalProps> = ({
               />
             </div>
             <div className={styles.field}>
-              <label className={styles.label}>End Date</label>
+              <label htmlFor="endDate" className={styles.label}>
+                End Date
+              </label>
               <input
+                id="endDate"
                 name="endDate"
                 type="date"
                 value={localFilters.endDate}
@@ -132,13 +164,25 @@ const SearchModal: React.FC<SearchModalProps> = ({
         </div>
 
         <div className={styles.actions}>
-          <button onClick={onClose} className={styles.cancelButton}>
+          <button
+            type="button"
+            onClick={onClose}
+            className={styles.cancelButton}
+          >
             Cancel
           </button>
-          <button onClick={handleReset} className={styles.resetButton}>
+          <button
+            type="button"
+            onClick={handleReset}
+            className={styles.resetButton}
+          >
             Reset
           </button>
-          <button onClick={handleSubmit} className={styles.submitButton}>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className={styles.submitButton}
+          >
             Search
           </button>
         </div>

@@ -1,12 +1,7 @@
-import {
-  type ColDef,
-  type GridApi,
-  type GridReadyEvent,
-} from "ag-grid-community";
+import type { ColDef, GridApi, GridReadyEvent } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { debounce } from "lodash";
 import type React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
 import tableStyles from "./table.module.scss";
 import "ag-grid-community/styles/ag-grid.css";
@@ -39,16 +34,6 @@ interface AgencyData {
   discipline_comments?: string;
 }
 
-interface Filters {
-  lastName: string;
-  middleName: string;
-  firstName: string;
-  agencyName: string;
-  uid: string;
-  startDate: string;
-  endDate: string;
-}
-
 interface PaginationInfo {
   currentPage: number;
   pageSize: number;
@@ -63,6 +48,16 @@ interface AgencyTableProps {
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
   fetchEntireCSV: () => Promise<string | null>;
+}
+
+interface Filters {
+  lastName: string;
+  middleName: string;
+  firstName: string;
+  agencyName: string;
+  uid: string;
+  startDate: string;
+  endDate: string;
 }
 
 const AgencyTable: React.FC<AgencyTableProps> = ({
@@ -87,61 +82,6 @@ const AgencyTable: React.FC<AgencyTableProps> = ({
     start_date: "startDate",
     end_date: "endDate",
   };
-
-  // Debounced filter change to prevent too many backend calls
-  const debouncedFilterChange = useMemo(
-    () =>
-      debounce((filters: Filters) => {
-        onFilterChange(filters);
-        onPageChange(1); // Reset to first page when filters change
-      }, 300),
-    [onFilterChange, onPageChange],
-  );
-
-  const onFilterChanged = useCallback(() => {
-    if (gridApi) {
-      const filterModel = gridApi.getFilterModel();
-      const updatedFilters: Filters = {
-        lastName: "",
-        middleName: "",
-        firstName: "",
-        agencyName: "",
-        uid: "",
-        startDate: "",
-        endDate: "",
-      };
-
-      // Convert grid filter model to our filter format
-      for (const [field, filterValue] of Object.entries(filterModel)) {
-        const mappedField = fieldMapping[field as keyof typeof fieldMapping];
-        if (mappedField && filterValue) {
-          updatedFilters[mappedField as keyof Filters] =
-            typeof filterValue === "string"
-              ? filterValue
-              : (filterValue as { filter?: string }).filter || "";
-        }
-      }
-
-      debouncedFilterChange(updatedFilters);
-    }
-  }, [gridApi, debouncedFilterChange]);
-
-  // Set initial filters when component mounts or filters prop changes
-  useEffect(() => {
-    if (gridApi && filters) {
-      const filterModel: Record<string, { filter: string; type: string }> = {};
-      for (const [gridField, filterKey] of Object.entries(fieldMapping)) {
-        const filterValue = filters[filterKey as keyof Filters];
-        if (filterValue) {
-          filterModel[gridField] = {
-            type: "contains",
-            filter: filterValue,
-          };
-        }
-      }
-      gridApi.setFilterModel(filterModel);
-    }
-  }, [gridApi, filters]);
 
   const hasNonEmptyColumn = useCallback(
     (columnName: keyof AgencyData) => {
