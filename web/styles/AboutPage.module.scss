@@ -9,7 +9,7 @@
     color: #333;
     line-height: 1.6;
   }
-  
+
   .backLink {
     display: inline-block;
     margin-bottom: 2rem;
@@ -22,21 +22,21 @@
       text-decoration: underline;
     }
   }
-  
+
   .heading {
     margin: 2rem 0 1rem;
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
   }
-  
+
   .section {
     margin-bottom: 2rem;
     p {
       margin: 0 0 1rem;
     }
   }
-  
+
   .link {
     color: #0b72eb;
     text-decoration: underline;
@@ -45,24 +45,24 @@
       color: #094bb5;
     }
   }
-  
+
   .divider {
     border: none;
     height: 1px;
     background-color: #e0e0e0;
     margin: 3rem 0;
   }
-  
+
   .teamContainer {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
   }
-  
+
   .teamMember {
     /* spacing is handled by teamContainer gap */
   }
-  
+
   .teamMemberName {
     margin: 0;
     font-size: 1.25rem;
@@ -71,25 +71,25 @@
     align-items: baseline;
     gap: 0.5rem;
   }
-  
+
   .pronouns {
     font-size: 0.875rem;
     font-weight: 400;
     color: #666;
   }
-  
+
   .teamMemberBio {
     margin-top: 0.5rem;
     line-height: 1.5;
   }
-  
+
   .specialThanks {
     margin-top: 3rem;
     .teamMemberName {
       font-size: 1.5rem;
     }
   }
-  
+
   @media (max-width: 600px) {
     .container {
       margin: 2rem auto;
@@ -102,4 +102,3 @@
       font-size: 1.125rem;
     }
   }
-  
