@@ -1,3 +1,17 @@
 .pageContainer {
   background: #ffffff;
+  padding-top: 5rem;  /* push the search button down */
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e293b;
+  letter-spacing: -0.025em;
+  margin-right: 2rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #3b82f6;
+  }
 }
